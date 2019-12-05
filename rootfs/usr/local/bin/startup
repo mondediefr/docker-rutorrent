@@ -1,0 +1,161 @@
+#!/usr/bin/env sh
+
+## var color
+CSI="\033["
+CEND="${CSI}0m"
+CRED="${CSI}1;31m"
+CGREEN="${CSI}1;32m"
+CYELLOW="${CSI}1;33m"
+CBLUE="${CSI}1;34m"
+
+# Functions
+f_log() {
+  LOG_TYPE=$1
+  LOG_MESSAGE=$2
+
+  case "${LOG_TYPE}" in
+    "INF")
+      echo -e "${CBLUE}=INF= $(date +%Y/%m/%d-%H:%M:%S) ${LOG_MESSAGE}${CEND}"
+    ;;
+    "SUC")
+      echo -e "${CGREEN}=SUC= $(date +%Y/%m/%d-%H:%M:%S) ${LOG_MESSAGE}${CEND}"
+    ;;
+    "WRN")
+      echo -e "${CYELLOW}=WRN= $(date +%Y/%m/%d-%H:%M:%S) ${LOG_MESSAGE}${CEND}"
+    ;;
+    "ERR")
+      echo -e "${CRED}=ERR= $(date +%Y/%m/%d-%H:%M:%S) ${LOG_MESSAGE}${CEND}"
+    ;;
+  esac
+}
+
+# Create user torrent
+f_log INF "Create user torrent ..."
+
+if [ "$(grep ':'${GID}':' /etc/group)" == "" ]; then
+  addgroup -g ${GID} torrent
+  GROUP_NAME=torrent
+else
+  GROUP_NAME=$(grep ':'${GID}':' /etc/group | cut -d: -f1)
+fi
+
+if [ "$(grep ${UID} /etc/passwd)" == "" ]; then
+  adduser -h /home/torrent -s /bin/sh -G ${GROUP_NAME} -D -u ${UID} torrent
+  USER_NAME=torrent
+else
+  USER_NAME=$(grep ${UID} /etc/passwd | cut -d: -f1)
+fi
+
+f_log SUC "Create user torrent done"
+
+# Create require folder
+mkdir -p /data/downloads \
+         /data/.watch \
+         /data/.session \
+         /config/rtorrent \
+         /config/rutorrent \
+         /config/custom_plugins \
+         /config/custom_themes
+
+# Generate configuration
+f_log INF "Generate configuration ..."
+
+if [ "${WEBROOT}" != "/" ]; then
+  PATH_RUTORRENT="/rutorrent/app${WEBROOT}"
+  mv /rutorrent/app "${PATH_RUTORRENT}"
+else
+  PATH_RUTORRENT="/rutorrent/app"
+fi
+
+sed -i 's|<webroot>|'${WEBROOT}'|g' /etc/nginx/nginx.conf
+sed -i 's|<folder>|'${PATH_RUTORRENT}'|g' /etc/nginx/nginx.conf
+sed -i 's|//|/|g' /etc/nginx/nginx.conf
+
+# Externalize rutorrent configuration
+if [ -d /config/rutorrent/conf ]; then
+  rm -rf "${PATH_RUTORRENT}/conf"
+  ln -s /config/rutorrent/conf "${PATH_RUTORRENT}/conf"
+else
+  mv "${PATH_RUTORRENT}/conf" /config/rutorrent
+  ln -s /config/rutorrent/conf "${PATH_RUTORRENT}/conf"
+fi
+
+# Externalize rutorrent share
+if [ -d /config/rutorrent/share ]; then
+  rm -rf "${PATH_RUTORRENT}/share"
+  ln -s /config/rutorrent/share "${PATH_RUTORRENT}/share"
+else
+  mv "${PATH_RUTORRENT}/share" /config/rutorrent
+  ln -s /config/rutorrent/share "${PATH_RUTORRENT}/share"
+fi
+
+# Add custom plugins
+[ "$(ls /config/custom_plugins/)" ] && for custom_plugin in $(ls /config/custom_plugins); do
+  if [ ! -d "${PATH_RUTORRENT}/plugins/${custom_plugin}" ]; then
+    ln -s "/config/custom_plugins/${custom_plugin}" "${PATH_RUTORRENT}/plugins/${custom_plugin}"
+  fi
+done
+
+# Add custom themes
+[ "$(ls /config/custom_themes/)" ] && for custom_theme in $(ls /config/custom_themes); do
+  if [ ! -d "${PATH_RUTORRENT}/plugins/theme/themes/${custom_theme}" ]; then
+    ln -s "/config/custom_themes/${custom_theme}" "${PATH_RUTORRENT}/plugins/theme/themes/${custom_theme}"
+  fi
+done
+
+sed -i -e 's|<PORT_RTORRENT>|'$PORT_RTORRENT'|g' \
+       -e 's|<DHT_RTORRENT>|'$DHT_RTORRENT'|g' /home/torrent/.rtorrent.rc
+
+# externalize rtorrent configuration
+if [ ! -e /config/rtorrent/.rtorrent.rc ]; then
+  mv /home/torrent/.rtorrent.rc /config/rtorrent/.rtorrent.rc
+  ln -s /config/rtorrent/.rtorrent.rc /home/torrent/.rtorrent.rc
+fi
+
+# Filebot
+# if [ -e /filebot ]; then
+#   mkdir -p /data/Media/Movies
+#   mkdir -p /data/Media/TV
+#   mkdir -p /data/Media/Animes
+#   mkdir -p /data/Media/Music
+#   chown -R ${USER_NAME}:${GROUP_NAME} /filebot
+
+#   grep -E "method.set_key.*event.download.finished" /home/torrent/.rtorrent.rc > /dev/null 2>&1
+#   [ $? -ne 0 ] && echo 'method.set_key = event.download.finished,filebot,"execute2={/usr/local/bin/postdl,$d.directory=,$d.name=,$d.custom1=}"' >> /home/torrent/.rtorrent.rc
+
+#   grep -E "method.set_key.*event.download.erased" /home/torrent/.rtorrent.rc > /dev/null 2>&1
+#   [ $? -ne 0 ] && echo 'method.set_key = event.download.erased,filebot_cleaner,"execute2=/usr/local/bin/postrm"' >> /home/torrent/.rtorrent.rc
+
+#   sed -e 's#<FILEBOT_RENAME_MOVIES>#'"$FILEBOT_RENAME_MOVIES"'#' \
+#       -e 's#<FILEBOT_RENAME_METHOD>#'"$FILEBOT_RENAME_METHOD"'#' \
+#       -e 's#<FILEBOT_RENAME_MUSICS>#'"$FILEBOT_RENAME_MUSICS"'#' \
+#       -e 's#<FILEBOT_RENAME_SERIES>#'"$FILEBOT_RENAME_SERIES"'#' \
+#       -e 's#<FILEBOT_RENAME_ANIMES>#'"$FILEBOT_RENAME_ANIMES"'#' -i /usr/local/bin/postdl
+
+#   chmod +x /usr/local/bin/post*
+# fi
+
+f_log SUC "Generate configuration done"
+
+f_log INF "Apply system permissions ..."
+
+mkdir -p /run/nginx
+
+for folder in /var/www /home/torrent /var/lib/nginx /etc/php7 /etc/nginx /var/log /tmp /config /etc/s6.d; do
+  find ${folder} ! -user torrent -exec chown ${USER_NAME}:${GROUP_NAME} {} \;
+done
+
+find /etc/s6.d -type f -exec chmod +x {} \;
+
+f_log SUC "Apply system permissions done"
+
+if [ "$DISABLE_PERM_DATA" == "false" ]; then
+  f_log INF "Apply data permissions ..."
+  find /data ! -user torrent -exec chown ${USER_NAME}:${GROUP_NAME} {} \;
+  f_log SUC "Apply data permissions done"
+fi
+
+rm -f /data/.session/rtorrent.lock
+
+# run!
+exec su-exec ${USER_NAME}:${GROUP_NAME} $@

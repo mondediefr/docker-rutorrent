@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+/usr/local/bin/rtorrent -I
+s6-svscanctl -qz /etc/s6.d
