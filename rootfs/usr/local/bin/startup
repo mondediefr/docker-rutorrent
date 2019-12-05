@@ -56,11 +56,14 @@ f_log INF "Generate configuration ..."
 
 if [ "${WEBROOT}" != "/" ]; then
   PATH_RUTORRENT="/rutorrent/app${WEBROOT}"
+  INITPLUGINS="/rutorrent/app${WEBROOT}/php/initplugins.php"
   mv /rutorrent/app "${PATH_RUTORRENT}"
 else
   PATH_RUTORRENT="/rutorrent/app"
+  INITPLUGINS="/rutorrent/app/php/initplugins.php"
 fi
 
+sed -i 's|<initplugins>|'${INITPLUGINS}'|g' /home/torrent/.rtorrent.rc
 sed -i 's|<webroot>|'${WEBROOT}'|g' /etc/nginx/nginx.conf
 sed -i 's|<folder>|'${PATH_RUTORRENT}'|g' /etc/nginx/nginx.conf
 sed -i 's|//|/|g' /etc/nginx/nginx.conf

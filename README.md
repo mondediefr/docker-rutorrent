@@ -57,8 +57,8 @@ docker build -t mondedie/rutorrent:filebot \
 
 | Variable | Description | Type | Default value |
 | -------- | ----------- | ---- | ------------- |
-| **UID** | Choose uid for launch rtorrent | *optional* | 991
-| **GID** | Choose gid for launch rtorrent | *optional* | 991
+| **UID** | Choose uid for launch rtorrent, must be a number | *optional* | 991
+| **GID** | Choose gid for launch rtorrent, must be a number | *optional* | 991
 | **WEBROOT** | Webroot path for rutorrent | *optional* | /
 | **PORT_RTORRENT** | Port of rtorrent | *optional* | 45000
 | **DHT_RTORRENT** | DHT option in rtorrent.rc file | *optional* | off
