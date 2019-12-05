@@ -30,6 +30,7 @@
 | -------- | ----------- | ---- | ------------- |
 | **RTORRENT_VER** | rtorrent version | *optional* | v0.9.8
 | **LIBTORRENT_VER** | libtorrent version | *optional* | v0.13.8
+| **GEOIP_VER** | pecl geoip version | *optional* | 1.1.1
 | **FILEBOT** | Build with filebot feature | *optional* | NO
 | **FILEBOT_VER** | Filebot version | *optional* | 4.7.9
 | **CHROMAPRINT_VER** | Chromaprint version | *optional* | 1.4.3

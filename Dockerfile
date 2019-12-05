@@ -2,6 +2,7 @@ FROM alpine:3.10
 
 ARG RTORRENT_VER=v0.9.8
 ARG LIBTORRENT_VER=v0.13.8
+ARG GEOIP_VER=1.1.1
 ARG FILEBOT=NO
 ARG FILEBOT_VER=4.7.9
 ARG CHROMAPRINT_VER=1.4.3
@@ -58,6 +59,17 @@ RUN apk --update-cache add git automake autoconf build-base linux-headers libtoo
   && git clone https://github.com/Phlooo/ruTorrent-MaterialDesign.git /rutorrent/app/plugins/theme/themes/materialdesign \
   && git clone https://github.com/Micdu70/geoip2-rutorrent /rutorrent/app/plugins/geoip2 \
   && rm -rf /var/www/html/rutorrent/plugins/geoip \
+  # Geoip module
+  && cd /usr/share/GeoIP \
+  && wget https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz \
+  && wget https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz \
+  && tar -xzf GeoLite2-City.tar.gz \
+  && tar -xzf GeoLite2-Country.tar.gz \
+  && rm -f *.tar.gz \
+  && mv GeoLite2-*/*.mmdb . \
+  && cp *.mmdb /var/www/html/torrent/plugins/geoip2/database/ \
+  && pecl install geoip-${GEOIP_VER} \
+  && chmod +x /usr/lib/php7/modules/geoip.so \
   # Socket folder
   && mkdir -p /run/rtorrent /run/nginx /run/php \
   # Cleanup

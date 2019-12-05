@@ -34,16 +34,10 @@ f_log INF "Create user torrent ..."
 
 if [ "$(grep ':'${GID}':' /etc/group)" == "" ]; then
   addgroup -g ${GID} torrent
-  GROUP_NAME=torrent
-else
-  GROUP_NAME=$(grep ':'${GID}':' /etc/group | cut -d: -f1)
 fi
 
 if [ "$(grep ${UID} /etc/passwd)" == "" ]; then
-  adduser -h /home/torrent -s /bin/sh -G ${GROUP_NAME} -D -u ${UID} torrent
-  USER_NAME=torrent
-else
-  USER_NAME=$(grep ${UID} /etc/passwd | cut -d: -f1)
+  adduser -h /home/torrent -s /bin/sh -G ${GID} -D -u ${UID} torrent
 fi
 
 f_log SUC "Create user torrent done"
@@ -139,21 +133,18 @@ f_log SUC "Generate configuration done"
 
 f_log INF "Apply system permissions ..."
 
-for folder in /home/torrent /var/lib/nginx /etc/php7 /etc/nginx /var/log /tmp /config /etc/s6.d /run/rtorrent /run/nginx /run/php; do
-  find ${folder} ! -user torrent -exec chown ${USER_NAME}:${GROUP_NAME} {} \;
-done
-
+chown -R ${UID}:${GID} /home/torrent /var/lib/nginx /etc/php7 /etc/nginx /var/log /tmp /config /etc/s6.d /run/rtorrent /run/nginx /run/php
 find /etc/s6.d -type f -exec chmod +x {} \;
 
 f_log SUC "Apply system permissions done"
 
 if [ "$DISABLE_PERM_DATA" == "false" ]; then
   f_log INF "Apply data permissions ..."
-  find /data ! -user torrent -exec chown ${USER_NAME}:${GROUP_NAME} {} \;
+  find /data ! -user torrent -exec chown ${UID}:${GID} {} \;
   f_log SUC "Apply data permissions done"
 fi
 
 rm -f /data/.session/rtorrent.lock
 
 # run!
-exec su-exec ${USER_NAME}:${GROUP_NAME} $@
+exec su-exec ${UID}:${GID} $@
