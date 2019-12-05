@@ -27,7 +27,7 @@
 ### Build arguments
 
 | Arguments | Description | Type | Default value |
-| -------- | ----------- | ---- | ------------- |
+| --------- | ----------- | ---- | ------------- |
 | **RTORRENT_VER** | rtorrent version | *optional* | v0.9.8
 | **LIBTORRENT_VER** | libtorrent version | *optional* | v0.13.8
 | **FILEBOT** | Build with filebot feature | *optional* | NO
@@ -67,6 +67,7 @@ docker build -t mondedie/rtorrent-rtorrent:filebot \
 ### Environment variables with filebot
 
 | Variable | Description | Type | Default value |
+| -------- | ----------- | ---- | ------------- |
 | **FILEBOT_RENAME_METHOD** | Method for rename media | *optional* | symlink
 | **FILEBOT_RENAME_MOVIES** | Regex for rename movies | *optional* | "{n} ({y})"
 | **FILEBOT_RENAME_MUSICS** | Regex for rename musics | *optional* | "{n}/{fn}"
