@@ -138,9 +138,9 @@ find /etc/s6.d -type f -exec chmod +x {} \;
 
 f_log SUC "Apply system permissions done"
 
-if [ "$DISABLE_PERM_DATA" == "false" ]; then
+if [ "${DISABLE_PERM_DATA}" == "false" ]; then
   f_log INF "Apply data permissions ..."
-  find /data ! -user torrent -exec chown ${UID}:${GID} {} \;
+  find /data ! -uid ${UID} -exec chown ${UID}:${GID} {} \;
   f_log SUC "Apply data permissions done"
 fi
 
