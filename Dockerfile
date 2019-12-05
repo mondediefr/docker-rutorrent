@@ -67,7 +67,7 @@ RUN apk --update-cache add git automake autoconf build-base linux-headers libtoo
   && tar -xzf GeoLite2-Country.tar.gz \
   && rm -f *.tar.gz \
   && mv GeoLite2-*/*.mmdb . \
-  && cp *.mmdb /var/www/html/torrent/plugins/geoip2/database/ \
+  && cp *.mmdb /rutorrent/app/plugins/geoip2/database/ \
   && pecl install geoip-${GEOIP_VER} \
   && chmod +x /usr/lib/php7/modules/geoip.so \
   # Socket folder
