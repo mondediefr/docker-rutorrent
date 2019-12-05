@@ -106,7 +106,7 @@ docker build -t mondedie/rutorrent:filebot \
 docker run -dt -p 8080:8080 -p 45000:45000 mondedie/rutorrent:latest
 ```
 
-URI access : http://XX.XX.XX.XX:8080
+URI access : http://xx.xx.xx.xx:8080
 
 ### Advanced launch
 
@@ -137,7 +137,7 @@ docker run -dt
   mondedie/rutorrent:filebot
 ```
 
-URI access : http://XX.XX.XX.XX:9080/rutorrent
+URI access : http://xx.xx.xx.xx:9080/rutorrent
 
 ## License
 
