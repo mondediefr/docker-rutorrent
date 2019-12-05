@@ -9,18 +9,18 @@
 
 ## Features
 
- * Based on Alpine Linux.
- * rTorrent and libtorrent are compiled from source.
- * Provides by default a solid configuration.
- * Filebot is included, and creates symlinks in /data/Media.
- * No **ROOT** process.
- * Persitance custom configuration for rutorrent and rtorrent.
- * Add your own plugins and themes
+ - Based on Alpine Linux.
+ - rTorrent and libtorrent are compiled from source.
+ - Provides by default a solid configuration.
+ - Filebot is included, and creates symlinks in /data/Media.
+ - No **ROOT** process.
+ - Persitance custom configuration for rutorrent and rtorrent.
+ - Add your own plugins and themes
 
 ## Tag available
 
- * latest [(Dockerfile)](https://github.com/mondediefr/docker-rutorrent/blob/master/Dockerfile)
- * latest-filebot, filebot [(Dockerfile)](https://github.com/mondediefr/docker-rutorrent/blob/master/Dockerfile)
+ - latest [(Dockerfile)](https://github.com/mondediefr/docker-rutorrent/blob/master/Dockerfile)
+ - filebot [(Dockerfile)](https://github.com/mondediefr/docker-rutorrent/blob/master/Dockerfile)
 
 ## BUILD IMAGE
 
@@ -46,8 +46,8 @@ docker build -t mondedie/rutorrent https://github.com/mondediefr/docker-rutorren
 ```sh
 docker build -t mondedie/rutorrent:filebot \
   --build-arg FILEBOT=YES \
-  --build-arg RTORRENT_VER=v0.9.6 \
-  --build-arg LIBTORRENT_VER=v0.13.6 \
+  --build-arg RTORRENT_VER=v0.9.7 \
+  --build-arg LIBTORRENT_VER=v0.13.7 \
   https://github.com/mondediefr/docker-rutorrent.git#master:rutorrent
 ```
 
@@ -78,25 +78,25 @@ docker build -t mondedie/rutorrent:filebot \
 
 ### Volumes
 
- * `/data` : folder for download torrents
- * `/config` : folder for rtorrent and rutorrent configuration
+ - `/data` : folder for download torrents
+ - `/config` : folder for rtorrent and rutorrent configuration
 
 #### Data folder tree
 
- * `/data/.watch` : rtorrent watch directory
- * `/data/.session` : rtorrent save statement here
- * `/data/torrents` : rtorrent download torrent here
- * `/data/Media` : if filebot version, rtorrent create a symlink
- * `/config/rtorrent` : path of .rtorrent.rc
- * `/config/rutorrent/conf` : global configuration of rutorrent
- * `/config/rutorrent/share` : rutorrent user configuration and cache
- * `/config/custom_plugins` : add your own plugins
- * `/config/custom_themes` : add your own themes
+ - `/data/.watch` : rtorrent watch directory
+ - `/data/.session` : rtorrent save statement here
+ - `/data/downloads` : rtorrent download torrent here
+ - `/data/Media` : filebot version, rtorrent create a symlink
+ - `/config/rtorrent` : path of .rtorrent.rc
+ - `/config/rutorrent/conf` : global configuration of rutorrent
+ - `/config/rutorrent/share` : rutorrent user configuration and cache
+ - `/config/custom_plugins` : add your own plugins
+ - `/config/custom_themes` : add your own themes
 
 ### Ports
 
- * 8080
- * $PORT_RTORRENT (default : 45000)
+ - 8080
+ - $PORT_RTORRENT (default : 45000)
 
 ## Usage
 
@@ -142,3 +142,10 @@ URI access : http://XX.XX.XX.XX:9080/rutorrent
 ## License
 
 mondedie/rutorrent is released under the [MIT License](https://github.com/mondediefr/docker-rutorrent/blob/master/LICENSE).
+
+# TODO LIST
+
+ - install filemanager
+ - Install filebot
+ - automatedbuild `latest` and `filebot` tag
+ - test WEBROOT env

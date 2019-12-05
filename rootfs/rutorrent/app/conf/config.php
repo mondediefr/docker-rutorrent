@@ -36,7 +36,7 @@ $pathToExternals = [
 ];
 $localhosts = [
     '127.0.0.1',
-     'localhost'
+    'localhost'
 ];
 $profilePath = '../share'; // Path to user profiles
 $profileMask = 0777;
