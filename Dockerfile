@@ -31,7 +31,7 @@ RUN apk --update-cache add git automake autoconf build-base linux-headers libtoo
     cppunit-dev cppunit libnl3 libnl3-dev ncurses-dev curl-dev curl wget libsigc++-dev nginx mediainfo \
     mktorrent ffmpeg gzip zip unrar s6 geoip geoip-dev su-exec nginx php7 php7-fpm php7-json php7-opcache \
     php7-apcu php7-mbstring php7-ctype php7-pear php7-dev php7-sockets php7-phar file findutils tar xz \
-    libressl bzip2 \
+    libressl bzip2 sox python3 py-pip \
   && git clone https://github.com/mirror/xmlrpc-c.git /tmp/xmlrpc-c \
   && git clone -b ${LIBTORRENT_VER} https://github.com/rakshasa/libtorrent.git /tmp/libtorrent \
   && git clone -b ${RTORRENT_VER} https://github.com/rakshasa/rtorrent.git /tmp/rtorrent \
@@ -70,6 +70,8 @@ RUN apk --update-cache add git automake autoconf build-base linux-headers libtoo
   && cp *.mmdb /rutorrent/app/plugins/geoip2/database/ \
   && pecl install geoip-${GEOIP_VER} \
   && chmod +x /usr/lib/php7/modules/geoip.so \
+  ## Install cfscrape
+  && pip install cfscrape \
   # Socket folder
   && mkdir -p /run/rtorrent /run/nginx /run/php \
   # Cleanup

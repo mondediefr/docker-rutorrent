@@ -32,7 +32,9 @@ $pathToExternals = [
     'curl' => '/usr/bin/curl',
     'gzip' => '/usr/bin/gzip',
     'id' => '/usr/bin/id',
-    'stat' => '/usr/bin/stat'
+    'stat' => '/usr/bin/stat',
+    'pgrep' => '/usr/bin/pgrep',
+    'python' => '/usr/bin/python3'
 ];
 $localhosts = [
     '127.0.0.1',
