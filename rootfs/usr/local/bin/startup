@@ -15,16 +15,16 @@ f_log() {
 
   case "${LOG_TYPE}" in
     "INF")
-      echo -e "${CBLUE}=INF= $(date +%Y/%m/%d-%H:%M:%S) ${LOG_MESSAGE}${CEND}"
+      echo -e "${CBLUE}[$(date +%Y/%m/%d-%H:%M:%S)] ${LOG_MESSAGE}${CEND}"
     ;;
     "SUC")
-      echo -e "${CGREEN}=SUC= $(date +%Y/%m/%d-%H:%M:%S) ${LOG_MESSAGE}${CEND}"
+      echo -e "${CGREEN}[$(date +%Y/%m/%d-%H:%M:%S)] ${LOG_MESSAGE}${CEND}"
     ;;
     "WRN")
-      echo -e "${CYELLOW}=WRN= $(date +%Y/%m/%d-%H:%M:%S) ${LOG_MESSAGE}${CEND}"
+      echo -e "${CYELLOW}[$(date +%Y/%m/%d-%H:%M:%S)] ${LOG_MESSAGE}${CEND}"
     ;;
     "ERR")
-      echo -e "${CRED}=ERR= $(date +%Y/%m/%d-%H:%M:%S) ${LOG_MESSAGE}${CEND}"
+      echo -e "${CRED}[$(date +%Y/%m/%d-%H:%M:%S)] ${LOG_MESSAGE}${CEND}"
     ;;
   esac
 }
@@ -139,9 +139,7 @@ f_log SUC "Generate configuration done"
 
 f_log INF "Apply system permissions ..."
 
-mkdir -p /run/nginx
-
-for folder in /var/www /home/torrent /var/lib/nginx /etc/php7 /etc/nginx /var/log /tmp /config /etc/s6.d; do
+for folder in /home/torrent /var/lib/nginx /etc/php7 /etc/nginx /var/log /tmp /config /etc/s6.d /run/rtorrent /run/nginx /run/php; do
   find ${folder} ! -user torrent -exec chown ${USER_NAME}:${GROUP_NAME} {} \;
 done
 

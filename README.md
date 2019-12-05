@@ -1,11 +1,11 @@
 # :warning: WORK IN PROGRESS NOT FUNCTIONAL :warning:
 
-# mondedie/rtorrent-rutorrent
+# mondedie/rutorrent
 
-[![](https://img.shields.io/docker/cloud/build/mondedie/rtorrent-rutorrent)](https://hub.docker.com/r/mondedie/rtorrrent-rutorrent/builds)
-[![](https://img.shields.io/docker/cloud/automated/mondedie/rtorrent-rutorrent)](https://hub.docker.com/r/mondedie/rtorrrent-rutorrent/builds)
-[![](https://img.shields.io/docker/pulls/mondedie/rtorrent-rutorrent)](https://hub.docker.com/r/mondedie/rtorrrent-rutorrent)
-[![](https://img.shields.io/docker/stars/mondedie/rtorrent-rutorrent)](https://hub.docker.com/r/mondedie/rtorrrent-rutorrent)
+[![](https://img.shields.io/docker/cloud/build/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent/builds)
+[![](https://img.shields.io/docker/cloud/automated/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent/builds)
+[![](https://img.shields.io/docker/pulls/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent)
+[![](https://img.shields.io/docker/stars/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent)
 
 ## Features
 
@@ -19,15 +19,15 @@
 
 ## Tag available
 
- * latest [(Dockerfile)](https://github.com/mondediefr/docker-rtorrent-rutorrent/blob/master/Dockerfile)
- * latest-filebot, filebot [(Dockerfile)](https://github.com/mondediefr/docker-rtorrent-rutorrent/blob/master/Dockerfile)
+ * latest [(Dockerfile)](https://github.com/mondediefr/docker-rutorrent/blob/master/Dockerfile)
+ * latest-filebot, filebot [(Dockerfile)](https://github.com/mondediefr/docker-rutorrent/blob/master/Dockerfile)
 
 ## BUILD IMAGE
 
 ### Build arguments
 
-| Arguments | Description | Type | Default value |
-| --------- | ----------- | ---- | ------------- |
+| Argument | Description | Type | Default value |
+| -------- | ----------- | ---- | ------------- |
 | **RTORRENT_VER** | rtorrent version | *optional* | v0.9.8
 | **LIBTORRENT_VER** | libtorrent version | *optional* | v0.13.8
 | **FILEBOT** | Build with filebot feature | *optional* | NO
@@ -37,18 +37,17 @@
 ### build
 
 ```sh
-docker build -t mondedie/rtorrent-rtorrent \
-  https://github.com/mondediefr/docker-rtorrent-rutorrent.git#master:rtorrent-rutorrent
+docker build -t mondedie/rutorrent https://github.com/mondediefr/docker-rutorrent.git#master:rutorrent
 ```
 
 ### Build with arguments
 
 ```sh
-docker build -t mondedie/rtorrent-rtorrent:filebot \
+docker build -t mondedie/rutorrent:filebot \
   --build-arg FILEBOT=YES \
   --build-arg RTORRENT_VER=v0.9.6 \
   --build-arg LIBTORRENT_VER=v0.13.6 \
-  https://github.com/mondediefr/docker-rtorrent-rutorrent.git#master:rtorrent-rutorrent
+  https://github.com/mondediefr/docker-rutorrent.git#master:rutorrent
 ```
 
 ## Configuration
@@ -78,20 +77,20 @@ docker build -t mondedie/rtorrent-rtorrent:filebot \
 
 ### Volumes
 
- * `/data` : Folder for download torrents
- * `/config` : Folder for rtorrent and rutorrent configuration
+ * `/data` : folder for download torrents
+ * `/config` : folder for rtorrent and rutorrent configuration
 
-#### data folder tree
+#### Data folder tree
 
- * /data/.watch : Rtorrent watch directory
- * /data/.session : Rtorrent save statement here
- * /data/torrents : Rtorrent download torrent here
- * /data/Media : If filebot version, rtorrent create a symlink
- * /config/rtorrent : Path of .rtorrent.rc
- * /config/rutorrent/conf : Global configuration of rutorrent
- * /config/rutorrent/share : rutorrent user configuration and cache
- * /config/custom_plugins : Add your own plugins
- * /config/custom_themes : Add your own themes
+ * `/data/.watch` : rtorrent watch directory
+ * `/data/.session` : rtorrent save statement here
+ * `/data/torrents` : rtorrent download torrent here
+ * `/data/Media` : if filebot version, rtorrent create a symlink
+ * `/config/rtorrent` : path of .rtorrent.rc
+ * `/config/rutorrent/conf` : global configuration of rutorrent
+ * `/config/rutorrent/share` : rutorrent user configuration and cache
+ * `/config/custom_plugins` : add your own plugins
+ * `/config/custom_themes` : add your own themes
 
 ### Ports
 
@@ -103,7 +102,7 @@ docker build -t mondedie/rtorrent-rtorrent:filebot \
 ### Simple launch
 
 ```sh
-docker run -dt -p 8080:8080 -p 45000:45000 mondedie/rtorrent-rutorrent
+docker run -dt -p 8080:8080 -p 45000:45000 mondedie/rutorrent:latest
 ```
 
 URI access : http://XX.XX.XX.XX:8080
@@ -134,11 +133,11 @@ docker run -dt
   -e GID=1001 \
   -v rutorrent-data-volume:/data \
   -v /docker/config:/config \
-  mondedie/rtorrent-rutorrent:filebot
+  mondedie/rutorrent:filebot
 ```
 
 URI access : http://XX.XX.XX.XX:9080/rutorrent
 
 ## License
 
-mondedie/rtorrent-rutorrent is released under the [MIT License](https://github.com/mondediefr/docker-rtorrent-rutorrent/blob/master/LICENSE).
+mondedie/rutorrent is released under the [MIT License](https://github.com/mondediefr/docker-rutorrent/blob/master/LICENSE).

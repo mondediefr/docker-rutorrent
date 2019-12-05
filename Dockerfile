@@ -59,7 +59,7 @@ RUN apk --update-cache add git automake autoconf build-base linux-headers libtoo
   && git clone https://github.com/Micdu70/geoip2-rutorrent /rutorrent/app/plugins/geoip2 \
   && rm -rf /var/www/html/rutorrent/plugins/geoip \
   # Socket folder
-  && mkdir -p /run/rtorrent \
+  && mkdir -p /run/rtorrent /run/nginx /run/php \
   # Cleanup
   && rm -rf /tmp/* /var/cache/apk/*
 
