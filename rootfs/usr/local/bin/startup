@@ -57,7 +57,8 @@ f_log INF "Generate configuration ..."
 if [ "${WEBROOT}" != "/" ]; then
   PATH_RUTORRENT="/rutorrent/app${WEBROOT}"
   INITPLUGINS="/rutorrent/app${WEBROOT}/php/initplugins.php"
-  mv /rutorrent/app "${PATH_RUTORRENT}"
+  mkdir -p "${PATH_RUTORRENT}"
+  mv /rutorrent/app/* "${PATH_RUTORRENT}"
 else
   PATH_RUTORRENT="/rutorrent/app"
   INITPLUGINS="/rutorrent/app/php/initplugins.php"

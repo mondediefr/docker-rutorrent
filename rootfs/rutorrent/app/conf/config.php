@@ -33,8 +33,7 @@ $pathToExternals = [
     'gzip' => '/usr/bin/gzip',
     'id' => '/usr/bin/id',
     'stat' => '/usr/bin/stat',
-    'pgrep' => '/usr/bin/pgrep',
-    'python' => '/usr/bin/python3'
+    'pgrep' => '/usr/bin/pgrep'
 ];
 $localhosts = [
     '127.0.0.1',
