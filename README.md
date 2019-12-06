@@ -114,8 +114,7 @@ Add custom plugin :
 
 ```sh
 mkdir -p /docker/config/custom_plugins
-cd /docker/config/custom_plugins
-git clone https://github.com/Gyran/rutorrent-ratiocolor.git ./ratiocolor
+git clone https://github.com/Gyran/rutorrent-ratiocolor.git /docker/config/custom_plugins/ratiocolor
 ```
 
 Run container :
@@ -147,3 +146,5 @@ mondedie/rutorrent is released under the [MIT License](https://github.com/monded
 
  - install filebot
  - automatedbuild `latest` and `filebot` tag
+ - test custom plugin
+ - test custom theme
