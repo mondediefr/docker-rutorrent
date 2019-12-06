@@ -8,7 +8,8 @@ $pathToExternals = [
     'unzip' => '/usr/bin/unzip',
     'tar' => '/bin/tar',
     'gzip' => '/bin/gzip',
-    'rar' => '/usr/bin/unrar'
+    'rar' => '/usr/bin/unrar',
+    'bzip2' => '/usr/bin/bzip2'
 ];
 
 $fm['archive']['types'] = array('rar', 'zip', 'tar', 'gzip', 'bzip2');

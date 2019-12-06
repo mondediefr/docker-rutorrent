@@ -145,7 +145,5 @@ mondedie/rutorrent is released under the [MIT License](https://github.com/monded
 
 # TODO LIST
 
- - install filemanager
  - install filebot
  - automatedbuild `latest` and `filebot` tag
- - test WEBROOT env

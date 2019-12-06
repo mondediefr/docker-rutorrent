@@ -66,7 +66,6 @@ fi
 
 sed -i 's|<initplugins>|'${INITPLUGINS}'|g' /home/torrent/.rtorrent.rc
 sed -i 's|<webroot>|'${WEBROOT}'|g' /etc/nginx/nginx.conf
-sed -i 's|<folder>|'${PATH_RUTORRENT}'|g' /etc/nginx/nginx.conf
 sed -i 's|//|/|g' /etc/nginx/nginx.conf
 
 # Externalize rutorrent configuration
@@ -110,6 +109,8 @@ if [ ! -e /config/rtorrent/.rtorrent.rc ]; then
   ln -s /config/rtorrent/.rtorrent.rc /home/torrent/.rtorrent.rc
 fi
 
+f_log SUC "Generate configuration done"
+
 # Filebot
 # if [ -e /filebot ]; then
 #   mkdir -p /data/Media/Movies
@@ -133,11 +134,9 @@ fi
 #   chmod +x /usr/local/bin/post*
 # fi
 
-f_log SUC "Generate configuration done"
-
 f_log INF "Apply system permissions ..."
 
-chown -R ${UID}:${GID} /home/torrent /var/lib/nginx /var/tmp/nginx /etc/nginx /etc/php7 /var/log /tmp /config /etc/s6.d /run/rtorrent /run/nginx /run/php
+chown -R ${UID}:${GID} /home/torrent /rutorrent /var/lib/nginx /var/tmp/nginx /etc/nginx /etc/php7 /var/log /tmp /config /etc/s6.d /run/rtorrent /run/nginx /run/php
 find /etc/s6.d -type f -exec chmod +x {} \;
 
 f_log SUC "Apply system permissions done"
