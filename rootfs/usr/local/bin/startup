@@ -136,9 +136,10 @@ f_log SUC "Generate configuration done"
 
 f_log INF "Apply system permissions ..."
 
-find /config ! -uid ${UID} -exec chown ${UID}:${GID} {} \;
-find /rutorrent ! -uid ${UID} -exec chown ${UID}:${GID} {} \;
-chown -R ${UID}:${GID} /home/torrent /var/lib/nginx /var/tmp/nginx /etc/nginx /etc/php7 /tmp /etc/s6.d /run/rtorrent /run/nginx /run/php
+for folder in /config /rutorrent /home/torrent /var/lib/nginx /var/tmp/nginx /var/log /etc/nginx /etc/php7 /tmp /etc/s6.d /run/rtorrent /run/nginx /run/php; do
+  find "${folder}" ! -uid ${UID} -exec chown ${UID}:${GID} {} \;
+done
+
 find /etc/s6.d -type f -exec chmod +x {} \;
 
 f_log SUC "Apply system permissions done"
@@ -151,5 +152,5 @@ fi
 
 rm -f /data/.session/rtorrent.lock
 
-# run!
+# Run !
 exec su-exec ${UID}:${GID} $@
