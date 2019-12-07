@@ -1,11 +1,7 @@
 # logs
 log.open_file = "rtorrent", "/tmp/rtorrent.log"
-log.add_output = "info", "rtorrent"
 log.add_output = "critical", "rtorrent"
 log.add_output = "error", "rtorrent"
-log.add_output = "warn", "rtorrent"
-log.add_output = "notice", "rtorrent"
-log.add_output = "debug", "rtorrent"
 
 # general
 system.daemon.set = true

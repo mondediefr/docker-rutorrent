@@ -140,11 +140,9 @@ URI access : http://xx.xx.xx.xx:9080/rutorrent
 
 ## License
 
-mondedie/rutorrent is released under the [MIT License](https://github.com/mondediefr/docker-rutorrent/blob/master/LICENSE).
+Docker image [mondedie/rutorrent](https://hub.docker.com/r/mondedie/rutorrent) is released under the [MIT License](https://github.com/mondediefr/docker-rutorrent/blob/master/LICENSE).
 
 # TODO LIST
 
  - install filebot
  - automatedbuild `latest` and `filebot` tag
- - test custom plugin
- - test custom theme
