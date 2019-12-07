@@ -67,7 +67,7 @@ docker build -t mondedie/rutorrent:filebot \
 | **WEBROOT** | Webroot path for rutorrent | *optional* | /
 | **PORT_RTORRENT** | Port of rtorrent | *optional* | 45000
 | **DHT_RTORRENT** | DHT option in rtorrent.rc file | *optional* | off
-| **DISABLE_PERM_DATA** | Don't check permission data in download directory | *optional* | false
+| **CHECK_PERM_DATA** | Check permission data in downloads directory | *optional* | true
 
 ### Environment variables with filebot
 
@@ -101,7 +101,7 @@ docker build -t mondedie/rutorrent:filebot \
 ### Ports
 
  - 8080
- - $PORT_RTORRENT (default : 45000)
+ - PORT_RTORRENT (default : 45000)
 
 ## Usage
 
