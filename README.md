@@ -1,5 +1,10 @@
 # :warning: WORK IN PROGRESS NOT FUNCTIONAL :warning:
 
+# TODO LIST
+
+ - install filebot
+ - automatedbuild `latest` and `filebot` tag (CI travis)
+
 # mondedie/rutorrent
 
 [![](https://img.shields.io/docker/cloud/build/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent/builds)
@@ -141,8 +146,3 @@ URI access : http://xx.xx.xx.xx:9080/rutorrent
 ## License
 
 Docker image [mondedie/rutorrent](https://hub.docker.com/r/mondedie/rutorrent) is released under the [MIT License](https://github.com/mondediefr/docker-rutorrent/blob/master/LICENSE).
-
-# TODO LIST
-
- - install filebot
- - automatedbuild `latest` and `filebot` tag
