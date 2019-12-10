@@ -32,7 +32,7 @@ RUN apk --update-cache add git automake autoconf build-base linux-headers libtoo
   && cd /tmp \
   && tar -xjf /tmp/libzen.tar.gz \
   && cd /tmp/ZenLib/Project/GNU/Library \
-  && ./autogen \
+  && ./autogen.sh \
   && ./configure --prefix=/usr/local --enable-shared --disable-static \
   && make -j ${BUILD_CORES} \
   && make install \
@@ -40,7 +40,7 @@ RUN apk --update-cache add git automake autoconf build-base linux-headers libtoo
   && cd /tmp \
   && tar -xzf libmediainfo.tar.gz \
   && cd /tmp/MediaInfoLib/Project/GNU/Library \
-  && ./autogen \
+  && ./autogen.sh \
   && ./configure \
   && make -j ${BUILD_CORES} \
   && make install \
@@ -48,7 +48,7 @@ RUN apk --update-cache add git automake autoconf build-base linux-headers libtoo
   && cd /tmp \
   && tar -xzf mediainfo.tar.gz \
   && cd /tmp/MediaInfo/Project/GNU/CLI \
-  && ./autogen \
+  && ./autogen.sh \
   && ./configure \
   && make -j ${BUILD_CORES} \
   && make install \
