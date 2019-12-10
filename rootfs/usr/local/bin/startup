@@ -43,13 +43,15 @@ fi
 f_log SUC "Create user torrent done"
 
 # Create require folder
-mkdir -p /data/downloads \
-         /data/.watch \
-         /data/.session \
-         /config/rtorrent \
-         /config/rutorrent \
-         /config/custom_plugins \
-         /config/custom_themes
+mkdir -p \
+  /data/downloads \
+  /data/.watch \
+  /data/.session \
+  /config/filebot \
+  /config/rtorrent \
+  /config/rutorrent \
+  /config/custom_plugins \
+  /config/custom_themes
 
 # Generate configuration
 f_log INF "Generate configuration ..."
@@ -100,8 +102,8 @@ done
   fi
 done
 
-sed -i -e 's|<PORT_RTORRENT>|'${PORT_RTORRENT}'|g' \
-       -e 's|<DHT_RTORRENT>|'${DHT_RTORRENT}'|g' /home/torrent/.rtorrent.rc
+sed -i 's|<DHT_RTORRENT>|'${DHT_RTORRENT}'|g' /home/torrent/.rtorrent.rc
+sed -i 's|<PORT_RTORRENT>|'${PORT_RTORRENT}'|g' /home/torrent/.rtorrent.rc
 
 # externalize rtorrent configuration
 if [ -e /config/rtorrent/.rtorrent.rc ]; then

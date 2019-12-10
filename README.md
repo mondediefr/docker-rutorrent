@@ -92,6 +92,7 @@ docker build -t mondedie/rutorrent:filebot \
  - `/config/rutorrent/share` : rutorrent user configuration and cache
  - `/config/custom_plugins` : add your own plugins
  - `/config/custom_themes` : add your own themes
+ - `/config/filebot` : add your License file in this folder
 
 ### Ports
 
