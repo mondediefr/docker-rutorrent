@@ -116,9 +116,8 @@ f_log SUC "Generate configuration done"
 if [ -e /filebot ]; then
   f_log INF "Configuration of filebot ..."
   mkdir -p /data/media/movies /data/media/series /data/media/animes /data/media/music
-  find /filebot ! -uid ${UID} -exec chown ${UID}:${GID} {} \;
 
-  # add license file
+  # Add license file
   if [ -e ${FILEBOT_LICENSE} ]; then
     /filebot/filebot.sh --license ${FILEBOT_LICENSE}
   else
@@ -126,17 +125,12 @@ if [ -e /filebot ]; then
   fi
 
   grep -E "method.set_key.*event.download.finished" /home/torrent/.rtorrent.rc > /dev/null 2>&1
-  [ $? -ne 0 ] && echo 'method.set_key = event.download.finished,filebot,"execute2={/usr/local/bin/postdl,$d.directory=,$d.name=}"' >> /home/torrent/.rtorrent.rc
+  [ $? -ne 0 ] && echo 'method.set_key = event.download.finished,filebot,"execute2=/usr/local/bin/postdl,$d.directory=,$d.name=,$d.custom1="' >> /home/torrent/.rtorrent.rc
 
   grep -E "method.set_key.*event.download.erased" /home/torrent/.rtorrent.rc > /dev/null 2>&1
   [ $? -ne 0 ] && echo 'method.set_key = event.download.erased,filebot_cleaner,"execute2=/usr/local/bin/postrm"' >> /home/torrent/.rtorrent.rc
 
-  sed -e 's#<FILEBOT_RENAME_MOVIES>#'"${FILEBOT_RENAME_MOVIES}"'#' \
-      -e 's#<FILEBOT_RENAME_METHOD>#'"${FILEBOT_RENAME_METHOD}"'#' \
-      -e 's#<FILEBOT_RENAME_MUSICS>#'"${FILEBOT_RENAME_MUSICS}"'#' \
-      -e 's#<FILEBOT_RENAME_SERIES>#'"${FILEBOT_RENAME_SERIES}"'#' \
-      -e 's#<FILEBOT_RENAME_ANIMES>#'"${FILEBOT_RENAME_ANIMES}"'#' -i /usr/local/bin/postdl
-
+  find /filebot ! -uid ${UID} -exec chown ${UID}:${GID} {} \;
   chmod +x /usr/local/bin/postdl /usr/local/bin/postrm
   f_log SUC "Configuration of filebot done"
 fi
