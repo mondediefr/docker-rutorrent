@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
-# Login
-#docker login
+# Login dockerhub
+echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
 
 # build latest tag
 docker build --tag mondedie/rutorrent:latest .
