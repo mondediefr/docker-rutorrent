@@ -1,26 +1,23 @@
 #!/usr/bin/env sh
 
-# rtorrent.rc
-# method.set_key = event.download.finished,filebot,"execute2={/usr/local/bin/postdl,$d.directory=,$d.name=,$d.custom1=}"
+TORRENT_PATH=${1}
+TORRENT_NAME=${2}
 
-TORRENT_PATH=$1
-TORRENT_NAME=$2
-TORRENT_LABEL=$(echo $3 | tr '[:upper:]' '[:lower:]')
-
-case $TORRENT_LABEL in
-  films|movies|film|movie)
-    /filebot/filebot.sh --lang "$FILEBOT_LANG" --db TheMovieDB -script fn:amc --output "/data/Media" --action <FILEBOT_RENAME_METHOD> --conflict $FILEBOT_CONFLICT -non-strict --log-file amc.log --def excludeList=amc.excludes unsorted=y "movieFormat=/data/Media/Movies/<FILEBOT_RENAME_MOVIES>" "ut_dir=$TORRENT_PATH" "ut_kind=multi" "ut_title=$TORRENT_NAME" "ut_label=Movies" | tee -a /tmp/filebot.log 2>&1
-  ;;
-  music|musics|musique|musiques)
-    /filebot/filebot.sh  --lang "$FILEBOT_LANG" --db ID3 -script fn:amc --output "/data/Media" --action <FILEBOT_RENAME_METHOD> --conflict $FILEBOT_CONFLICT -non-strict --log-file amc.log --def excludeList=amc.excludes unsorted=y music=y "musicFormat=/data/Media/Music/<FILEBOT_RENAME_MUSICS>" "ut_dir=$TORRENT_PATH" "ut_kind=multi" "ut_title=$TORRENT_NAME" "ut_label=Music" | tee -a /tmp/filebot.log 2>&1
-  ;;
-  tv|"tv shows"|series|serie)
-    /filebot/filebot.sh  --lang "$FILEBOT_LANG" --db TheTVDB -script fn:amc --output "/data/Media" --action <FILEBOT_RENAME_METHOD> --conflict $FILEBOT_CONFLICT -non-strict --log-file amc.log --def excludeList=amc.excludes unsorted=y "seriesFormat=/data/Media/TV/<FILEBOT_RENAME_SERIES>" "ut_dir=$TORRENT_PATH" "ut_kind=multi" "ut_title=$TORRENT_NAME" "ut_label=TV" | tee -a /tmp/filebot.log 2>&1
-  ;;
-  animes)
-    /filebot/filebot.sh  --lang "$FILEBOT_LANG" --db AniDB -script fn:amc --output "/data/Media" --action <FILEBOT_RENAME_METHOD> --conflict $FILEBOT_CONFLICT -non-strict --log-file amc.log --def excludeList=amc.excludes unsorted=y "animeFormat=/data/Media/Animes/<FILEBOT_RENAME_ANIMES>" "ut_dir=$TORRENT_PATH" "ut_kind=multi" "ut_title=$TORRENT_NAME" "ut_label=Anime" | tee -a /tmp/filebot.log 2>&1
-  ;;
-  *)
-    /filebot/filebot.sh --lang "$FILEBOT_LANG" -script fn:amc --output "/data/Media" --action <FILEBOT_RENAME_METHOD> --conflict $FILEBOT_CONFLICT -non-strict --log-file amc.log --def excludeList=amc.excludes unsorted=y music=y "seriesFormat=/data/Media/TV/<FILEBOT_RENAME_SERIES>" "animeFormat=/data/Media/Animes/<FILEBOT_RENAME_ANIMES>" "movieFormat=/data/Media/Movies/<FILEBOT_RENAME_MOVIES>" "musicFormat=/data/Media/Music/<FILEBOT_RENAME_MUSICS>" "ut_dir=$TORRENT_PATH" "ut_kind=multi" "ut_title=$TORRENT_NAME" "ut_label=$TORRENT_LABEL" | tee -a /tmp/filebot.log 2>&1
-  ;;
-esac
+/filebot/filebot.sh \
+  --lang ${FILEBOT_LANG} \
+  -script fn:amc \
+  --output "/data/media" \
+  --action <FILEBOT_RENAME_METHOD> \
+  --conflict ${FILEBOT_CONFLICT} \
+  -non-strict \
+  --log-file amc.log \
+  --def excludeList=amc.excludes \
+  --def unsorted=y \
+  --def music=y \
+  --def seriesFormat="/data/media/series/<FILEBOT_RENAME_SERIES>" \
+  --def animeFormat="/data/media/animes/<FILEBOT_RENAME_ANIMES>" \
+  --def movieFormat="/data/media/movies/<FILEBOT_RENAME_MOVIES>" \
+  --def musicFormat="/data/media/music/<FILEBOT_RENAME_MUSICS>" \
+  --def ut_dir=${TORRENT_PATH} \
+  --def ut_kind=multi \
+  --def ut_title=${TORRENT_NAME} | tee -a /tmp/filebot.log 2>&1

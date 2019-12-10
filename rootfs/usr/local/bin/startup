@@ -100,8 +100,8 @@ done
   fi
 done
 
-sed -i -e 's|<PORT_RTORRENT>|'$PORT_RTORRENT'|g' \
-       -e 's|<DHT_RTORRENT>|'$DHT_RTORRENT'|g' /home/torrent/.rtorrent.rc
+sed -i -e 's|<PORT_RTORRENT>|'${PORT_RTORRENT}'|g' \
+       -e 's|<DHT_RTORRENT>|'${DHT_RTORRENT}'|g' /home/torrent/.rtorrent.rc
 
 # externalize rtorrent configuration
 if [ ! -e /config/rtorrent/.rtorrent.rc ]; then
@@ -112,27 +112,27 @@ fi
 f_log SUC "Generate configuration done"
 
 # Filebot
-# if [ -e /filebot ]; then
-#   mkdir -p /data/Media/Movies
-#   mkdir -p /data/Media/TV
-#   mkdir -p /data/Media/Animes
-#   mkdir -p /data/Media/Music
-#   chown -R ${USER_NAME}:${GROUP_NAME} /filebot
+if [ -e /filebot ]; then
+  mkdir -p /data/media/{movies,series,animes,music}
+  find /filebot ! -uid ${UID} -exec chown ${UID}:${GID} {} \;
 
-#   grep -E "method.set_key.*event.download.finished" /home/torrent/.rtorrent.rc > /dev/null 2>&1
-#   [ $? -ne 0 ] && echo 'method.set_key = event.download.finished,filebot,"execute2={/usr/local/bin/postdl,$d.directory=,$d.name=,$d.custom1=}"' >> /home/torrent/.rtorrent.rc
+  # add license file
+  /fileboot/filebot.sh --license ${FILEBOT_LICENSE}
 
-#   grep -E "method.set_key.*event.download.erased" /home/torrent/.rtorrent.rc > /dev/null 2>&1
-#   [ $? -ne 0 ] && echo 'method.set_key = event.download.erased,filebot_cleaner,"execute2=/usr/local/bin/postrm"' >> /home/torrent/.rtorrent.rc
+  grep -E "method.set_key.*event.download.finished" /home/torrent/.rtorrent.rc > /dev/null 2>&1
+  [ $? -ne 0 ] && echo 'method.set_key = event.download.finished,filebot,"execute2={/usr/local/bin/postdl,$d.directory=,$d.name=}"' >> /home/torrent/.rtorrent.rc
 
-#   sed -e 's#<FILEBOT_RENAME_MOVIES>#'"$FILEBOT_RENAME_MOVIES"'#' \
-#       -e 's#<FILEBOT_RENAME_METHOD>#'"$FILEBOT_RENAME_METHOD"'#' \
-#       -e 's#<FILEBOT_RENAME_MUSICS>#'"$FILEBOT_RENAME_MUSICS"'#' \
-#       -e 's#<FILEBOT_RENAME_SERIES>#'"$FILEBOT_RENAME_SERIES"'#' \
-#       -e 's#<FILEBOT_RENAME_ANIMES>#'"$FILEBOT_RENAME_ANIMES"'#' -i /usr/local/bin/postdl
+  grep -E "method.set_key.*event.download.erased" /home/torrent/.rtorrent.rc > /dev/null 2>&1
+  [ $? -ne 0 ] && echo 'method.set_key = event.download.erased,filebot_cleaner,"execute2=/usr/local/bin/postrm"' >> /home/torrent/.rtorrent.rc
 
-#   chmod +x /usr/local/bin/post*
-# fi
+  sed -e 's#<FILEBOT_RENAME_MOVIES>#'"${FILEBOT_RENAME_MOVIES}"'#' \
+      -e 's#<FILEBOT_RENAME_METHOD>#'"${FILEBOT_RENAME_METHOD}"'#' \
+      -e 's#<FILEBOT_RENAME_MUSICS>#'"${FILEBOT_RENAME_MUSICS}"'#' \
+      -e 's#<FILEBOT_RENAME_SERIES>#'"${FILEBOT_RENAME_SERIES}"'#' \
+      -e 's#<FILEBOT_RENAME_ANIMES>#'"${FILEBOT_RENAME_ANIMES}"'#' -i /usr/local/bin/postdl
+
+  chmod +x /usr/local/bin/postdl /usr/local/bin/postrm
+fi
 
 f_log INF "Apply system permissions ..."
 
