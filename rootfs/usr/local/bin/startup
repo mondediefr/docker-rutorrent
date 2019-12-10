@@ -148,6 +148,8 @@ f_log SUC "Apply system permissions done"
 if [ "${CHECK_PERM_DATA}" == "true" ]; then
   f_log INF "Apply data permissions ..."
   find /data ! -uid ${UID} -exec chown ${UID}:${GID} {} \;
+  # fix chroot sftp
+  chown root:root /data
   f_log SUC "Apply data permissions done"
 fi
 
