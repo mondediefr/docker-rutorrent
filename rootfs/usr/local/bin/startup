@@ -104,9 +104,10 @@ sed -i -e 's|<PORT_RTORRENT>|'${PORT_RTORRENT}'|g' \
        -e 's|<DHT_RTORRENT>|'${DHT_RTORRENT}'|g' /home/torrent/.rtorrent.rc
 
 # externalize rtorrent configuration
-if [ ! -e /config/rtorrent/.rtorrent.rc ]; then
-  mv /home/torrent/.rtorrent.rc /config/rtorrent/.rtorrent.rc
-  ln -s /config/rtorrent/.rtorrent.rc /home/torrent/.rtorrent.rc
+if [ -e /config/rtorrent/.rtorrent.rc ]; then
+  cp /config/rtorrent/.rtorrent.rc /home/torrent/.rtorrent.rc
+else
+  cp /home/torrent/.rtorrent.rc /config/rtorrent/.rtorrent.rc
 fi
 
 f_log SUC "Generate configuration done"
