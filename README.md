@@ -1,5 +1,3 @@
-# :warning: WORK IN PROGRESS NOT FUNCTIONAL :warning:
-
 # mondedie/rutorrent
 
 [![Build Status](https://travis-ci.com/mondediefr/docker-rutorrent.svg?branch=master)](https://travis-ci.com/mondediefr/docker-rutorrent)
