@@ -4,9 +4,9 @@
 echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
 
 # build tag latest and filebot
-# docker build --tag mondedie/rutorrent:latest .
-# docker build --tag mondedie/rutorrent:filebot --build-arg FILEBOT=YES .
+docker build --tag mondedie/rutorrent:latest .
+docker build --tag mondedie/rutorrent:filebot --build-arg FILEBOT=YES .
 
 # push to dockerhub
-# docker push mondedie/rutorrent:latest
-# docker push mondedie/rutorrent:filebot
+docker push mondedie/rutorrent:latest
+docker push mondedie/rutorrent:filebot

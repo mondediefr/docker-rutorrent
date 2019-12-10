@@ -1,13 +1,8 @@
 # :warning: WORK IN PROGRESS NOT FUNCTIONAL :warning:
 
-# TODO LIST
-
- - automatedbuild `latest` and `filebot` tag (CI travis)
-
 # mondedie/rutorrent
 
-[![](https://img.shields.io/docker/cloud/build/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent/builds)
-[![](https://img.shields.io/docker/cloud/automated/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent/builds)
+[![Build Status](https://travis-ci.com/mondediefr/docker-rutorrent.svg?branch=master)](https://travis-ci.com/mondediefr/docker-rutorrent)
 [![](https://img.shields.io/docker/pulls/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent)
 [![](https://img.shields.io/docker/stars/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent)
 
