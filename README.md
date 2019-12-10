@@ -134,6 +134,7 @@ docker run -dt
   -e WEBROOT=/rutorrent \
   -e DHT_RTORRENT=on \
   -e PORT_RTORRENT=6881 \
+  -e FILEBOT_LICENSE=/config/filebot/FileBot_License_XXXXXXXXX.psm \
   -e FILEBOT_RENAME_METHOD=move \
   -e FILEBOT_RENAME_SERIES="{n}/Season {s}/{n} - {s00e00} - {t}" \
   -e UID=1001 \

@@ -114,7 +114,7 @@ f_log SUC "Generate configuration done"
 # Filebot
 if [ -e /filebot ]; then
   f_log INF "Configuration of filebot ..."
-  mkdir -p /data/media/{movies,series,animes,music}
+  mkdir -p /data/media/movies /data/media/series /data/media/animes /data/media/music
   find /filebot ! -uid ${UID} -exec chown ${UID}:${GID} {} \;
 
   # add license file
