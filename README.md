@@ -2,7 +2,6 @@
 
 # TODO LIST
 
- - install filebot
  - automatedbuild `latest` and `filebot` tag (CI travis)
 
 # mondedie/rutorrent
@@ -45,7 +44,7 @@
 ### build
 
 ```sh
-docker build -t mondedie/rutorrent https://github.com/mondediefr/docker-rutorrent.git#master:rutorrent
+docker build -t mondedie/rutorrent https://github.com/mondediefr/docker-rutorrent.git
 ```
 
 ### Build with arguments
@@ -55,7 +54,7 @@ docker build -t mondedie/rutorrent:filebot \
   --build-arg FILEBOT=YES \
   --build-arg RTORRENT_VER=v0.9.7 \
   --build-arg LIBTORRENT_VER=v0.13.7 \
-  https://github.com/mondediefr/docker-rutorrent.git#master:rutorrent
+  https://github.com/mondediefr/docker-rutorrent.git
 ```
 
 ## Configuration
@@ -148,4 +147,4 @@ URI access : http://xx.xx.xx.xx:9080/rutorrent
 
 ## License
 
-Docker image [mondedie/rutorrent](https://hub.docker.com/r/mondedie/rutorrent) is released under the [MIT License](https://github.com/mondediefr/docker-rutorrent/blob/master/LICENSE).
+Docker image [mondedie/rutorrent](https://hub.docker.com/r/mondedie/rutorrent) is released under [MIT License](https://github.com/mondediefr/docker-rutorrent/blob/master/LICENSE).

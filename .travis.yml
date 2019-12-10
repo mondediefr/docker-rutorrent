@@ -1,0 +1,10 @@
+language: minimal
+
+services:
+  - docker
+
+before_script:
+  - chmod +x .travis/build.sh
+
+script:
+  - ./.travis/build.sh

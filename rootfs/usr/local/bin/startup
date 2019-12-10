@@ -113,11 +113,16 @@ f_log SUC "Generate configuration done"
 
 # Filebot
 if [ -e /filebot ]; then
+  f_log INF "Configuration of filebot ..."
   mkdir -p /data/media/{movies,series,animes,music}
   find /filebot ! -uid ${UID} -exec chown ${UID}:${GID} {} \;
 
   # add license file
-  /fileboot/filebot.sh --license ${FILEBOT_LICENSE}
+  if [ -e ${FILEBOT_LICENSE} ]; then
+    /filebot/filebot.sh --license ${FILEBOT_LICENSE}
+  else
+    f_log ERR "The filebot license file doesn't exist"
+  fi
 
   grep -E "method.set_key.*event.download.finished" /home/torrent/.rtorrent.rc > /dev/null 2>&1
   [ $? -ne 0 ] && echo 'method.set_key = event.download.finished,filebot,"execute2={/usr/local/bin/postdl,$d.directory=,$d.name=}"' >> /home/torrent/.rtorrent.rc
@@ -132,6 +137,7 @@ if [ -e /filebot ]; then
       -e 's#<FILEBOT_RENAME_ANIMES>#'"${FILEBOT_RENAME_ANIMES}"'#' -i /usr/local/bin/postdl
 
   chmod +x /usr/local/bin/postdl /usr/local/bin/postrm
+  f_log SUC "Configuration of filebot done"
 fi
 
 f_log INF "Apply system permissions ..."
