@@ -157,5 +157,6 @@ fi
 
 rm -f /data/.session/rtorrent.lock
 
-# Run !
 exec su-exec ${UID}:${GID} $@
+
+f_log SUC "Rutorrent container has been started!"
