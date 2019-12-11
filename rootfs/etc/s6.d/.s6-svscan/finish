@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-echo "Stop s6"
+echo "stop s6"

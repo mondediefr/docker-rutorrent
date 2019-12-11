@@ -1,10 +1,10 @@
 #!/usr/bin/env sh
 
 (sleep 10; find /data/Media -type l | while read in; do
-  file "$in" | grep "broken symbolic link"
+  file "${in}" | grep "broken symbolic link"
   if [ $? -ne 1 ]; then
-    echo "Delete $in"
-    rm -f "$in"
+    echo "Delete ${in}"
+    rm -f "${in}"
   fi
 done
 

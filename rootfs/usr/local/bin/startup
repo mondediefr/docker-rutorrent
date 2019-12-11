@@ -10,8 +10,8 @@ CBLUE="${CSI}1;34m"
 
 # Functions
 f_log() {
-  LOG_TYPE=$1
-  LOG_MESSAGE=$2
+  LOG_TYPE="${1}"
+  LOG_MESSAGE="${2}"
 
   case "${LOG_TYPE}" in
     "INF")
@@ -32,12 +32,12 @@ f_log() {
 # Create user torrent
 f_log INF "Create user torrent ..."
 
-if [ "$(grep ':'${GID}':' /etc/group)" == "" ]; then
-  addgroup -g ${GID} torrent
+if [ "$(grep ':'"${GID}"':' /etc/group)" == "" ]; then
+  addgroup -g "${GID}" torrent
 fi
 
 if [ "$(grep ${UID} /etc/passwd)" == "" ]; then
-  adduser -h /home/torrent -s /bin/sh -G torrent -D -u ${UID} torrent
+  adduser -h /home/torrent -s /bin/sh -G torrent -D -u "${UID}" torrent
 fi
 
 f_log SUC "Create user torrent done"
@@ -66,9 +66,9 @@ else
   INITPLUGINS="/rutorrent/app/php/initplugins.php"
 fi
 
-sed -i 's|<initplugins>|'${INITPLUGINS}'|g' /home/torrent/.rtorrent.rc
-sed -i 's|<webroot>|'${WEBROOT}'|g' /etc/nginx/nginx.conf
-sed -i 's|//|/|g' /etc/nginx/nginx.conf
+sed -i "s|<initplugins>|${INITPLUGINS}|g" /home/torrent/.rtorrent.rc
+sed -i "s|<webroot>|${WEBROOT}|g" /etc/nginx/nginx.conf
+sed -i "s|//|/|g" /etc/nginx/nginx.conf
 
 # Externalize rutorrent configuration
 if [ -d /config/rutorrent/conf ]; then
@@ -102,8 +102,8 @@ done
   fi
 done
 
-sed -i 's|<DHT_RTORRENT>|'${DHT_RTORRENT}'|g' /home/torrent/.rtorrent.rc
-sed -i 's|<PORT_RTORRENT>|'${PORT_RTORRENT}'|g' /home/torrent/.rtorrent.rc
+sed -i "s|<DHT_RTORRENT>|${DHT_RTORRENT}|g" /home/torrent/.rtorrent.rc
+sed -i "s|<PORT_RTORRENT>|${PORT_RTORRENT}|g" /home/torrent/.rtorrent.rc
 
 # Externalize rtorrent configuration
 if [ -e /config/rtorrent/.rtorrent.rc ]; then
@@ -121,19 +121,23 @@ if [ -e /filebot ]; then
   mkdir -p /data/media/movies /data/media/series /data/media/animes /data/media/music
 
   # Add license file
-  if [ -e ${FILEBOT_LICENSE} ]; then
-    /filebot/filebot.sh --license ${FILEBOT_LICENSE}
+  if [ -e "${FILEBOT_LICENSE}" ]; then
+    /filebot/filebot.sh --license "${FILEBOT_LICENSE}"
   else
-    f_log ERR "The filebot license file doesn't exist"
+    f_log ERR "license filebot file does not exist"
   fi
 
   grep -E "method.set_key.*event.download.finished" /home/torrent/.rtorrent.rc > /dev/null 2>&1
-  [ $? -ne 0 ] && echo 'method.set_key = event.download.finished,filebot,"execute2=/usr/local/bin/postdl,$d.directory=,$d.name="' >> /home/torrent/.rtorrent.rc
+  if [ "$?" -ne 0 ]; then
+    echo 'method.set_key = event.download.finished,filebot,"execute2=/usr/local/bin/postdl,$d.directory=,$d.name="' >> /home/torrent/.rtorrent.rc
+  fi
 
   grep -E "method.set_key.*event.download.erased" /home/torrent/.rtorrent.rc > /dev/null 2>&1
-  [ $? -ne 0 ] && echo 'method.set_key = event.download.erased,filebot_cleaner,"execute2=/usr/local/bin/postrm"' >> /home/torrent/.rtorrent.rc
+  if [ "$?" -ne 0 ]; then
+    echo 'method.set_key = event.download.erased,filebot_cleaner,"execute2=/usr/local/bin/postrm"' >> /home/torrent/.rtorrent.rc
+  fi
 
-  find /filebot ! -uid ${UID} -exec chown -h ${UID}:${GID} {} \;
+  find /filebot ! -uid "${UID}" -exec chown -h "${UID}":"${GID}" {} \;
   chmod +x /usr/local/bin/postdl /usr/local/bin/postrm
   f_log SUC "Configuration of filebot done"
 fi
@@ -141,7 +145,7 @@ fi
 f_log INF "Apply system permissions ..."
 
 for folder in /config /rutorrent /home/torrent /var/lib/nginx /var/tmp/nginx /var/log /etc/nginx /etc/php7 /tmp /etc/s6.d /data/.watch /run/rtorrent /run/nginx /run/php; do
-  find "${folder}" ! -uid ${UID} -exec chown -h ${UID}:${GID} {} \;
+  find "${folder}" ! -uid "${UID}" -exec chown -h "${UID}":"${GID}" {} \;
 done
 
 find /etc/s6.d -type f -exec chmod +x {} \;
@@ -150,11 +154,11 @@ f_log SUC "Apply system permissions done"
 
 if [ "${CHECK_PERM_DATA}" == "true" ]; then
   f_log INF "Apply data permissions ..."
-  find /data ! -uid ${UID} -exec chown -h ${UID}:${GID} {} \;
+  find /data ! -uid "${UID}" -exec chown -h "${UID}":"${GID}" {} \;
   chown root:root /data # fix chroot sftp
   f_log SUC "Apply data permissions done"
 fi
 
 rm -f /data/.session/rtorrent.lock
 
-exec su-exec ${UID}:${GID} $@
+exec su-exec "${UID}":"${GID}" "$@"

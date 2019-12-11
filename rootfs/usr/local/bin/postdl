@@ -1,14 +1,14 @@
 #!/usr/bin/env sh
 
-TORRENT_PATH=${1}
-TORRENT_NAME=${2}
+TORRENT_PATH="${1}"
+TORRENT_NAME="${2}"
 
 /filebot/filebot.sh \
-  --lang ${FILEBOT_LANG} \
+  --lang "${FILEBOT_LANG}" \
   -script fn:amc \
   --output "/data/media" \
-  --action ${FILEBOT_RENAME_METHOD} \
-  --conflict ${FILEBOT_CONFLICT} \
+  --action "${FILEBOT_RENAME_METHOD}" \
+  --conflict "${FILEBOT_CONFLICT}" \
   -non-strict \
   --log-file amc.log \
   --def minFileSize=15728640 \
@@ -22,5 +22,5 @@ TORRENT_NAME=${2}
   --def animeFormat="/data/media/animes/${FILEBOT_RENAME_ANIMES}" \
   --def unsortedFormat="/data/media/unsorted/{file.structurePathTail}" \
   --def ut_kind=multi \
-  --def ut_dir=${TORRENT_PATH} \
-  --def ut_title=${TORRENT_NAME} >> /tmp/filebot.log 2>&1
+  --def ut_dir="${TORRENT_PATH}" \
+  --def ut_title="${TORRENT_NAME}" >> /tmp/filebot.log 2>&1
