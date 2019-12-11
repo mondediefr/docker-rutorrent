@@ -44,14 +44,14 @@ f_log SUC "Create user torrent done"
 
 # Create require folder
 mkdir -p \
-  /data/downloads \
   /data/.watch \
   /data/.session \
+  /data/downloads \
   /config/filebot \
   /config/rtorrent \
   /config/rutorrent \
-  /config/custom_plugins \
-  /config/custom_themes
+  /config/custom_themes \
+  /config/custom_plugins
 
 # Generate configuration
 f_log INF "Generate configuration ..."
