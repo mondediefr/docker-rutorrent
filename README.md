@@ -9,10 +9,10 @@
  - Based on Alpine Linux.
  - rTorrent and libtorrent are compiled from source.
  - Provides by default a solid configuration.
- - Filebot is included, and creates symlinks in /data/Media.
  - No **ROOT** process.
  - Persitance custom configuration for rutorrent and rtorrent.
- - Add your own plugins and themes
+ - Add your own plugins and themes.
+ - Filebot is included, and creates symlinks in `/data/media` (choose filebot tag).
 
 ## Tag available
 
@@ -37,7 +37,7 @@
 ### build
 
 ```sh
-docker build -t mondedie/rutorrent https://github.com/mondediefr/docker-rutorrent.git
+docker build -t mondedie/rutorrent:latest https://github.com/mondediefr/docker-rutorrent.git
 ```
 
 ### Build with arguments
@@ -86,7 +86,7 @@ docker build -t mondedie/rutorrent:filebot \
  - `/data/.watch` : rtorrent watch directory
  - `/data/.session` : rtorrent save statement here
  - `/data/downloads` : rtorrent download torrent here
- - `/data/Media` : filebot version, rtorrent create a symlink
+ - `/data/media` : organize your media and create a symlink with filebot
  - `/config/rtorrent` : path of .rtorrent.rc
  - `/config/rutorrent/conf` : global configuration of rutorrent
  - `/config/rutorrent/share` : rutorrent user configuration and cache
@@ -104,7 +104,14 @@ docker build -t mondedie/rutorrent:filebot \
 ### Simple launch
 
 ```sh
-docker run -dt -p 8080:8080 -p 45000:45000 mondedie/rutorrent:latest
+docker run --name rutorrent -dt \
+  -e UID=1000 \
+  -e GID=1000 \
+  -p 8080:8080 \
+  -p 45000:45000 \
+  -v /mnt/docker/rutorrent/config:/config \
+  -v /mnt/docker/rutorrent/data:/data \
+  mondedie/rutorrent:latest
 ```
 
 URI access : http://xx.xx.xx.xx:8080
@@ -114,27 +121,26 @@ URI access : http://xx.xx.xx.xx:8080
 Add custom plugin :
 
 ```sh
-mkdir -p /docker/config/custom_plugins
-git clone https://github.com/Gyran/rutorrent-ratiocolor.git /docker/config/custom_plugins/ratiocolor
+mkdir -p /mnt/docker/rutorrent/config/custom_plugins
+git clone https://github.com/Gyran/rutorrent-ratiocolor.git /mnt/docker/rutorrent/config/custom_plugins
 ```
 
 Run container :
 
 ```sh
-docker run -dt
-  -p 9080:8080 \
-  -p 6881:6881 \
-  -p 6881:6881/udp \
-  -e WEBROOT=/rutorrent \
+docker run --name rutorrent -dt \
+  -e UID=1000 \
+  -e GID=1000 \
   -e DHT_RTORRENT=on \
   -e PORT_RTORRENT=6881 \
   -e FILEBOT_LICENSE=/config/filebot/FileBot_License_XXXXXXXXX.psm \
   -e FILEBOT_RENAME_METHOD=move \
   -e FILEBOT_RENAME_SERIES="{n}/Season {s}/{n} - {s00e00} - {t}" \
-  -e UID=1001 \
-  -e GID=1001 \
-  -v rutorrent-data-volume:/data \
-  -v /docker/config:/config \
+  -p 9080:8080 \
+  -p 6881:6881 \
+  -p 6881:6881/udp \
+  -v /mnt/docker/rutorrent/config:/config \
+  -v /mnt/docker/rutorrent/data:/data \
   mondedie/rutorrent:filebot
 ```
 
