@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-## var color
+# Var color
 CSI="\033["
 CEND="${CSI}0m"
 CRED="${CSI}1;31m"
@@ -105,7 +105,7 @@ done
 sed -i 's|<DHT_RTORRENT>|'${DHT_RTORRENT}'|g' /home/torrent/.rtorrent.rc
 sed -i 's|<PORT_RTORRENT>|'${PORT_RTORRENT}'|g' /home/torrent/.rtorrent.rc
 
-# externalize rtorrent configuration
+# Externalize rtorrent configuration
 if [ -e /config/rtorrent/.rtorrent.rc ]; then
   cp /config/rtorrent/.rtorrent.rc /home/torrent/.rtorrent.rc
 else
@@ -127,7 +127,7 @@ if [ -e /filebot ]; then
   fi
 
   grep -E "method.set_key.*event.download.finished" /home/torrent/.rtorrent.rc > /dev/null 2>&1
-  [ $? -ne 0 ] && echo 'method.set_key = event.download.finished,filebot,"execute2=/usr/local/bin/postdl,$d.directory=,$d.name=,$d.custom1="' >> /home/torrent/.rtorrent.rc
+  [ $? -ne 0 ] && echo 'method.set_key = event.download.finished,filebot,"execute2=/usr/local/bin/postdl,$d.directory=,$d.name="' >> /home/torrent/.rtorrent.rc
 
   grep -E "method.set_key.*event.download.erased" /home/torrent/.rtorrent.rc > /dev/null 2>&1
   [ $? -ne 0 ] && echo 'method.set_key = event.download.erased,filebot_cleaner,"execute2=/usr/local/bin/postrm"' >> /home/torrent/.rtorrent.rc
@@ -150,13 +150,10 @@ f_log SUC "Apply system permissions done"
 if [ "${CHECK_PERM_DATA}" == "true" ]; then
   f_log INF "Apply data permissions ..."
   find /data ! -uid ${UID} -exec chown ${UID}:${GID} {} \;
-  # fix chroot sftp
-  chown root:root /data
+  chown root:root /data # fix chroot sftp
   f_log SUC "Apply data permissions done"
 fi
 
 rm -f /data/.session/rtorrent.lock
 
 exec su-exec ${UID}:${GID} $@
-
-f_log SUC "Rutorrent container has been started!"

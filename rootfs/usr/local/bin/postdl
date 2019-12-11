@@ -2,7 +2,6 @@
 
 TORRENT_PATH=${1}
 TORRENT_NAME=${2}
-TORRENT_LABEL=${3}
 
 /filebot/filebot.sh \
   --lang ${FILEBOT_LANG} \
@@ -12,14 +11,16 @@ TORRENT_LABEL=${3}
   --conflict ${FILEBOT_CONFLICT} \
   -non-strict \
   --log-file amc.log \
+  --def minFileSize=15728640 \
+  --def minLengthMS=120000 \
   --def excludeList=amc.excludes \
   --def unsorted=y \
   --def music=y \
   --def seriesFormat="/data/media/series/${FILEBOT_RENAME_SERIES}" \
-  --def animeFormat="/data/media/animes/${FILEBOT_RENAME_ANIMES}" \
   --def movieFormat="/data/media/movies/${FILEBOT_RENAME_MOVIES}" \
   --def musicFormat="/data/media/music/${FILEBOT_RENAME_MUSICS}" \
-  --def ut_dir=${TORRENT_PATH} \
+  --def animeFormat="/data/media/animes/${FILEBOT_RENAME_ANIMES}" \
+  --def unsortedFormat="/data/media/unsorted/{file.structurePathTail}" \
   --def ut_kind=multi \
-  --def ut_title=${TORRENT_NAME} \
-  --def ut_label=${TORRENT_LABEL} >> /tmp/filebot.log 2>&1
+  --def ut_dir=${TORRENT_PATH} \
+  --def ut_title=${TORRENT_NAME} >> /tmp/filebot.log 2>&1
