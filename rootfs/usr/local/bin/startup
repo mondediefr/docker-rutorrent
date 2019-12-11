@@ -107,9 +107,10 @@ sed -i 's|<PORT_RTORRENT>|'${PORT_RTORRENT}'|g' /home/torrent/.rtorrent.rc
 
 # Externalize rtorrent configuration
 if [ -e /config/rtorrent/.rtorrent.rc ]; then
-  cp /config/rtorrent/.rtorrent.rc /home/torrent/.rtorrent.rc
+  ln -sf /config/rtorrent/.rtorrent.rc /home/torrent/.rtorrent.rc
 else
-  cp /home/torrent/.rtorrent.rc /config/rtorrent/.rtorrent.rc
+  mv /home/torrent/.rtorrent.rc /config/rtorrent/.rtorrent.rc
+  ln -s /config/rtorrent/.rtorrent.rc /home/torrent/.rtorrent.rc
 fi
 
 f_log SUC "Generate configuration done"
@@ -132,7 +133,7 @@ if [ -e /filebot ]; then
   grep -E "method.set_key.*event.download.erased" /home/torrent/.rtorrent.rc > /dev/null 2>&1
   [ $? -ne 0 ] && echo 'method.set_key = event.download.erased,filebot_cleaner,"execute2=/usr/local/bin/postrm"' >> /home/torrent/.rtorrent.rc
 
-  find /filebot ! -uid ${UID} -exec chown ${UID}:${GID} {} \;
+  find /filebot ! -uid ${UID} -exec chown -h ${UID}:${GID} {} \;
   chmod +x /usr/local/bin/postdl /usr/local/bin/postrm
   f_log SUC "Configuration of filebot done"
 fi
@@ -140,7 +141,7 @@ fi
 f_log INF "Apply system permissions ..."
 
 for folder in /config /rutorrent /home/torrent /var/lib/nginx /var/tmp/nginx /var/log /etc/nginx /etc/php7 /tmp /etc/s6.d /data/.watch /run/rtorrent /run/nginx /run/php; do
-  find "${folder}" ! -uid ${UID} -exec chown ${UID}:${GID} {} \;
+  find "${folder}" ! -uid ${UID} -exec chown -h ${UID}:${GID} {} \;
 done
 
 find /etc/s6.d -type f -exec chmod +x {} \;
@@ -149,7 +150,7 @@ f_log SUC "Apply system permissions done"
 
 if [ "${CHECK_PERM_DATA}" == "true" ]; then
   f_log INF "Apply data permissions ..."
-  find /data ! -uid ${UID} -exec chown ${UID}:${GID} {} \;
+  find /data ! -uid ${UID} -exec chown -h ${UID}:${GID} {} \;
   chown root:root /data # fix chroot sftp
   f_log SUC "Apply data permissions done"
 fi
