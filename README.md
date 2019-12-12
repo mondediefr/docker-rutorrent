@@ -58,7 +58,6 @@ docker build -t mondedie/rutorrent:filebot \
 | -------- | ----------- | ---- | ------------- |
 | **UID** | Choose uid for launch rtorrent | *optional* | 991
 | **GID** | Choose gid for launch rtorrent | *optional* | 991
-| **WEBROOT** | Webroot path for rutorrent | *optional* | /
 | **PORT_RTORRENT** | Port of rtorrent | *optional* | 45000
 | **DHT_RTORRENT** | DHT option in rtorrent.rc file | *optional* | off
 | **CHECK_PERM_DATA** | Check permission data in downloads directory | *optional* | true
@@ -144,7 +143,7 @@ docker run --name rutorrent -dt \
   mondedie/rutorrent:filebot
 ```
 
-URI access : http://xx.xx.xx.xx:9080/rutorrent
+URI access : http://xx.xx.xx.xx:9080
 
 ## License
 

@@ -29,7 +29,7 @@ throttle.max_uploads.set = 15
 encoding.add = utf8
 
 # scheduling
-execute2 = {sh,-c,/usr/bin/php <initplugins> torrent &}
+execute2 = {sh,-c,/usr/bin/php /rutorrent/app/php/initplugins.php torrent &}
 schedule2 = watch_directory,1,1,"load.start=/data/.watch/*.torrent"
 schedule2 = untied_directory,5,5,"stop_untied=/data/.watch/*.torrent"
 schedule2 = espace_disque_insuffisant,1,30,close_low_diskspace=500M
