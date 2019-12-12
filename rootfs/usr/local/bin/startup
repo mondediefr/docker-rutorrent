@@ -114,6 +114,14 @@ if [ -e /filebot ]; then
     f_log ERR "License filebot file does not exist"
   fi
 
+  # Externalize args_amc.txt file
+  if [ -e /config/filebot/args_amc.txt ]; then
+    ln -sf /config/filebot/args_amc.txt /filebot/args_amc.txt
+  else
+    mv /filebot/args_amc.txt /config/filebot/args_amc.txt
+    ln -s /config/filebot/args_amc.txt /filebot/args_amc.txt
+  fi
+
   grep -E "method.set_key.*event.download.finished" /home/torrent/.rtorrent.rc > /dev/null 2>&1
   if [ "$?" -ne 0 ]; then
     echo 'method.set_key = event.download.finished,filebot,"execute2=/usr/local/bin/postdl,$d.directory=,$d.name="' >> /home/torrent/.rtorrent.rc

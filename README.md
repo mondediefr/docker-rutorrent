@@ -68,10 +68,6 @@ docker build -t mondedie/rutorrent:filebot \
 | -------- | ----------- | ---- | ------------- |
 | **FILEBOT_LICENSE** | License file path | **required** | none
 | **FILEBOT_RENAME_METHOD** | Method for rename media | *optional* | symlink
-| **FILEBOT_RENAME_MOVIES** | Regex for rename movies | *optional* | "{n} ({y})"
-| **FILEBOT_RENAME_MUSICS** | Regex for rename musics | *optional* | "{n}/{fn}"
-| **FILEBOT_RENAME_SERIES** | Regex for rename series | *optional* | "{n}/Season {s.pad(2)}/{s00e00} - {t}"
-| **FILEBOT_RENAME_ANIMES** | Regex for rename animes | *optional* | "{n}/{e.pad(3)} - {t}"
 | **FILEBOT_LANG** | Set your language | *optional* | fr
 | **FILEBOT_CONFLICT** | Conflict management | *optional* | skip
 
@@ -91,7 +87,7 @@ docker build -t mondedie/rutorrent:filebot \
  - `/config/rutorrent/share` : rutorrent user configuration and cache
  - `/config/custom_plugins` : add your own plugins
  - `/config/custom_themes` : add your own themes
- - `/config/filebot` : add your License file in this folder
+ - `/config/filebot` : add your License file in this folder and modify `args_amc.txt` file
 
 ### Ports
 
@@ -134,7 +130,6 @@ docker run --name rutorrent -dt \
   -e PORT_RTORRENT=6881 \
   -e FILEBOT_LICENSE=/config/filebot/FileBot_License_XXXXXXXXX.psm \
   -e FILEBOT_RENAME_METHOD=move \
-  -e FILEBOT_RENAME_SERIES="{n}/Season {s}/{n} - {s00e00} - {t}" \
   -p 9080:8080 \
   -p 6881:6881 \
   -p 6881:6881/udp \

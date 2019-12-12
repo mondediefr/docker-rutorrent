@@ -1,0 +1,9 @@
+music=y
+unsorted=y
+ut_kind=multi
+excludeList=amc.excludes
+musicFormat="/data/media/music/{n}/{fn}"
+movieFormat="/data/media/movies/{n} ({y})"
+animeFormat="/data/media/animes/{n}/{e.pad(3)} - {t}"
+unsortedFormat="/data/media/unsorted/{file.structurePathTail}"
+seriesFormat="/data/media/series/{n}/Season {s.pad(2)}/{s00e00} - {t}"

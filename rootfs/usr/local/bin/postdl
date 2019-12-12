@@ -11,16 +11,6 @@ TORRENT_NAME="${2}"
   --conflict "${FILEBOT_CONFLICT}" \
   -non-strict \
   --log-file amc.log \
-  --def minFileSize=15728640 \
-  --def minLengthMS=120000 \
-  --def excludeList=amc.excludes \
-  --def unsorted=y \
-  --def music=y \
-  --def seriesFormat="/data/media/series/${FILEBOT_RENAME_SERIES}" \
-  --def movieFormat="/data/media/movies/${FILEBOT_RENAME_MOVIES}" \
-  --def musicFormat="/data/media/music/${FILEBOT_RENAME_MUSICS}" \
-  --def animeFormat="/data/media/animes/${FILEBOT_RENAME_ANIMES}" \
-  --def unsortedFormat="/data/media/unsorted/{file.structurePathTail}" \
-  --def ut_kind=multi \
+  --def @/filebot/args_amc.txt \
   --def ut_dir="${TORRENT_PATH}" \
   --def ut_title="${TORRENT_NAME}" >> /tmp/filebot.log 2>&1

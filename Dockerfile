@@ -100,10 +100,6 @@ ARG FILEBOT_VER=4.8.5
 ARG CHROMAPRINT_VER=1.4.3
 
 ENV FILEBOT_RENAME_METHOD=symlink \
-    FILEBOT_RENAME_MOVIES="{n} ({y})" \
-    FILEBOT_RENAME_SERIES="{n}/Season {s.pad(2)}/{s00e00} - {t}" \
-    FILEBOT_RENAME_ANIMES="{n}/{e.pad(3)} - {t}" \
-    FILEBOT_RENAME_MUSICS="{n}/{fn}" \
     FILEBOT_LANG=fr \
     FILEBOT_CONFLICT=skip
 
