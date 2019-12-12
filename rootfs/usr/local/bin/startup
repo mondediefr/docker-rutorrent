@@ -124,7 +124,7 @@ if [ -e /filebot ]; then
   if [ -e "${FILEBOT_LICENSE}" ]; then
     /filebot/filebot.sh --license "${FILEBOT_LICENSE}"
   else
-    f_log ERR "license filebot file does not exist"
+    f_log ERR "License filebot file does not exist"
   fi
 
   grep -E "method.set_key.*event.download.finished" /home/torrent/.rtorrent.rc > /dev/null 2>&1

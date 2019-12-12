@@ -67,7 +67,7 @@ docker build -t mondedie/rutorrent:filebot \
 
 | Variable | Description | Type | Default value |
 | -------- | ----------- | ---- | ------------- |
-| **FILEBOT_LICENSE** | License file path | **required** | 
+| **FILEBOT_LICENSE** | License file path | **required** | none
 | **FILEBOT_RENAME_METHOD** | Method for rename media | *optional* | symlink
 | **FILEBOT_RENAME_MOVIES** | Regex for rename movies | *optional* | "{n} ({y})"
 | **FILEBOT_RENAME_MUSICS** | Regex for rename musics | *optional* | "{n}/{fn}"

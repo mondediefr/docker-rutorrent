@@ -105,8 +105,7 @@ ENV FILEBOT_RENAME_METHOD=symlink \
     FILEBOT_RENAME_ANIMES="{n}/{e.pad(3)} - {t}" \
     FILEBOT_RENAME_MUSICS="{n}/{fn}" \
     FILEBOT_LANG=fr \
-    FILEBOT_CONFLICT=skip \
-    FILEBOT_LICENSE=
+    FILEBOT_CONFLICT=skip
 
 RUN if [ "${FILEBOT}" == "YES" ]; then \
   apk add openjdk8-jre java-jna-native \
