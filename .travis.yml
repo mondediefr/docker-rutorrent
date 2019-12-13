@@ -1,11 +1,25 @@
 os: linux
+sudo: required
 language: shell
 
 services:
   - docker
 
 before_script:
-  - chmod +x .travis/build.sh
+  - docker pull mondedie/rutorrent:latest
+  - docker pull mondedie/rutorrent:filebot
 
 script:
-  - ./.travis/build.sh
+  - docker build --pull --cache-from mondedie/rutorrent:latest --tag mondedie/rutorrent:latest .
+  - docker build --pull --cache-from mondedie/rutorrent:filebot --tag mondedie/rutorrent:filebot --build-arg FILEBOT=YES .
+
+before_deploy:
+  - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+
+deploy:
+  provider: script
+  script:
+    - docker push mondedie/rutorrent:latest
+    - docker push mondedie/rutorrent:filebot
+  on:
+    branch: master
