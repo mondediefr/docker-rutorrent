@@ -8,7 +8,6 @@ ARG GEOIP_VER=1.1.1
 
 ENV UID=991 \
     GID=991 \
-    WEBROOT=/ \
     PORT_RTORRENT=45000 \
     DHT_RTORRENT=off \
     CHECK_PERM_DATA=true

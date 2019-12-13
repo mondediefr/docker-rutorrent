@@ -47,7 +47,6 @@ mkdir -p \
   /data/.watch \
   /data/.session \
   /data/downloads \
-  /rutorrent/app \
   /config/filebot \
   /config/rtorrent \
   /config/rutorrent \
