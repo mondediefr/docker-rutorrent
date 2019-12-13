@@ -1,11 +1,11 @@
 #!/usr/bin/env sh
 
-(sleep 10; find /data/media -type l | while read in; do
+find /data/media -type l | while read in; do
   file "${in}" | grep "broken symbolic link"
   if [ $? -ne 1 ]; then
-    echo "Delete ${in}"
+    echo "Delete ${in}" >> /tmp/postrm.log 2>&1
     rm -f "${in}"
   fi
 done
 
-find /data/media -type d -empty -delete) >> /tmp/postrm.log 2>&1
+find /data/media -type d -empty -delete >> /tmp/postrm.log 2>&1
