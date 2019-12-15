@@ -103,7 +103,7 @@ ENV FILEBOT_RENAME_METHOD=symlink \
     FILEBOT_CONFLICT=skip
 
 RUN if [ "${FILEBOT}" == "YES" ]; then \
-  apk add openjdk8-jre java-jna-native \
+  apk add openjdk11-jre java-jna-native \
   # Install filebot
   && mkdir /filebot \
   && cd /filebot \
