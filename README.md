@@ -30,7 +30,7 @@
 | **LIBZEN_VER** | libzen version | *optional* | 0.4.37
 | **LIBMEDIAINFO_VER** | libmediainfo version | *optional* | 19.09
 | **GEOIP_VER** | pecl geoip version | *optional* | 1.1.1
-| **FILEBOT** | Build with filebot | *optional* | NO
+| **FILEBOT** | Build with filebot | *optional* | false
 | **FILEBOT_VER** | Filebot version | *optional* | 4.8.5
 | **CHROMAPRINT_VER** | Chromaprint version | *optional* | 1.4.3
 
@@ -44,9 +44,7 @@ docker build -t mondedie/rutorrent:latest https://github.com/mondediefr/docker-r
 
 ```sh
 docker build -t mondedie/rutorrent:filebot \
-  --build-arg FILEBOT=YES \
-  --build-arg RTORRENT_VER=v0.9.7 \
-  --build-arg LIBTORRENT_VER=v0.13.7 \
+  --build-arg FILEBOT=true \
   https://github.com/mondediefr/docker-rutorrent.git
 ```
 

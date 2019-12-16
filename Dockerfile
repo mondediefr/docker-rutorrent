@@ -94,7 +94,7 @@ RUN apk --update-cache add git automake autoconf build-base linux-headers libtoo
   # Cleanup
   && rm -rf /tmp/* /var/cache/apk/*
 
-ARG FILEBOT=NO
+ARG FILEBOT=false
 ARG FILEBOT_VER=4.8.5
 ARG CHROMAPRINT_VER=1.4.3
 
@@ -102,7 +102,7 @@ ENV FILEBOT_RENAME_METHOD=symlink \
     FILEBOT_LANG=fr \
     FILEBOT_CONFLICT=skip
 
-RUN if [ "${FILEBOT}" == "YES" ]; then \
+RUN if [ "${FILEBOT}" == "true" ]; then \
   apk add openjdk11-jre java-jna-native \
   # Install filebot
   && mkdir /filebot \
