@@ -88,8 +88,7 @@ done
   fi
 done
 
-sed -i "s|<DHT_RTORRENT>|${DHT_RTORRENT}|g" /home/torrent/.rtorrent.rc
-sed -i "s|<PORT_RTORRENT>|${PORT_RTORRENT}|g" /home/torrent/.rtorrent.rc
+sed -i -e "s|<DHT_RTORRENT>|${DHT_RTORRENT}|g" -e "s|<PORT_RTORRENT>|${PORT_RTORRENT}|g" /home/torrent/.rtorrent.rc
 
 # Externalize rtorrent configuration
 if [ -e /config/rtorrent/.rtorrent.rc ]; then
@@ -102,9 +101,9 @@ fi
 f_log SUC "Generate configuration done"
 
 # Filebot
-if [ -e /filebot ]; then
+if [ -e /filebot/filebot.sh ]; then
   f_log INF "Configuration of filebot ..."
-  mkdir -p /data/media/movies /data/media/series /data/media/animes /data/media/music
+  mkdir -p /data/media
 
   # Add license file
   if [ -e "${FILEBOT_LICENSE}" ]; then
