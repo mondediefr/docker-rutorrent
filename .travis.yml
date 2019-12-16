@@ -19,7 +19,6 @@ before_deploy:
 deploy:
   provider: script
   script:
-    - docker push mondedie/rutorrent:latest
-    - docker push mondedie/rutorrent:filebot
+    - docker push mondedie/rutorrent:latest && docker push mondedie/rutorrent:filebot
   on:
     branch: master
