@@ -25,8 +25,8 @@
 
 | Argument | Description | Type | Default value |
 | -------- | ----------- | ---- | ------------- |
-| **RTORRENT_VER** | rtorrent version | *optional* | v0.9.8
-| **LIBTORRENT_VER** | libtorrent version | *optional* | v0.13.8
+| **RTORRENT_VER** | rtorrent version | *optional* | 0.9.8
+| **LIBTORRENT_VER** | libtorrent version | *optional* | 0.13.8
 | **LIBZEN_VER** | libzen version | *optional* | 0.4.37
 | **LIBMEDIAINFO_VER** | libmediainfo version | *optional* | 19.09
 | **GEOIP_VER** | pecl geoip version | *optional* | 1.1.1

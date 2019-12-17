@@ -1,28 +1,31 @@
-FROM alpine:3.10
+FROM alpine:3.10 AS builder
 
-ARG RTORRENT_VER=v0.9.8
-ARG LIBTORRENT_VER=v0.13.8
+ARG RTORRENT_VER=0.9.8
+ARG LIBTORRENT_VER=0.13.8
 ARG LIBZEN_VER=0.4.37
 ARG LIBMEDIAINFO_VER=19.09
-ARG GEOIP_VER=1.1.1
 
-ENV UID=991 \
-    GID=991 \
-    PORT_RTORRENT=45000 \
-    DHT_RTORRENT=off \
-    CHECK_PERM_DATA=true
-
-LABEL description="rutorrent based on alpinelinux" \
-      tags="latest" \
-      maintainer="magicalex <magicalex@mondedie.fr>"
-
-RUN apk --update-cache add git automake autoconf build-base linux-headers libtool zlib-dev cppunit-dev \
-    php7-apcu php7-mbstring php7-ctype php7-pear php7-dev php7-sockets php7-phar file findutils tar xz \
-    cppunit libnl3 libnl3-dev ncurses-dev curl-dev curl wget libsigc++-dev nginx mktorrent unrar \
-    ffmpeg gzip zip unrar s6 geoip geoip-dev su-exec nginx php7 php7-fpm php7-json php7-opcache bzip2 sox \
+RUN apk add --no-progress --no-cache --upgrade \
+    git \
+    tar \
+    wget \
+    automake \
+    autoconf \
+    build-base \
+    linux-headers \
+    libtool \
+    zlib-dev \
+    cppunit-dev \
+    cppunit \
+    ncurses-dev \
+    curl-dev \
+    curl \
+    libsigc++-dev \
+    libnl3-dev \
+    libnl3 \
   && git clone https://github.com/mirror/xmlrpc-c.git /tmp/xmlrpc-c \
-  && git clone -b ${LIBTORRENT_VER} https://github.com/rakshasa/libtorrent.git /tmp/libtorrent \
-  && git clone -b ${RTORRENT_VER} https://github.com/rakshasa/rtorrent.git /tmp/rtorrent \
+  && git clone -b "v${LIBTORRENT_VER}" https://github.com/rakshasa/libtorrent.git /tmp/libtorrent \
+  && git clone -b "v${RTORRENT_VER}" https://github.com/rakshasa/rtorrent.git /tmp/rtorrent \
   && wget https://mediaarea.net/download/source/libzen/${LIBZEN_VER}/libzen_${LIBZEN_VER}.tar.bz2 -O /tmp/libzen.tar.gz \
   && wget https://mediaarea.net/download/source/libmediainfo/${LIBMEDIAINFO_VER}/libmediainfo_${LIBMEDIAINFO_VER}.tar.gz -O /tmp/libmediainfo.tar.gz \
   && wget https://mediaarea.net/download/source/mediainfo/${LIBMEDIAINFO_VER}/mediainfo_${LIBMEDIAINFO_VER}.tar.gz -O /tmp/mediainfo.tar.gz \
@@ -69,7 +72,64 @@ RUN apk --update-cache add git automake autoconf build-base linux-headers libtoo
   && ./configure --enable-ipv6 --disable-debug --with-xmlrpc-c \
   && make -j ${BUILD_CORES} \
   && make install \
-  && strip -s /usr/local/bin/rtorrent \
+  && strip -s /usr/local/bin/rtorrent
+
+FROM alpine:3.10
+
+LABEL description="rutorrent based on alpinelinux" \
+      tags="latest" \
+      maintainer="magicalex <magicalex@mondedie.fr>"
+
+ARG GEOIP_VER=1.1.1
+ARG FILEBOT=false
+ARG FILEBOT_VER=4.8.5
+ARG CHROMAPRINT_VER=1.4.3
+
+ENV UID=991 \
+    GID=991 \
+    PORT_RTORRENT=45000 \
+    DHT_RTORRENT=off \
+    CHECK_PERM_DATA=true \
+    FILEBOT_RENAME_METHOD=symlink \
+    FILEBOT_LANG=fr \
+    FILEBOT_CONFLICT=skip
+
+COPY --from=builder /usr/local/bin /usr/local/bin
+COPY --from=builder /usr/local/lib /usr/local/lib
+
+RUN apk add --no-progress --no-cache --upgrade \
+    libsigc++-dev \
+    ncurses-dev \
+    curl-dev \
+    curl \
+    git \
+    wget \
+    nginx \
+    php7 \
+    php7-dev \
+    php7-fpm \
+    php7-json \
+    php7-opcache \
+    php7-apcu \
+    php7-mbstring \
+    php7-ctype \
+    php7-pear \
+    php7-sockets \
+    php7-phar \
+    file \
+    findutils \
+    tar \
+    gzip \
+    zip \
+    bzip2 \
+    unrar \
+    mktorrent \
+    ffmpeg \
+    s6 \
+    geoip \
+    geoip-dev \
+    su-exec \
+    sox \
   # Install rutorrent
   && git clone https://github.com/Novik/ruTorrent.git /rutorrent/app \
   && git clone https://github.com/Phlooo/ruTorrent-MaterialDesign.git /rutorrent/app/plugins/theme/themes/materialdesign \
@@ -92,18 +152,13 @@ RUN apk --update-cache add git automake autoconf build-base linux-headers libtoo
   # Socket folder
   && mkdir -p /run/rtorrent /run/nginx /run/php \
   # Cleanup
-  && rm -rf /tmp/* /var/cache/apk/*
-
-ARG FILEBOT=false
-ARG FILEBOT_VER=4.8.5
-ARG CHROMAPRINT_VER=1.4.3
-
-ENV FILEBOT_RENAME_METHOD=symlink \
-    FILEBOT_LANG=fr \
-    FILEBOT_CONFLICT=skip
+  && rm -rf /tmp/*
 
 RUN if [ "${FILEBOT}" == "true" ]; then \
-  apk add openjdk11-jre java-jna-native \
+  apk add --no-progress --no-cache --upgrade \
+    openjdk11-jre \
+    java-jna-native \
+    xz \
   # Install filebot
   && mkdir /filebot \
   && cd /filebot \
@@ -123,9 +178,8 @@ RUN if [ "${FILEBOT}" == "true" ]; then \
   ; fi
 
 COPY rootfs /
+RUN chmod +x /usr/local/bin/startup
 VOLUME /data /config
 EXPOSE 8080
-RUN chmod +x /usr/local/bin/startup
-
 ENTRYPOINT ["/usr/local/bin/startup"]
 CMD ["/bin/s6-svscan", "/etc/s6.d"]
