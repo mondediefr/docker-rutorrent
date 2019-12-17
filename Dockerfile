@@ -173,7 +173,6 @@ RUN if [ "${FILEBOT}" == "true" ]; then \
   && tar -xzf chromaprint-fpcalc.tar.gz \
   && mv chromaprint-fpcalc-${CHROMAPRINT_VER}-linux-x86_64/fpcalc /usr/local/bin \
   && rm -rf /tmp/chromaprint-fpcalc.tar.gz \
-  && strip -s /usr/local/bin/fpcalc \
   && rm -rf /tmp/* \
   ; fi
 
