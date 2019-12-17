@@ -4,6 +4,7 @@ ARG RTORRENT_VER=0.9.8
 ARG LIBTORRENT_VER=0.13.8
 ARG LIBZEN_VER=0.4.37
 ARG LIBMEDIAINFO_VER=19.09
+ARG GEOIP_VER=1.1.1
 
 RUN apk add --no-progress --no-cache --upgrade \
     git \
@@ -23,6 +24,10 @@ RUN apk add --no-progress --no-cache --upgrade \
     libsigc++-dev \
     libnl3-dev \
     libnl3 \
+    geoip-dev \
+    geoip \
+    php7-pear \
+    php7-dev \
   && git clone https://github.com/mirror/xmlrpc-c.git /tmp/xmlrpc-c \
   && git clone -b "v${LIBTORRENT_VER}" https://github.com/rakshasa/libtorrent.git /tmp/libtorrent \
   && git clone -b "v${RTORRENT_VER}" https://github.com/rakshasa/rtorrent.git /tmp/rtorrent \
@@ -72,7 +77,9 @@ RUN apk add --no-progress --no-cache --upgrade \
   && ./configure --enable-ipv6 --disable-debug --with-xmlrpc-c \
   && make -j ${BUILD_CORES} \
   && make install \
-  && strip -s /usr/local/bin/rtorrent
+  && strip -s /usr/local/bin/rtorrent \
+  # Compile Geoip php module
+  pecl install geoip-${GEOIP_VER}
 
 FROM alpine:3.10
 
@@ -80,7 +87,6 @@ LABEL description="rutorrent based on alpinelinux" \
       tags="latest" \
       maintainer="magicalex <magicalex@mondedie.fr>"
 
-ARG GEOIP_VER=1.1.1
 ARG FILEBOT=false
 ARG FILEBOT_VER=4.8.5
 ARG CHROMAPRINT_VER=1.4.3
@@ -96,6 +102,7 @@ ENV UID=991 \
 
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/local/lib /usr/local/lib
+COPY --from=builder /usr/lib/php7/modules/geoip.so /usr/lib/php7/modules/geoip.so
 
 RUN apk add --no-progress --no-cache --upgrade \
     libsigc++-dev \
@@ -106,14 +113,12 @@ RUN apk add --no-progress --no-cache --upgrade \
     wget \
     nginx \
     php7 \
-    php7-dev \
     php7-fpm \
     php7-json \
     php7-opcache \
     php7-apcu \
     php7-mbstring \
     php7-ctype \
-    php7-pear \
     php7-sockets \
     php7-phar \
     file \
@@ -126,8 +131,6 @@ RUN apk add --no-progress --no-cache --upgrade \
     mktorrent \
     ffmpeg \
     s6 \
-    geoip \
-    geoip-dev \
     su-exec \
     sox \
   # Install rutorrent
@@ -139,15 +142,12 @@ RUN apk add --no-progress --no-cache --upgrade \
   && rm -rf /rutorrent/app/plugins/geoip \
   && rm -rf /rutorrent/app/plugins/_cloudflare \
   # Geoip module
-  && cd /usr/share/GeoIP \
+  && cd /tmp \
   && wget https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz \
   && wget https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz \
   && tar -xzf GeoLite2-City.tar.gz \
   && tar -xzf GeoLite2-Country.tar.gz \
-  && rm -f *.tar.gz \
-  && mv GeoLite2-*/*.mmdb . \
-  && cp *.mmdb /rutorrent/app/plugins/geoip2/database \
-  && pecl install geoip-${GEOIP_VER} \
+  && mv GeoLite2-*/*.mmdb /rutorrent/app/plugins/geoip2/database \
   && chmod +x /usr/lib/php7/modules/geoip.so \
   # Socket folder
   && mkdir -p /run/rtorrent /run/nginx /run/php \
