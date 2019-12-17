@@ -79,7 +79,7 @@ RUN apk add --no-progress --no-cache --upgrade \
   && make install \
   && strip -s /usr/local/bin/rtorrent \
   # Compile Geoip php module
-  pecl install geoip-${GEOIP_VER}
+  && pecl install geoip-${GEOIP_VER}
 
 FROM alpine:3.10
 
