@@ -139,7 +139,7 @@ fi
 f_log INF "Apply system permissions ..."
 
 for folder in /config /rutorrent /home/torrent /var/lib/nginx /var/tmp/nginx /var/log /etc/nginx /etc/php7 /tmp /etc/s6.d /data/.watch /run/rtorrent /run/nginx /run/php; do
-  find "${folder}" ! -uid "${UID}" | xargs -d '\n' chown -h "${UID}":"${GID}"
+  find "${folder}" ! -uid "${UID}" -print0 | xargs --null chown -h "${UID}":"${GID}"
 done
 
 find /etc/s6.d -type f | xargs -d '\n' chmod +x
@@ -148,7 +148,7 @@ f_log SUC "Apply system permissions done"
 
 if [ "${CHECK_PERM_DATA}" == "true" ]; then
   f_log INF "Apply data permissions ..."
-  find /data ! -uid "${UID}" | xargs -d '\n' chown -h "${UID}":"${GID}"
+  find /data ! -uid "${UID}" -print0 | xargs --null chown -h "${UID}":"${GID}"
   chown root:root /data # fix chroot sftp
   f_log SUC "Apply data permissions done"
 fi
