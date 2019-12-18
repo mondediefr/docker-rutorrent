@@ -11,7 +11,7 @@ protocol.encryption.set = allow_incoming, try_outgoing, enable_retry
 
 # network
 network.scgi.open_local = /run/rtorrent/rtorrent.sock
-schedule2 = chmod_scgi_socket,0,0,"execute2=chmod,\"g+w,o=\",/run/rtorrent/rtorrent.sock"
+schedule2 = chmod_scgi_socket,0,0,"execute2=chmod,660,/run/rtorrent/rtorrent.sock"
 network.port_range.set = <PORT_RTORRENT>-<PORT_RTORRENT>
 network.port_random.set = no
 pieces.hash.on_completion.set = no
