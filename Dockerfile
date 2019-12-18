@@ -149,7 +149,7 @@ RUN apk add --no-progress --no-cache --upgrade \
   # Socket folder
   && mkdir -p /run/rtorrent /run/nginx /run/php \
   # Cleanup
-  && apk del --purge git wget
+  && apk del --purge git wget \
   && rm -rf /tmp/*
 
 RUN if [ "${FILEBOT}" == "true" ]; then \
@@ -174,8 +174,8 @@ RUN if [ "${FILEBOT}" == "true" ]; then \
   && mv chromaprint-fpcalc-${CHROMAPRINT_VER}-linux-x86_64/fpcalc /usr/local/bin \
   && rm -rf /tmp/chromaprint-fpcalc.tar.gz \
   # Cleanup
-  && apk del --purge xz wget
-  && rm -rf /tmp/*
+  && apk del --purge xz wget \
+  && rm -rf /tmp/* \
   ; fi
 
 COPY rootfs /
