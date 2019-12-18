@@ -6,9 +6,9 @@ services:
 
 jobs:
   include:
-    - stage: build tag latest
+    - stage: build
       script: docker build --pull --tag mondedie/rutorrent:latest .
-    - stage: build tag filebot
+    - stage: build
       script: docker build --pull --tag mondedie/rutorrent:filebot --build-arg FILEBOT=true .
 
 before_deploy:
