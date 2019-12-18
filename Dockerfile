@@ -131,6 +131,9 @@ RUN apk add --no-progress --no-cache --upgrade \
   && cp -r /tmp/rutorrent-thirdparty-plugins/filemanager /rutorrent/app/plugins \
   && rm -rf /rutorrent/app/plugins/geoip \
   && rm -rf /rutorrent/app/plugins/_cloudflare \
+  && rm -rf /rutorrent/app/plugins/geoip2/.git \
+  && rm -rf /rutorrent/app/plugins/theme/themes/materialdesign/.git \
+  && rm -rf /rutorrent/app/.git \
   # Geoip module
   && cd /tmp \
   && wget https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz \

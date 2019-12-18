@@ -131,7 +131,7 @@ if [ -e /filebot/filebot.sh ]; then
     echo 'method.set_key = event.download.erased,filebot_cleaner,"execute2=/usr/local/bin/postrm"' >> /home/torrent/.rtorrent.rc
   fi
 
-  find /filebot ! -uid "${UID}" -exec chown -h "${UID}":"${GID}" {} \;
+  find /filebot ! -uid "${UID}" | xargs chown -h "${UID}":"${GID}"
   chmod +x /usr/local/bin/postdl /usr/local/bin/postrm
   f_log SUC "Configuration of filebot done"
 fi
@@ -139,16 +139,16 @@ fi
 f_log INF "Apply system permissions ..."
 
 for folder in /config /rutorrent /home/torrent /var/lib/nginx /var/tmp/nginx /var/log /etc/nginx /etc/php7 /tmp /etc/s6.d /data/.watch /run/rtorrent /run/nginx /run/php; do
-  find "${folder}" ! -uid "${UID}" -exec chown -h "${UID}":"${GID}" {} \;
+  find "${folder}" ! -uid "${UID}" | xargs chown -h "${UID}":"${GID}"
 done
 
-find /etc/s6.d -type f -exec chmod +x {} \;
+find /etc/s6.d -type f | xargs chmod +x
 
 f_log SUC "Apply system permissions done"
 
 if [ "${CHECK_PERM_DATA}" == "true" ]; then
   f_log INF "Apply data permissions ..."
-  find /data ! -uid "${UID}" -exec chown -h "${UID}":"${GID}" {} \;
+  find /data ! -uid "${UID}" | xargs chown -h "${UID}":"${GID}"
   chown root:root /data # fix chroot sftp
   f_log SUC "Apply data permissions done"
 fi
