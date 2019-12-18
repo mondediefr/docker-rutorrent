@@ -131,7 +131,7 @@ if [ -e /filebot/filebot.sh ]; then
     echo 'method.set_key = event.download.erased,filebot_cleaner,"execute2=/usr/local/bin/postrm"' >> /home/torrent/.rtorrent.rc
   fi
 
-  find /filebot ! -uid "${UID}" | xargs -d '\n' chown -h "${UID}":"${GID}"
+  find /filebot ! -uid "${UID}" -print0 | xargs --null chown -h "${UID}":"${GID}"
   chmod +x /usr/local/bin/postdl /usr/local/bin/postrm
   f_log SUC "Configuration of filebot done"
 fi
@@ -142,7 +142,7 @@ for folder in /config /rutorrent /home/torrent /var/lib/nginx /var/tmp/nginx /va
   find "${folder}" ! -uid "${UID}" -print0 | xargs --null chown -h "${UID}":"${GID}"
 done
 
-find /etc/s6.d -type f | xargs -d '\n' chmod +x
+find /etc/s6.d -type f -print0 | xargs --null chmod +x
 
 f_log SUC "Apply system permissions done"
 
