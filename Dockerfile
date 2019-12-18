@@ -4,7 +4,6 @@ ARG RTORRENT_VER=0.9.8
 ARG LIBTORRENT_VER=0.13.8
 ARG LIBZEN_VER=0.4.37
 ARG LIBMEDIAINFO_VER=19.09
-ARG GEOIP_VER=1.1.1
 
 RUN apk add --no-progress --no-cache --upgrade \
     git \
@@ -24,10 +23,6 @@ RUN apk add --no-progress --no-cache --upgrade \
     libsigc++-dev \
     libnl3-dev \
     libnl3 \
-    geoip-dev \
-    geoip \
-    php7-pear \
-    php7-dev \
   && git clone https://github.com/mirror/xmlrpc-c.git /tmp/xmlrpc-c \
   && git clone -b "v${LIBTORRENT_VER}" https://github.com/rakshasa/libtorrent.git /tmp/libtorrent \
   && git clone -b "v${RTORRENT_VER}" https://github.com/rakshasa/rtorrent.git /tmp/rtorrent \
@@ -77,9 +72,7 @@ RUN apk add --no-progress --no-cache --upgrade \
   && ./configure --enable-ipv6 --disable-debug --with-xmlrpc-c \
   && make -j ${BUILD_CORES} \
   && make install \
-  && strip -s /usr/local/bin/rtorrent \
-  # Compile Geoip php module
-  && pecl install geoip-${GEOIP_VER}
+  && strip -s /usr/local/bin/rtorrent
 
 FROM alpine:3.10
 
@@ -102,7 +95,6 @@ ENV UID=991 \
 
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/local/lib /usr/local/lib
-COPY --from=builder /usr/lib/php7/modules/geoip.so /usr/lib/php7/modules/geoip.so
 
 RUN apk add --no-progress --no-cache --upgrade \
     libsigc++-dev \
@@ -146,7 +138,6 @@ RUN apk add --no-progress --no-cache --upgrade \
   && tar -xzf GeoLite2-City.tar.gz \
   && tar -xzf GeoLite2-Country.tar.gz \
   && mv GeoLite2-*/*.mmdb /rutorrent/app/plugins/geoip2/database \
-  && chmod +x /usr/lib/php7/modules/geoip.so \
   # Socket folder
   && mkdir -p /run/rtorrent /run/nginx /run/php \
   # Cleanup

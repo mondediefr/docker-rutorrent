@@ -29,7 +29,6 @@
 | **LIBTORRENT_VER** | libtorrent version | *optional* | 0.13.8
 | **LIBZEN_VER** | libzen version | *optional* | 0.4.37
 | **LIBMEDIAINFO_VER** | libmediainfo version | *optional* | 19.09
-| **GEOIP_VER** | pecl geoip version | *optional* | 1.1.1
 | **FILEBOT** | Build with filebot | *optional* | false
 | **FILEBOT_VER** | Filebot version | *optional* | 4.8.5
 | **CHROMAPRINT_VER** | Chromaprint version | *optional* | 1.4.3
