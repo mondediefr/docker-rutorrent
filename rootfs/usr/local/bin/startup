@@ -110,6 +110,7 @@ if [ -e /filebot/filebot.sh ]; then
     /filebot/filebot.sh --license "${FILEBOT_LICENSE}"
   else
     f_log ERR "License filebot file does not exist"
+    exit 1
   fi
 
   # Externalize args_amc.txt file

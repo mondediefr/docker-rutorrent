@@ -120,9 +120,6 @@ RUN apk add --no-progress --no-cache --upgrade \
     php7-mbstring \
     php7-ctype \
     php7-sockets \
-    php7-phar \
-    file \
-    findutils \
     tar \
     gzip \
     zip \
@@ -152,13 +149,16 @@ RUN apk add --no-progress --no-cache --upgrade \
   # Socket folder
   && mkdir -p /run/rtorrent /run/nginx /run/php \
   # Cleanup
+  && apk del --purge git wget
   && rm -rf /tmp/*
 
 RUN if [ "${FILEBOT}" == "true" ]; then \
   apk add --no-progress --no-cache --upgrade \
-    openjdk11-jre \
+    openjdk8-jre \
     java-jna-native \
+    findutils \
     xz \
+    wget \
   # Install filebot
   && mkdir /filebot \
   && cd /filebot \
@@ -173,7 +173,9 @@ RUN if [ "${FILEBOT}" == "true" ]; then \
   && tar -xzf chromaprint-fpcalc.tar.gz \
   && mv chromaprint-fpcalc-${CHROMAPRINT_VER}-linux-x86_64/fpcalc /usr/local/bin \
   && rm -rf /tmp/chromaprint-fpcalc.tar.gz \
-  && rm -rf /tmp/* \
+  # Cleanup
+  && apk del --purge xz wget
+  && rm -rf /tmp/*
   ; fi
 
 COPY rootfs /

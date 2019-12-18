@@ -1,11 +1,5 @@
 #!/usr/bin/env sh
 
-find /data/media -type l | while read in; do
-  file "${in}" | grep "broken symbolic link"
-  if [ $? -ne 1 ]; then
-    echo "Delete ${in}" >> /tmp/postrm.log 2>&1
-    rm -f "${in}"
-  fi
-done
-
-find /data/media -type d -empty -delete >> /tmp/postrm.log 2>&1
+sleep 10 # wait 10 sec (file removing)
+find /data/media -xtype l -exec rm -rf {} \; >> /tmp/filebot-cleaner.log 2>&1
+find /data/media -type d -empty -delete >> /tmp/filebot-cleaner.log 2>&1
