@@ -6,14 +6,16 @@ services:
 
 jobs:
   include:
-    - stage: build
-      script: docker build --pull --tag mondedie/rutorrent:latest .
-    - stage: build
-      script: docker build --pull --tag mondedie/rutorrent:filebot --build-arg FILEBOT=true .
+  - name: build tag latest
+    env: TAG=latest
+    script: docker build --pull --tag mondedie/rutorrent:${TAG} .
+  - name: build tag filebot
+    env: TAG=filebot
+    script: docker build --build-arg FILEBOT=true --pull --tag mondedie/rutorrent:${TAG} .
 
 before_deploy:
-  - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+  - docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
 
 deploy:
   provider: script
-  script: docker push mondedie/rutorrent:latest && docker push mondedie/rutorrent:filebot
+  script: docker push mondedie/rutorrent:${TAG}
