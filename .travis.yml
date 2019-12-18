@@ -1,24 +1,19 @@
 os: linux
-sudo: required
 language: shell
 
 services:
   - docker
 
-before_script:
-  - docker pull mondedie/rutorrent:latest
-  - docker pull mondedie/rutorrent:filebot
-
-script:
-  - docker build --pull --cache-from mondedie/rutorrent:latest --tag mondedie/rutorrent:latest .
-  - docker build --pull --cache-from mondedie/rutorrent:filebot --tag mondedie/rutorrent:filebot --build-arg FILEBOT=true .
+jobs:
+  include:
+    - stage: build tag latest
+      script: docker build --pull --tag mondedie/rutorrent:latest .
+    - stage: build tag filebot
+      script: docker build --pull --tag mondedie/rutorrent:filebot --build-arg FILEBOT=true .
 
 before_deploy:
   - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
 
 deploy:
   provider: script
-  script:
-    - docker push mondedie/rutorrent:latest && docker push mondedie/rutorrent:filebot
-  on:
-    branch: master
+  script: docker push mondedie/rutorrent:latest && docker push mondedie/rutorrent:filebot
