@@ -120,6 +120,7 @@ RUN apk add --no-progress --no-cache --upgrade \
     php7-mbstring \
     php7-ctype \
     php7-sockets \
+    php7-phar \
     tar \
     gzip \
     zip \
