@@ -1,6 +1,10 @@
 os: linux
 language: shell
 
+arch: 
+ - amd64
+ - arm64
+
 services:
   - docker
 
@@ -11,7 +15,7 @@ jobs:
     script: docker build --pull --tag mondedie/rutorrent:${TAG} .
   - name: build tag filebot
     env: TAG=filebot
-    script: docker build --build-arg FILEBOT=true --pull --tag mondedie/rutorrent:${TAG} .
+    script: docker build --platform linux/${TRAVIS_CPU_ARCH} --build-arg FILEBOT=true --pull --tag mondedie/rutorrent:${TAG} .
 
 before_deploy:
   - docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
@@ -19,3 +23,4 @@ before_deploy:
 deploy:
   provider: script
   script: docker push mondedie/rutorrent:${TAG}
+  branch: master
