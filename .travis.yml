@@ -1,21 +1,20 @@
-os: linux
-language: shell
+services:
+  - docker
 
 arch: 
  - amd64
  - arm64
 
-services:
-  - docker
-
 jobs:
   include:
   - name: build tag latest
+    os: linux
     env: TAG=latest
     script: docker build --pull --tag mondedie/rutorrent:${TAG} .
   - name: build tag filebot
+    os: linux
     env: TAG=filebot
-    script: docker build --platform linux/${TRAVIS_CPU_ARCH} --build-arg FILEBOT=true --pull --tag mondedie/rutorrent:${TAG} .
+    script: docker build --build-arg FILEBOT=true --pull --tag mondedie/rutorrent:${TAG} .
 
 before_deploy:
   - docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
