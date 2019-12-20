@@ -1,20 +1,25 @@
-
+os: linux
 language: shell
-arch:
-  - amd64
-  - ppc64le
-  - s390x
-  - arm64
+
 services:
   - docker
+
 jobs:
   include:
   - name: build tag latest
-    os: linux
+    arch: amd64
+    env: TAG=latest
+    script: docker build --pull --tag mondedie/rutorrent:${TAG} .
+  - name: build tag latest
+    arch: arm64
     env: TAG=latest
     script: docker build --pull --tag mondedie/rutorrent:${TAG} .
   - name: build tag filebot
-    os: linux
+    arch: amd64
+    env: TAG=filebot
+    script: docker build --build-arg FILEBOT=true --pull --tag mondedie/rutorrent:${TAG} .
+  - name: build tag filebot
+    arch: arm64
     env: TAG=filebot
     script: docker build --build-arg FILEBOT=true --pull --tag mondedie/rutorrent:${TAG} .
 
@@ -24,4 +29,3 @@ before_deploy:
 deploy:
   provider: script
   script: docker push mondedie/rutorrent:${TAG}
-  branch: master
