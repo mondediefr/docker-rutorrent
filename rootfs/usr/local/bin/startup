@@ -32,12 +32,13 @@ f_log() {
 # Create user torrent
 f_log INF "Create user torrent ..."
 
-if [ "$(grep ${GID} /etc/group)" == "" ]; then
+if [ "$(grep :${GID}: /etc/group)" == "" ]; then
   addgroup -g "${GID}" torrent
 fi
 
-if [ "$(grep ${UID} /etc/passwd)" == "" ]; then
-  adduser -h /home/torrent -s /bin/sh -G torrent -D -u "${UID}" torrent
+if [ "$(grep :${UID}: /etc/passwd)" == "" ]; then
+  group="$(grep :${GID}: /etc/group | cut -f 1 -d :)"
+  adduser -h /home/torrent -s /bin/sh -G "${group}" -D -u "${UID}" torrent
 fi
 
 f_log SUC "Create user torrent done"
