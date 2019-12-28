@@ -106,12 +106,21 @@ if [ -e /filebot/filebot.sh ]; then
   f_log INF "Configuration of filebot ..."
   mkdir -p /data/media
 
+  # Externalize filebot data folder
+  if [ -d /config/filebot/data ]; then
+    rm -rf /filebot/data
+    ln -s /config/filebot/data /filebot/data
+  fi
+
   # Add license file
-  if [ -e "${FILEBOT_LICENSE}" ]; then
-    /filebot/filebot.sh --license "${FILEBOT_LICENSE}"
-  else
+  if [ ! -e "${FILEBOT_LICENSE}" ]
     f_log ERR "License filebot file does not exist"
     exit 1
+  elif [ ! -e /filebot/data/.license ]
+    /filebot/filebot.sh --license "${FILEBOT_LICENSE}"
+    # Externalize filebot data folder
+    mv /filebot/data /config/filebot/data
+    ln -s /config/filebot/data /filebot/data
   fi
 
   # Externalize args_amc.txt file

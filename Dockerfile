@@ -1,4 +1,4 @@
-FROM alpine:3.10 AS builder
+FROM alpine:3.11 AS builder
 
 ARG RTORRENT_VER=0.9.8
 ARG LIBTORRENT_VER=0.13.8
@@ -74,7 +74,7 @@ RUN apk add --no-progress --no-cache --upgrade \
   && make install \
   && strip -s /usr/local/bin/rtorrent
 
-FROM alpine:3.10
+FROM alpine:3.11
 
 LABEL description="rutorrent based on alpinelinux" \
       tags="latest" \
@@ -162,6 +162,7 @@ RUN if [ "${FILEBOT}" == "true" ]; then \
   && rm -rf filebot.tar.xz \
   && ln -sf /usr/local/lib/libzen.so.0.0.0 /filebot/lib/Linux-x86_64/libzen.so \
   && ln -sf /usr/local/lib/libmediainfo.so.0.0.0 /filebot/lib/Linux-x86_64/libmediainfo.so \
+  && ln -sf /usr/lib/libjnidispatch.so /filebot/lib/Linux-x86_64/libjnidispatch.so \
   # Install chromaprint acoustid
   && wget https://github.com/acoustid/chromaprint/releases/download/v${CHROMAPRINT_VER}/chromaprint-fpcalc-${CHROMAPRINT_VER}-linux-x86_64.tar.gz -O /tmp/chromaprint-fpcalc.tar.gz \
   && cd /tmp \
@@ -170,8 +171,8 @@ RUN if [ "${FILEBOT}" == "true" ]; then \
   && rm -rf /tmp/chromaprint-fpcalc.tar.gz \
   # Cleanup
   && apk del --purge xz wget \
-  && rm -rf /tmp/* \
-  ; fi
+  && rm -rf /tmp/*; \
+  fi
 
 COPY rootfs /
 RUN chmod +x /usr/local/bin/startup
