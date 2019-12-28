@@ -113,10 +113,10 @@ if [ -e /filebot/filebot.sh ]; then
   fi
 
   # Add license file
-  if [ ! -e "${FILEBOT_LICENSE}" ]
+  if [ ! -e "${FILEBOT_LICENSE}" ]; then
     f_log ERR "License filebot file does not exist"
     exit 1
-  elif [ ! -e /filebot/data/.license ]
+  elif [ ! -e /filebot/data/.license ]; then
     /filebot/filebot.sh --license "${FILEBOT_LICENSE}"
     # Externalize filebot data folder
     mv /filebot/data /config/filebot/data
