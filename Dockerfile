@@ -5,7 +5,7 @@ ARG LIBTORRENT_VER=0.13.8
 ARG LIBZEN_VER=0.4.37
 ARG LIBMEDIAINFO_VER=19.09
 
-RUN apk add --no-progress --no-cache --upgrade \
+RUN apk add --no-progress --no-cache \
     git \
     tar \
     wget \
@@ -77,7 +77,6 @@ RUN apk add --no-progress --no-cache --upgrade \
 FROM alpine:3.11
 
 LABEL description="rutorrent based on alpinelinux" \
-      tags="latest" \
       maintainer="magicalex <magicalex@mondedie.fr>"
 
 ARG FILEBOT=false
@@ -96,7 +95,7 @@ ENV UID=991 \
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/local/lib /usr/local/lib
 
-RUN apk add --no-progress --no-cache --upgrade \
+RUN apk add --no-progress --no-cache \
     libsigc++-dev \
     ncurses-dev \
     curl-dev \
@@ -148,7 +147,7 @@ RUN apk add --no-progress --no-cache --upgrade \
   && rm -rf /tmp/*
 
 RUN if [ "${FILEBOT}" == "true" ]; then \
-  apk add --no-progress --no-cache --upgrade \
+  apk add --no-progress --no-cache \
     openjdk8-jre \
     java-jna-native \
     findutils \
