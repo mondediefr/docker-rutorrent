@@ -125,21 +125,12 @@ RUN apk add --no-progress --no-cache \
   # Install rutorrent
   && git clone https://github.com/Novik/ruTorrent.git /rutorrent/app \
   && git clone https://github.com/Phlooo/ruTorrent-MaterialDesign.git /rutorrent/app/plugins/theme/themes/materialdesign \
-  && git clone https://github.com/Micdu70/geoip2-rutorrent /rutorrent/app/plugins/geoip2 \
   && git clone https://github.com/nelu/rutorrent-thirdparty-plugins.git /tmp/rutorrent-thirdparty-plugins \
   && cp -r /tmp/rutorrent-thirdparty-plugins/filemanager /rutorrent/app/plugins \
   && rm -rf /rutorrent/app/plugins/geoip \
   && rm -rf /rutorrent/app/plugins/_cloudflare \
-  && rm -rf /rutorrent/app/plugins/geoip2/.git \
   && rm -rf /rutorrent/app/plugins/theme/themes/materialdesign/.git \
   && rm -rf /rutorrent/app/.git \
-  # Geoip module
-  && cd /tmp \
-  && wget https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz \
-  && wget https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz \
-  && tar -xzf GeoLite2-City.tar.gz \
-  && tar -xzf GeoLite2-Country.tar.gz \
-  && mv GeoLite2-*/*.mmdb /rutorrent/app/plugins/geoip2/database \
   # Socket folder
   && mkdir -p /run/rtorrent /run/nginx /run/php \
   # Cleanup
