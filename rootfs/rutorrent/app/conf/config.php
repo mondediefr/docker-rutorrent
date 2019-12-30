@@ -1,5 +1,7 @@
 <?php
 
+// file config: https://github.com/Novik/ruTorrent/blob/master/conf/config.php
+
 // configuration parameters
 @define('HTTP_USER_AGENT', 'Mozilla/5.0 (Windows NT 6.0; WOW64; rv:12.0) Gecko/20100101 Firefox/12.0', true);
 @define('HTTP_TIME_OUT', 30, true); // in seconds
@@ -19,7 +21,7 @@ $httpProxy = [
 ];
 $schedule_rand = 10; // rand for schedulers start, +0..X seconds
 $do_diagnostic = true;
-$log_file = '/tmp/errors.log'; // path to log file (comment or leave blank to disable logging)
+$log_file = '/tmp/rutorrent-app-errors.log'; // path to log file (comment or leave blank to disable logging)
 $saveUploadedTorrents = true; // Save uploaded torrents to profile/torrents directory or not
 $overwriteUploadedTorrents = false; // Overwrite existing uploaded torrents in profile/torrents directory or make unique name
 $topDirectory = '/data/downloads'; // Upper available directory. Absolute path with trail slash.
@@ -35,10 +37,7 @@ $pathToExternals = [
     'stat' => '/usr/bin/stat',
     'pgrep' => '/usr/bin/pgrep'
 ];
-$localhosts = [
-    '127.0.0.1',
-    'localhost'
-];
+$localhosts = ['127.0.0.1', 'localhost'];
 $profilePath = '../share'; // Path to user profiles
 $profileMask = 0777;
 $tempDirectory = null; // Temp directory. Absolute path with trail slash. If null, then autodetect will be used.
