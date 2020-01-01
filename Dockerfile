@@ -5,7 +5,7 @@ ARG LIBTORRENT_VER=0.13.8
 ARG LIBZEN_VER=0.4.37
 ARG LIBMEDIAINFO_VER=19.09
 
-RUN apk add --no-progress --no-cache \
+RUN apk add --no-progress \
     git \
     tar \
     wget \
@@ -23,6 +23,10 @@ RUN apk add --no-progress --no-cache \
     libsigc++-dev \
     libnl3-dev \
     libnl3 \
+    cmake \
+    openjdk8 \
+    openjdk8-jre \
+    java-jna-native \
   && git clone https://github.com/mirror/xmlrpc-c.git /tmp/xmlrpc-c \
   && git clone -b "v${LIBTORRENT_VER}" https://github.com/rakshasa/libtorrent.git /tmp/libtorrent \
   && git clone -b "v${RTORRENT_VER}" https://github.com/rakshasa/rtorrent.git /tmp/rtorrent \
@@ -72,7 +76,13 @@ RUN apk add --no-progress --no-cache \
   && ./configure --enable-ipv6 --disable-debug --with-xmlrpc-c \
   && make -j ${BUILD_CORES} \
   && make install \
-  && strip -s /usr/local/bin/rtorrent
+  && strip -s /usr/local/bin/rtorrent \
+  # Compile SevenZipJBinding
+  && git clone https://github.com/borisbrodski/sevenzipjbinding.git /tmp/sevenzipjbinding \
+  && cd /tmp/sevenzipjbinding \
+  && cmake . -DJAVA_JDK=/usr/lib/jvm/java-1.8-openjdk \
+  && make \
+  && make package
 
 FROM alpine:3.11
 
@@ -93,7 +103,7 @@ ENV UID=991 \
     FILEBOT_CONFLICT=skip
 
 COPY --from=builder /usr/local/bin /usr/local/bin
-COPY --from=builder /usr/local/lib /usr/local/lib
+COPY --from=builder /usr/local/lib /tmp/sevenzipjbinding/Linux-amd64/lib7-Zip-JBinding.so /usr/local/lib
 
 RUN apk add --no-progress --no-cache \
     libsigc++-dev \
@@ -139,6 +149,7 @@ RUN apk add --no-progress --no-cache \
 
 RUN if [ "${FILEBOT}" == "true" ]; then \
   apk add --no-progress --no-cache \
+    openjdk8 \
     openjdk8-jre \
     java-jna-native \
     findutils \
@@ -153,6 +164,7 @@ RUN if [ "${FILEBOT}" == "true" ]; then \
   && ln -sf /usr/local/lib/libzen.so.0.0.0 /filebot/lib/Linux-x86_64/libzen.so \
   && ln -sf /usr/local/lib/libmediainfo.so.0.0.0 /filebot/lib/Linux-x86_64/libmediainfo.so \
   && ln -sf /usr/lib/libjnidispatch.so /filebot/lib/Linux-x86_64/libjnidispatch.so \
+  && ln -sf /usr/local/lib/lib7-Zip-JBinding.so /filebot/lib/Linux-x86_64/lib7-Zip-JBinding.so \
   # Install chromaprint acoustid
   && wget https://github.com/acoustid/chromaprint/releases/download/v${CHROMAPRINT_VER}/chromaprint-fpcalc-${CHROMAPRINT_VER}-linux-x86_64.tar.gz -O /tmp/chromaprint-fpcalc.tar.gz \
   && cd /tmp \
