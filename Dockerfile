@@ -78,11 +78,10 @@ RUN apk add --no-progress \
   && make install \
   && strip -s /usr/local/bin/rtorrent \
   # Compile SevenZipJBinding
-  && git clone https://github.com/borisbrodski/sevenzipjbinding.git /tmp/sevenzipjbinding \
-  && cd /tmp/sevenzipjbinding \
+  && git clone https://github.com/borisbrodski/sevenzipjbinding.git /tmp/SevenZipJBinding \
+  && cd /tmp/SevenZipJBinding \
   && cmake . -DJAVA_JDK=/usr/lib/jvm/java-1.8-openjdk \
-  && make \
-  && make package
+  && make
 
 FROM alpine:3.11
 
@@ -103,7 +102,7 @@ ENV UID=991 \
     FILEBOT_CONFLICT=skip
 
 COPY --from=builder /usr/local/bin /usr/local/bin
-COPY --from=builder /usr/local/lib /tmp/sevenzipjbinding/Linux-amd64/lib7-Zip-JBinding.so /usr/local/lib
+COPY --from=builder /usr/local/lib /tmp/SevenZipJBinding/Linux-amd64/lib7-Zip-JBinding.so /usr/local/lib
 
 RUN apk add --no-progress --no-cache \
     libsigc++-dev \
@@ -136,10 +135,12 @@ RUN apk add --no-progress --no-cache \
   && git clone https://github.com/Novik/ruTorrent.git /rutorrent/app \
   && git clone https://github.com/Phlooo/ruTorrent-MaterialDesign.git /rutorrent/app/plugins/theme/themes/materialdesign \
   && git clone https://github.com/nelu/rutorrent-thirdparty-plugins.git /tmp/rutorrent-thirdparty-plugins \
+  && git clone https://github.com/Micdu70/geoip2-rutorrent.git /rutorrent/app/plugins/geoip2 \
   && cp -r /tmp/rutorrent-thirdparty-plugins/filemanager /rutorrent/app/plugins \
   && rm -rf /rutorrent/app/plugins/geoip \
   && rm -rf /rutorrent/app/plugins/_cloudflare \
   && rm -rf /rutorrent/app/plugins/theme/themes/materialdesign/.git \
+  && rm -rf /rutorrent/app/plugins/geoip2/.git \
   && rm -rf /rutorrent/app/.git \
   # Socket folder
   && mkdir -p /run/rtorrent /run/nginx /run/php \
