@@ -102,7 +102,8 @@ ENV UID=991 \
     FILEBOT_CONFLICT=skip
 
 COPY --from=builder /usr/local/bin /usr/local/bin
-COPY --from=builder /usr/local/lib /tmp/SevenZipJBinding/Linux-amd64/lib7-Zip-JBinding.so /usr/local/lib
+COPY --from=builder /usr/local/lib /usr/local/lib
+COPY --from=builder /tmp/SevenZipJBinding/Linux-amd64/lib7-Zip-JBinding.so /usr/local/lib
 
 RUN apk add --no-progress --no-cache \
     libsigc++-dev \
