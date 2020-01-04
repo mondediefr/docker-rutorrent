@@ -54,7 +54,7 @@ RUN apk add --no-progress \
   && cd /tmp/SevenZipJBinding \
   && cmake . -DJAVA_JDK=/usr/lib/jvm/java-1.8-openjdk \
   && make -j "${BUILD_CORES}" \
-  && mv /tmp/SevenZipJBinding/Linux-amd64/lib7-Zip-JBinding.so /usr/local/lib
+  && cp /tmp/SevenZipJBinding/Linux-amd64/lib7-Zip-JBinding.so /usr/local/lib \
   # Removes symbols that are not needed
   && find /usr/local/lib -name "*.so" -exec strip -s {} \;
 
