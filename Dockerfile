@@ -126,6 +126,7 @@ RUN if [ "${FILEBOT}" == "true" ]; then \
     openjdk8 \
     openjdk8-jre \
     java-jna-native \
+    findutils \
   # Install filebot
   && mkdir /filebot \
   && cd /filebot \
