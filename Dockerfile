@@ -2,8 +2,6 @@ FROM alpine:3.11 AS builder
 
 ARG RTORRENT_VER=0.9.8
 ARG LIBTORRENT_VER=0.13.8
-ARG LIBZEN_VER=0.4.37
-ARG LIBMEDIAINFO_VER=19.09
 
 RUN apk add --no-progress \
     git \
@@ -27,61 +25,38 @@ RUN apk add --no-progress \
     openjdk8 \
     openjdk8-jre \
     java-jna-native \
+    findutils \
   && git clone https://github.com/mirror/xmlrpc-c.git /tmp/xmlrpc-c \
   && git clone -b "v${LIBTORRENT_VER}" https://github.com/rakshasa/libtorrent.git /tmp/libtorrent \
   && git clone -b "v${RTORRENT_VER}" https://github.com/rakshasa/rtorrent.git /tmp/rtorrent \
-  && wget https://mediaarea.net/download/source/libzen/${LIBZEN_VER}/libzen_${LIBZEN_VER}.tar.bz2 -O /tmp/libzen.tar.gz \
-  && wget https://mediaarea.net/download/source/libmediainfo/${LIBMEDIAINFO_VER}/libmediainfo_${LIBMEDIAINFO_VER}.tar.gz -O /tmp/libmediainfo.tar.gz \
-  && wget https://mediaarea.net/download/source/mediainfo/${LIBMEDIAINFO_VER}/mediainfo_${LIBMEDIAINFO_VER}.tar.gz -O /tmp/mediainfo.tar.gz \
-  && export BUILD_CORES=$(grep -c "processor" /proc/cpuinfo) \
-  # Compile libzen
-  && cd /tmp \
-  && tar -xjf /tmp/libzen.tar.gz \
-  && cd /tmp/ZenLib/Project/GNU/Library \
-  && ./autogen.sh \
-  && ./configure --prefix=/usr/local --enable-shared --disable-static \
-  && make -j ${BUILD_CORES} \
-  && make install \
-  # Compile libmediainfo
-  && cd /tmp \
-  && tar -xzf libmediainfo.tar.gz \
-  && cd /tmp/MediaInfoLib/Project/GNU/Library \
-  && ./autogen.sh \
-  && ./configure \
-  && make -j ${BUILD_CORES} \
-  && make install \
-  # Compile mediainfo cli
-  && cd /tmp \
-  && tar -xzf mediainfo.tar.gz \
-  && cd /tmp/MediaInfo/Project/GNU/CLI \
-  && ./autogen.sh \
-  && ./configure \
-  && make -j ${BUILD_CORES} \
-  && make install \
-  && strip -s /usr/local/bin/mediainfo \
+  # Set BUILD_CORES
+  && BUILD_CORES="$(grep -c processor /proc/cpuinfo)" \
   # Compile xmlrpc-c
   && cd /tmp/xmlrpc-c/stable \
   && ./configure \
-  && make -j ${BUILD_CORES} \
+  && make -j "${BUILD_CORES}" \
   && make install \
   # Compile libtorrent
   && cd /tmp/libtorrent \
   && ./autogen.sh \
   && ./configure --disable-debug --disable-instrumentation \
-  && make -j ${BUILD_CORES} \
+  && make -j "${BUILD_CORES}" \
   && make install \
   # Compile rtorrent
   && cd /tmp/rtorrent \
   && ./autogen.sh \
   && ./configure --enable-ipv6 --disable-debug --with-xmlrpc-c \
-  && make -j ${BUILD_CORES} \
+  && make -j "${BUILD_CORES}" \
   && make install \
   && strip -s /usr/local/bin/rtorrent \
   # Compile SevenZipJBinding
   && git clone https://github.com/borisbrodski/sevenzipjbinding.git /tmp/SevenZipJBinding \
   && cd /tmp/SevenZipJBinding \
   && cmake . -DJAVA_JDK=/usr/lib/jvm/java-1.8-openjdk \
-  && make
+  && make -j "${BUILD_CORES}" \
+  && mv /tmp/SevenZipJBinding/Linux-amd64/lib7-Zip-JBinding.so /usr/local/lib
+  # Removes symbols that are not needed
+  && find /usr/local/lib -name "*.so" -exec strip -s {} \;
 
 FROM alpine:3.11
 
@@ -103,7 +78,6 @@ ENV UID=991 \
 
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/local/lib /usr/local/lib
-COPY --from=builder /tmp/SevenZipJBinding/Linux-amd64/lib7-Zip-JBinding.so /usr/local/lib
 
 RUN apk add --no-progress --no-cache \
     libsigc++-dev \
@@ -132,6 +106,11 @@ RUN apk add --no-progress --no-cache \
     s6 \
     su-exec \
     sox \
+    libzen-dev \
+    libzen \
+    libmediainfo-dev \
+    libmediainfo \
+    mediainfo \
   # Install rutorrent
   && git clone https://github.com/Novik/ruTorrent.git /rutorrent/app \
   && git clone https://github.com/Phlooo/ruTorrent-MaterialDesign.git /rutorrent/app/plugins/theme/themes/materialdesign \
@@ -163,8 +142,8 @@ RUN if [ "${FILEBOT}" == "true" ]; then \
   && wget https://get.filebot.net/filebot/FileBot_${FILEBOT_VER}/FileBot_${FILEBOT_VER}-portable.tar.xz -O /filebot/filebot.tar.xz \
   && tar -xJf filebot.tar.xz \
   && rm -rf filebot.tar.xz \
-  && ln -sf /usr/local/lib/libzen.so.0.0.0 /filebot/lib/Linux-x86_64/libzen.so \
-  && ln -sf /usr/local/lib/libmediainfo.so.0.0.0 /filebot/lib/Linux-x86_64/libmediainfo.so \
+  && ln -sf /usr/lib/libzen.so /filebot/lib/Linux-x86_64/libzen.so \
+  && ln -sf /usr/lib/libmediainfo.so /filebot/lib/Linux-x86_64/libmediainfo.so \
   && ln -sf /usr/lib/libjnidispatch.so /filebot/lib/Linux-x86_64/libjnidispatch.so \
   && ln -sf /usr/local/lib/lib7-Zip-JBinding.so /filebot/lib/Linux-x86_64/lib7-Zip-JBinding.so \
   # Install chromaprint acoustid

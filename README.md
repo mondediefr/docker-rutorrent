@@ -27,8 +27,6 @@
 | -------- | ----------- | ---- | ------------- |
 | **RTORRENT_VER** | rtorrent version | *optional* | 0.9.8
 | **LIBTORRENT_VER** | libtorrent version | *optional* | 0.13.8
-| **LIBZEN_VER** | libzen version | *optional* | 0.4.37
-| **LIBMEDIAINFO_VER** | libmediainfo version | *optional* | 19.09
 | **FILEBOT** | Build with filebot | *optional* | false
 | **FILEBOT_VER** | Filebot version | *optional* | 4.8.5
 | **CHROMAPRINT_VER** | Chromaprint version | *optional* | 1.4.3
@@ -89,7 +87,7 @@ docker build -t mondedie/rutorrent:filebot \
 ### Ports
 
  - 8080
- - PORT_RTORRENT (default : 45000)
+ - PORT_RTORRENT (default: 45000)
 
 ## Usage
 
