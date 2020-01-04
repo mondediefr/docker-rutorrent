@@ -5,8 +5,6 @@ ARG LIBTORRENT_VER=0.13.8
 
 RUN apk add --no-progress \
     git \
-    tar \
-    wget \
     automake \
     autoconf \
     build-base \
@@ -25,7 +23,6 @@ RUN apk add --no-progress \
     openjdk8 \
     openjdk8-jre \
     java-jna-native \
-    findutils \
   && git clone https://github.com/mirror/xmlrpc-c.git /tmp/xmlrpc-c \
   && git clone -b "v${LIBTORRENT_VER}" https://github.com/rakshasa/libtorrent.git /tmp/libtorrent \
   && git clone -b "v${RTORRENT_VER}" https://github.com/rakshasa/rtorrent.git /tmp/rtorrent \
@@ -85,7 +82,6 @@ RUN apk add --no-progress --no-cache \
     curl-dev \
     curl \
     git \
-    wget \
     nginx \
     php7 \
     php7-fpm \
@@ -96,10 +92,7 @@ RUN apk add --no-progress --no-cache \
     php7-ctype \
     php7-sockets \
     php7-phar \
-    tar \
-    gzip \
     zip \
-    bzip2 \
     unrar \
     mktorrent \
     ffmpeg \
@@ -125,7 +118,7 @@ RUN apk add --no-progress --no-cache \
   # Socket folder
   && mkdir -p /run/rtorrent /run/nginx /run/php \
   # Cleanup
-  && apk del --purge git wget \
+  && apk del --purge git \
   && rm -rf /tmp/*
 
 RUN if [ "${FILEBOT}" == "true" ]; then \
@@ -133,9 +126,6 @@ RUN if [ "${FILEBOT}" == "true" ]; then \
     openjdk8 \
     openjdk8-jre \
     java-jna-native \
-    findutils \
-    xz \
-    wget \
   # Install filebot
   && mkdir /filebot \
   && cd /filebot \
@@ -153,7 +143,6 @@ RUN if [ "${FILEBOT}" == "true" ]; then \
   && mv chromaprint-fpcalc-${CHROMAPRINT_VER}-linux-x86_64/fpcalc /usr/local/bin \
   && rm -rf /tmp/chromaprint-fpcalc.tar.gz \
   # Cleanup
-  && apk del --purge xz wget \
   && rm -rf /tmp/*; \
   fi
 
