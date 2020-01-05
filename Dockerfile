@@ -62,7 +62,7 @@ RUN apk add --no-progress \
   # Compile chromaprint
   && cd /tmp \
   && tar -xzf chromaprint-fpcalc.tar.gz \
-  && cd "chromaprint-v${CHROMAPRINT_VER}"
+  && cd "chromaprint-v${CHROMAPRINT_VER}" \
   && cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON . \
   && make -j "${BUILD_CORES}" \
   && make install \

@@ -19,7 +19,7 @@ jobs:
   - name: filebot
     arch: arm64
     env: TAG=filebot
-    script: docker build --build-arg FILEBOT=true --pull --file Dockerfile.arm64 --tag mondedie/rutorrent:"${TAG}" .
+    script: docker build --pull --file Dockerfile.arm64 --build-arg FILEBOT=true --tag mondedie/rutorrent:"${TAG}" .
 
 before_deploy:
   - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
