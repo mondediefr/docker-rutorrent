@@ -30,7 +30,6 @@ RUN apk add --no-progress \
   && git clone https://github.com/mirror/xmlrpc-c.git /tmp/xmlrpc-c \
   && git clone -b "v${LIBTORRENT_VER}" https://github.com/rakshasa/libtorrent.git /tmp/libtorrent \
   && git clone -b "v${RTORRENT_VER}" https://github.com/rakshasa/rtorrent.git /tmp/rtorrent \
-  && git clone https://github.com/borisbrodski/sevenzipjbinding.git /tmp/SevenZipJBinding \
   && wget "https://github.com/acoustid/chromaprint/releases/download/v${CHROMAPRINT_VER}/chromaprint-${CHROMAPRINT_VER}.tar.gz" -O /tmp/chromaprint-fpcalc.tar.gz \
   # Set BUILD_CORES
   && BUILD_CORES="$(grep -c processor /proc/cpuinfo)" \
@@ -54,11 +53,6 @@ RUN apk add --no-progress \
   && make -j "${BUILD_CORES}" \
   && make install \
   && strip -s /usr/local/bin/rtorrent \
-  # Compile SevenZipJBinding
-  && cd /tmp/SevenZipJBinding \
-  && cmake . -DJAVA_JDK=/usr/lib/jvm/java-1.8-openjdk \
-  && make -j "${BUILD_CORES}" \
-  && cp /tmp/SevenZipJBinding/Linux-amd64/lib7-Zip-JBinding.so /usr/local/lib \
   # Compile chromaprint
   && cd /tmp \
   && tar -xzf chromaprint-fpcalc.tar.gz \
@@ -148,10 +142,7 @@ RUN if [ "${FILEBOT}" == "true" ]; then \
   && tar -xJf filebot.tar.xz \
   && rm -rf filebot.tar.xz \
   # Fix filebot lib
-  && ln -sf /usr/lib/libzen.so /filebot/lib/Linux-x86_64/libzen.so \
-  && ln -sf /usr/lib/libmediainfo.so /filebot/lib/Linux-x86_64/libmediainfo.so \
-  && ln -sf /usr/lib/libjnidispatch.so /filebot/lib/Linux-x86_64/libjnidispatch.so \
-  && ln -sf /usr/local/lib/lib7-Zip-JBinding.so /filebot/lib/Linux-x86_64/lib7-Zip-JBinding.so; \
+  && ln -sf /usr/lib/libjnidispatch.so /filebot/lib/Linux-aarch64/libjnidispatch.so; \
   fi
 
 COPY rootfs /
