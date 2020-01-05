@@ -7,14 +7,24 @@ services:
 jobs:
   include:
   - name: latest
+    arch: amd64
     env: TAG=latest
     script: docker build --pull --tag mondedie/rutorrent:"${TAG}" .
   - name: filebot
+    arch: amd64
+    env: TAG=filebot
+    script: docker build --build-arg FILEBOT=true --pull --tag mondedie/rutorrent:"${TAG}" .
+  - name: latest
+    arch: arm64
+    env: TAG=latest
+    script: docker build --pull --tag mondedie/rutorrent:"${TAG}" .
+  - name: filebot
+    arch: arm64
     env: TAG=filebot
     script: docker build --build-arg FILEBOT=true --pull --tag mondedie/rutorrent:"${TAG}" .
 
 before_deploy:
-  - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+  - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
 
 deploy:
   provider: script
