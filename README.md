@@ -6,6 +6,7 @@
 
 ## Features
 
+ - Multi-platform image linux/amd64, linux/arm64
  - Based on Alpine Linux.
  - rTorrent and libtorrent are compiled from source.
  - Provides by default a solid configuration.
