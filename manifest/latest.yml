@@ -1,0 +1,12 @@
+image: mondedie/rutorrent:latest
+manifests:
+  -
+    image: mondedie/rutorrent:amd64-latest
+    platform:
+      architecture: amd64
+      os: linux
+  -
+    image: mondedie/rutorrent:arm64-latest
+    platform:
+      architecture: arm64
+      os: linux
