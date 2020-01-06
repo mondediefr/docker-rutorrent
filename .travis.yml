@@ -4,32 +4,34 @@ services: docker
 
 jobs:
   include:
-  - name: amd64-latest
-    arch: amd64
-    env: TAG=amd64-latest
-    script: docker build --pull --tag mondedie/rutorrent:"${TAG}" .
-  - name: amd64-filebot
-    arch: amd64
-    env: TAG=amd64-filebot
-    script: docker build --build-arg FILEBOT=true --pull --tag mondedie/rutorrent:"${TAG}" .
-  - name: arm64-latest
-    arch: arm64
-    env: TAG=arm64-latest
-    script: docker build --pull --file Dockerfile.aarch64 --tag mondedie/rutorrent:"${TAG}" .
-  - name: arm64-filebot
-    arch: arm64
-    env: TAG=arm64-filebot
-    script: docker build --pull --file Dockerfile.aarch64 --build-arg FILEBOT=true --tag mondedie/rutorrent:"${TAG}" .
+  - stage: build images
+    - script: docker build --pull --tag mondedie/rutorrent:"${TAG}" .
+      name: amd64-latest
+      arch: amd64
+      env: TAG=amd64-latest
+    - script: docker build --build-arg FILEBOT=true --pull --tag mondedie/rutorrent:"${TAG}" .
+      name: amd64-filebot
+      arch: amd64
+      env: TAG=amd64-filebot
+    - script: docker build --pull --file Dockerfile.aarch64 --tag mondedie/rutorrent:"${TAG}" .
+      name: arm64-latest
+      arch: arm64
+      env: TAG=arm64-latest
+    - script: docker build --pull --file Dockerfile.aarch64 --build-arg FILEBOT=true --tag mondedie/rutorrent:"${TAG}" .
+      name: arm64-filebot
+      arch: arm64
+      env: TAG=arm64-filebot
   - stage: deploy manifest
+    name: manifest-tool
     install:
       - wget https://github.com/estesp/manifest-tool/releases/download/v1.0.0/manifest-tool-linux-amd64
-      - mv manifest-tool-linux-amd64 /usr/local/bin/manifest-tool
-      - chmod +x /usr/local/bin/manifest-tool
+      - mv manifest-tool-linux-amd64 manifest-tool
+      - chmod +x manifest-tool
     before_script:
       - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
     script:
-      - manifest-tool push from-spec manifest/latest.yml
-      - manifest-tool push from-spec manifest/filebot.yml
+      - ./manifest-tool push from-spec manifest/latest.yml
+      - ./manifest-tool push from-spec manifest/filebot.yml
     # after_success: skip
     # after_failure: skip
     # after_script: skip
