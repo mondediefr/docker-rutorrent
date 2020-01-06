@@ -151,7 +151,9 @@ RUN if [ "${FILEBOT}" == "true" ]; then \
   && ln -sf /usr/lib/libzen.so /filebot/lib/Linux-x86_64/libzen.so \
   && ln -sf /usr/lib/libmediainfo.so /filebot/lib/Linux-x86_64/libmediainfo.so \
   && ln -sf /usr/lib/libjnidispatch.so /filebot/lib/Linux-x86_64/libjnidispatch.so \
-  && ln -sf /usr/local/lib/lib7-Zip-JBinding.so /filebot/lib/Linux-x86_64/lib7-Zip-JBinding.so; \
+  && ln -sf /usr/local/lib/lib7-Zip-JBinding.so /filebot/lib/Linux-x86_64/lib7-Zip-JBinding.so \
+  # Remove unnecessary libs
+  rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-armv7l /filebot/lib/Linux-i686 /filebot/lib/Linux-aarch64; \
   fi
 
 COPY rootfs /
