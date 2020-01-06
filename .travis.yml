@@ -37,9 +37,7 @@ jobs:
       script:
         - ./manifest-tool push from-spec manifest/latest.yml
         - ./manifest-tool push from-spec manifest/filebot.yml
-      # after_success: skip
-      # after_failure: skip
-      # after_script: skip
+      after_success: skip
 
 before_deploy:
   - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
