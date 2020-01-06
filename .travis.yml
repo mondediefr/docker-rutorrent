@@ -42,7 +42,3 @@ deploy:
   script: docker push mondedie/rutorrent:"${TAG}"
   on:
     branch: master
-
-jobs:
-  include:
-
