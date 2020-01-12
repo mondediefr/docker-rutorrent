@@ -35,8 +35,8 @@ jobs:
       before_script:
         - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
       script:
-        - ./manifest-tool push from-spec manifest/latest.yml
-        - ./manifest-tool push from-spec manifest/filebot.yml
+        - ./manifest-tool push from-args --platforms linux/amd64,linux/arm64/v8 --template mondedie/rutorrent:ARCH-latest --target mondedie/rutorrent:latest
+        - ./manifest-tool push from-args --platforms linux/amd64,linux/arm64/v8 --template mondedie/rutorrent:ARCH-filebot --target mondedie/rutorrent:filebot
       after_success: skip
 
 before_deploy:
