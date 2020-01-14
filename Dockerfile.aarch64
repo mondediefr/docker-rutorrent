@@ -126,6 +126,7 @@ RUN apk add --no-progress --no-cache \
   && rm -rf /rutorrent/app/plugins/theme/themes/materialdesign/.git \
   && rm -rf /rutorrent/app/plugins/geoip2/.git \
   && rm -rf /rutorrent/app/.git \
+  && rm -rf /tmp/rutorrent-thirdparty-plugins \
   # Socket folder
   && mkdir -p /run/rtorrent /run/nginx /run/php \
   # Cleanup
