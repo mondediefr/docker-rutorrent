@@ -85,7 +85,8 @@ ENV UID=991 \
     CHECK_PERM_DATA=true \
     FILEBOT_RENAME_METHOD=symlink \
     FILEBOT_LANG=fr \
-    FILEBOT_CONFLICT=skip
+    FILEBOT_CONFLICT=skip \
+    HTTP_AUTH=false
 
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/local/lib /usr/local/lib
@@ -119,6 +120,7 @@ RUN apk add --no-progress --no-cache \
     libmediainfo-dev \
     libmediainfo \
     mediainfo \
+    openssl \
   # Install rutorrent
   && git clone https://github.com/Novik/ruTorrent.git /rutorrent/app \
   && git clone https://github.com/Phlooo/ruTorrent-MaterialDesign.git /rutorrent/app/plugins/theme/themes/materialdesign \
@@ -135,7 +137,7 @@ RUN apk add --no-progress --no-cache \
   # Cleanup
   && apk del --purge git
 
-RUN if [ "${FILEBOT}" == "true" ]; then \
+RUN if [ "${FILEBOT}" = true ]; then \
   apk add --no-progress --no-cache \
     openjdk8 \
     openjdk8-jre \

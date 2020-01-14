@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+read -p "Username: " username
+passwd="$(openssl passwd -6)"
+
+echo "${username}:${passwd}" > /config/nginx/passwd/rutorrent_passwd
+echo "Password was generated for the http user ${username}"

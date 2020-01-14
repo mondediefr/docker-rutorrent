@@ -8,7 +8,7 @@ Github repository: https://github.com/mondediefr/docker-rutorrent
 
 ## Features
 
- - Multi-platform image: linux/amd64, linux/arm64
+ - Multi-platform image: linux/amd64, linux/arm64/v8
  - Based on Alpine Linux.
  - rTorrent and libtorrent are compiled from source.
  - Provides by default a solid configuration.
@@ -137,6 +137,10 @@ docker run --name rutorrent -dt \
 ```
 
 URI access : http://xx.xx.xx.xx:9080
+
+#### Add HTTP authentication
+
+...
 
 ## License
 
