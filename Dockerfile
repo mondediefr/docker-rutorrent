@@ -159,7 +159,7 @@ RUN if [ "${FILEBOT}" = true ]; then \
   fi
 
 COPY rootfs /
-RUN chmod +x /usr/local/bin/startup
+RUN chmod 775 /usr/local/bin/*
 VOLUME /data /config
 EXPOSE 8080
 ENTRYPOINT ["/usr/local/bin/startup"]

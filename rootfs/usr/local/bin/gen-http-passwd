@@ -4,4 +4,6 @@ read -p "Username: " username
 passwd="$(openssl passwd -6)"
 
 echo "${username}:${passwd}" > /config/nginx/passwd/rutorrent_passwd
-echo "Password was generated for the http user ${username}"
+chown "${UID}:${GID}" /config/nginx/passwd/rutorrent_passwd
+chmod 640 /config/nginx/passwd/rutorrent_passwd
+echo "Password was generated for the http user: ${username}"

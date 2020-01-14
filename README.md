@@ -43,9 +43,7 @@ docker build -t mondedie/rutorrent:latest https://github.com/mondediefr/docker-r
 ### Build with arguments
 
 ```sh
-docker build -t mondedie/rutorrent:filebot \
-  --build-arg FILEBOT=true \
-  https://github.com/mondediefr/docker-rutorrent.git
+docker build -t mondedie/rutorrent:filebot --build-arg FILEBOT=true https://github.com/mondediefr/docker-rutorrent.git
 ```
 
 ## Configuration
@@ -107,7 +105,7 @@ docker run --name rutorrent -dt \
   mondedie/rutorrent:latest
 ```
 
-URI access : http://xx.xx.xx.xx:8080
+URL: http://xx.xx.xx.xx:8080
 
 ### Advanced launch
 
@@ -136,11 +134,34 @@ docker run --name rutorrent -dt \
   mondedie/rutorrent:filebot
 ```
 
-URI access : http://xx.xx.xx.xx:9080
+URL: http://xx.xx.xx.xx:9080
 
 #### Add HTTP authentication
 
-...
+```sh
+docker run --name rutorrent -dt \
+  -e UID=1000 \
+  -e GID=1000 \
+  -e PORT_RTORRENT=46000 \
+  -e HTTP_AUTH=true \
+  -p 8080:8080 \
+  -p 46000:46000 \
+  -v /mnt/docker/rutorrent/config:/config \
+  -v /mnt/docker/rutorrent/data:/data \
+  mondedie/rutorrent:latest
+```
+
+Generate your password:
+
+```sh
+docker exec -it rutorrent gen-http-passwd
+Username: torrent
+Password:
+Verifying - Password:
+Password was generated for the http user: torrent
+```
+
+URL: http://xx.xx.xx.xx:8080
 
 ## License
 
