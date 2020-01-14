@@ -57,6 +57,7 @@ docker build -t mondedie/rutorrent:filebot --build-arg FILEBOT=true https://gith
 | **PORT_RTORRENT** | Port of rtorrent | *optional* | 45000
 | **DHT_RTORRENT** | DHT option in rtorrent.rc file | *optional* | off
 | **CHECK_PERM_DATA** | Check permission data in downloads directory | *optional* | true
+| **HTTP_AUTH** | Enable HTTP authentication | *optional* | false
 
 ### Environment variables with filebot
 
