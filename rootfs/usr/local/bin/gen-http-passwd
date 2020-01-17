@@ -1,9 +1,20 @@
 #!/usr/bin/env sh
 
+file=/config/nginx/passwd/rutorrent_passwd
+
 read -p "Username: " username
 passwd="$(openssl passwd -6)"
 
-echo "${username}:${passwd}" >> /config/nginx/passwd/rutorrent_passwd
-chown "${UID}:${GID}" /config/nginx/passwd/rutorrent_passwd
-chmod 640 /config/nginx/passwd/rutorrent_passwd
-echo "Password was generated for the http user: ${username}"
+if [ "${?}" -eq 0 ]; then
+  if [ ! -e "${file}" ] || [ -z $(grep "^${username}:" "${file}") ]; then
+    echo "${username}:${passwd}" >> "${file}"
+    chown "${UID}:${GID}" "${file}"
+    chmod 640 "${file}"
+    echo "The password was generated for the http user: ${username}"
+  else
+    sed -e "s|^${username}:.*|${username}:${passwd}|g" -i "${file}"
+    chown "${UID}:${GID}" "${file}"
+    chmod 640 "${file}"
+    echo "The password has been updated for the http user: ${username}"
+  fi
+fi
