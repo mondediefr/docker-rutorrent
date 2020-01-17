@@ -29,12 +29,12 @@ f_log() {
 
 f_log INF "Create user torrent ..."
 
-if [ -z $(grep ":${GID}:" /etc/group) ]; then
+if [ -z "$(grep :${GID}: /etc/group)" ]; then
   addgroup -g "${GID}" torrent
 fi
 
-if [ -z $(grep ":${UID}:" /etc/passwd) ]; then
-  group=$(grep ":${GID}:" /etc/group | cut -f 1 -d :)
+if [ -z "$(grep :${UID}: /etc/passwd)" ]; then
+  group="$(grep :${GID}: /etc/group | cut -f 1 -d :)"
   adduser -h /home/torrent -s /bin/sh -G "${group}" -D -u "${UID}" torrent
 fi
 
@@ -74,14 +74,14 @@ else
 fi
 
 # Add custom plugins
-[ $(ls /config/custom_plugins) ] && for custom_plugin in $(ls /config/custom_plugins); do
+[ "$(ls /config/custom_plugins)" ] && for custom_plugin in "$(ls /config/custom_plugins)"; do
   if [ ! -d "/rutorrent/app/plugins/${custom_plugin}" ]; then
     ln -s "/config/custom_plugins/${custom_plugin}" "/rutorrent/app/plugins/${custom_plugin}"
   fi
 done
 
 # Add custom themes
-[ $(ls /config/custom_themes) ] && for custom_theme in $(ls /config/custom_themes); do
+[ "$(ls /config/custom_themes)" ] && for custom_theme in "$(ls /config/custom_themes)"; do
   if [ ! -d "/rutorrent/app/plugins/theme/themes/${custom_theme}" ]; then
     ln -s "/config/custom_themes/${custom_theme}" "/rutorrent/app/plugins/theme/themes/${custom_theme}"
   fi
@@ -120,6 +120,10 @@ if [ -e /filebot/filebot.sh ]; then
   if [ -d /config/filebot/data ]; then
     rm -rf /filebot/data
     ln -s /config/filebot/data /filebot/data
+  else
+    mkdir -p /config/filebot/data
+    rm -rf /filebot/data
+    ln -s /config/filebot/data /filebot/data
   fi
 
   # Add license file
@@ -128,9 +132,6 @@ if [ -e /filebot/filebot.sh ]; then
     exit 1
   elif [ ! -e /filebot/data/.license ]; then
     /filebot/filebot.sh --license "${FILEBOT_LICENSE}"
-    # Externalize filebot data folder
-    mv /filebot/data /config/filebot/data
-    ln -s /config/filebot/data /filebot/data
   fi
 
   # Externalize args_amc.txt file
@@ -141,11 +142,11 @@ if [ -e /filebot/filebot.sh ]; then
     ln -s /config/filebot/args_amc.txt /filebot/args_amc.txt
   fi
 
-  if [ -z $(grep "^method.set_key.*event.download.finished,filebot" /home/torrent/.rtorrent.rc) ]; then
+  if [ -z "$(grep ^method.set_key.*event.download.finished,filebot /home/torrent/.rtorrent.rc)" ]; then
     echo 'method.set_key = event.download.finished,filebot,"execute2=/usr/local/bin/postdl,$d.directory=,$d.name="' >> /home/torrent/.rtorrent.rc
   fi
 
-  if [ -z $(grep "^method.set_key.*event.download.erased,filebot_cleaner" /home/torrent/.rtorrent.rc) ]; then
+  if [ -z "$(grep ^method.set_key.*event.download.erased,filebot_cleaner /home/torrent/.rtorrent.rc)" ]; then
     echo 'method.set_key = event.download.erased,filebot_cleaner,"execute2=/usr/local/bin/postrm"' >> /home/torrent/.rtorrent.rc
   fi
 

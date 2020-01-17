@@ -3,10 +3,10 @@
 file=/config/nginx/passwd/rutorrent_passwd
 
 read -p "Username: " username
-passwd=$(openssl passwd -6)
+passwd="$(openssl passwd -6)"
 
 if [ "${?}" -eq 0 ]; then
-  if [ ! -e "${file}" ] || [ -z $(grep "^${username}:" "${file}") ]; then
+  if [ ! -e "${file}" ] || [ -z "$(grep ^${username}: ${file})" ]; then
     echo "${username}:${passwd}" >> "${file}"
     chown "${UID}:${GID}" "${file}"
     chmod 640 "${file}"
