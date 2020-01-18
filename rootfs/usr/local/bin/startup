@@ -74,16 +74,16 @@ else
 fi
 
 # Add custom plugins
-[ "$(ls /config/custom_plugins)" ] && for custom_plugin in "$(ls /config/custom_plugins)"; do
-  if [ ! -d "/rutorrent/app/plugins/${custom_plugin}" ]; then
-    ln -s "/config/custom_plugins/${custom_plugin}" "/rutorrent/app/plugins/${custom_plugin}"
+[ "$(ls /config/custom_plugins)" ] && for plugin in $(ls /config/custom_plugins); do
+  if [ ! -d "/rutorrent/app/plugins/${plugin}" ]; then
+    ln -s "/config/custom_plugins/${plugin}" "/rutorrent/app/plugins/${plugin}"
   fi
 done
 
 # Add custom themes
-[ "$(ls /config/custom_themes)" ] && for custom_theme in "$(ls /config/custom_themes)"; do
-  if [ ! -d "/rutorrent/app/plugins/theme/themes/${custom_theme}" ]; then
-    ln -s "/config/custom_themes/${custom_theme}" "/rutorrent/app/plugins/theme/themes/${custom_theme}"
+[ "$(ls /config/custom_themes)" ] && for theme in $(ls /config/custom_themes); do
+  if [ ! -d "/rutorrent/app/plugins/theme/themes/${theme}" ]; then
+    ln -s "/config/custom_themes/${theme}" "/rutorrent/app/plugins/theme/themes/${theme}"
   fi
 done
 
