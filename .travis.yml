@@ -5,45 +5,33 @@ services: docker
 jobs:
   include:
     -
-      stage: build images
-      name: amd64-latest
+      stage: Build images
+      name: Build latest tag
       arch: amd64
-      env: TAG=amd64-latest
-      script: docker build --pull --tag mondedie/rutorrent:"${TAG}" .
-    -
-      name: amd64-filebot
-      arch: amd64
-      env: TAG=amd64-filebot
-      script: docker build --build-arg FILEBOT=true --pull --tag mondedie/rutorrent:"${TAG}" .
-    -
-      name: arm64-latest
-      arch: arm64
-      env: TAG=arm64-latest
-      script: docker build --pull --file Dockerfile.aarch64 --tag mondedie/rutorrent:"${TAG}" .
-    -
-      name: arm64-filebot
-      arch: arm64
-      env: TAG=arm64-filebot
-      script: docker build --pull --file Dockerfile.aarch64 --build-arg FILEBOT=true --tag mondedie/rutorrent:"${TAG}" .
-    -
-      stage: deploy manifest
-      name: manifest-tool
+      env: TAG=latest
       install:
-        - wget https://github.com/estesp/manifest-tool/releases/download/v1.0.0/manifest-tool-linux-amd64
-        - mv manifest-tool-linux-amd64 manifest-tool
-        - chmod +x manifest-tool
+        - export DOCKER_CLI_EXPERIMENTAL=enabled
+        - apt-get update -y
+        - apt-get install -y qemu-user-static
       before_script:
         - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
       script:
-        - ./manifest-tool push from-args --platforms linux/amd64,linux/arm64/v8 --template mondedie/rutorrent:ARCH-latest --target mondedie/rutorrent:latest
-        - ./manifest-tool push from-args --platforms linux/amd64,linux/arm64/v8 --template mondedie/rutorrent:ARCH-filebot --target mondedie/rutorrent:filebot
-      after_success: skip
-
-before_deploy:
-  - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-
-deploy:
-  provider: script
-  script: docker push mondedie/rutorrent:"${TAG}"
-  on:
-    branch: master
+        - docker buildx create --name builder
+        - docker buildx inspect builder --bootstrap
+        - docker buildx use builder
+        - docker buildx build --progress plain --push --pull --platform linux/386,linux/amd64,linux/arm/v7,linux/arm64/v8 --tag mondedie/rutorrent:"${TAG}" .
+    -
+      name: Build filebot tag
+      arch: amd64
+      env: TAG=filebot
+      install:
+        - export DOCKER_CLI_EXPERIMENTAL=enabled
+        - apt-get update -y
+        - apt-get install -y qemu-user-static
+      before_script:
+        - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+      script:
+        - docker buildx create --name builder
+        - docker buildx inspect builder --bootstrap
+        - docker buildx use builder
+        - docker buildx build --build-arg FILEBOT=true --progress plain --push --pull --platform linux/386,linux/amd64,linux/arm/v7,linux/arm64/v8 --tag mondedie/rutorrent:"${TAG}" .

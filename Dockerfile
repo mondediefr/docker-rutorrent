@@ -1,5 +1,6 @@
 FROM alpine:3.11 AS builder
 
+ARG TARGETPLATFORM
 ARG RTORRENT_VER=0.9.8
 ARG LIBTORRENT_VER=0.13.8
 ARG CHROMAPRINT_VER=1.4.3
@@ -58,7 +59,12 @@ RUN apk add --no-progress \
   && cd /tmp/SevenZipJBinding \
   && cmake . -DJAVA_JDK=/usr/lib/jvm/java-1.8-openjdk \
   && make -j "${BUILD_CORES}" \
-  && cp /tmp/SevenZipJBinding/Linux-amd64/lib7-Zip-JBinding.so /usr/local/lib \
+  && case "${TARGETPLATFORM}" in \
+    "linux/386") cp /tmp/SevenZipJBinding/Linux-i386/lib7-Zip-JBinding.so /usr/local/lib;; \
+    "linux/amd64") cp /tmp/SevenZipJBinding/Linux-amd64/lib7-Zip-JBinding.so /usr/local/lib;; \
+    "linux/arm/v7") cp /tmp/SevenZipJBinding/Linux-arm/lib7-Zip-JBinding.so /usr/local/lib;; \
+    "linux/arm64") cp /tmp/SevenZipJBinding/Linux-aarch64/lib7-Zip-JBinding.so /usr/local/lib;; \
+  esac \
   # Compile chromaprint
   && cd /tmp \
   && tar -xzf chromaprint-fpcalc.tar.gz \
@@ -75,6 +81,7 @@ FROM alpine:3.11
 LABEL description="rutorrent based on alpinelinux" \
       maintainer="magicalex <magicalex@mondedie.fr>"
 
+ARG TARGETPLATFORM
 ARG FILEBOT=false
 ARG FILEBOT_VER=4.8.5
 
@@ -140,6 +147,7 @@ RUN apk add --no-progress --no-cache \
 
 RUN if [ "${FILEBOT}" = true ]; then \
   apk add --no-progress --no-cache \
+    zlib-dev \
     openjdk8 \
     openjdk8-jre \
     java-jna-native \
@@ -151,12 +159,34 @@ RUN if [ "${FILEBOT}" = true ]; then \
   && tar -xJf filebot.tar.xz \
   && rm -rf filebot.tar.xz \
   # Fix filebot lib
-  && ln -sf /usr/lib/libzen.so /filebot/lib/Linux-x86_64/libzen.so \
-  && ln -sf /usr/lib/libmediainfo.so /filebot/lib/Linux-x86_64/libmediainfo.so \
-  && ln -sf /usr/lib/libjnidispatch.so /filebot/lib/Linux-x86_64/libjnidispatch.so \
-  && ln -sf /usr/local/lib/lib7-Zip-JBinding.so /filebot/lib/Linux-x86_64/lib7-Zip-JBinding.so \
-  # Remove unnecessary libs
-  && rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-armv7l /filebot/lib/Linux-i686 /filebot/lib/Linux-aarch64; \
+  && case "${TARGETPLATFORM}" in \
+    "linux/386") \
+      ln -sf /usr/lib/libzen.so /filebot/lib/Linux-i686/libzen.so \
+      && ln -sf /usr/lib/libmediainfo.so /filebot/lib/Linux-i686/libmediainfo.so \
+      && ln -sf /usr/lib/libjnidispatch.so /filebot/lib/Linux-i686/libjnidispatch.so \
+      && ln -sf /usr/local/lib/lib7-Zip-JBinding.so /filebot/lib/Linux-i686/lib7-Zip-JBinding.so \
+      # Remove unnecessary libs
+      && rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-armv7l /filebot/lib/Linux-x86_64 /filebot/lib/Linux-aarch64;; \
+    "linux/amd64") \
+      ln -sf /usr/lib/libzen.so /filebot/lib/Linux-x86_64/libzen.so \
+      && ln -sf /usr/lib/libmediainfo.so /filebot/lib/Linux-x86_64/libmediainfo.so \
+      && ln -sf /usr/lib/libjnidispatch.so /filebot/lib/Linux-x86_64/libjnidispatch.so \
+      && ln -sf /usr/local/lib/lib7-Zip-JBinding.so /filebot/lib/Linux-x86_64/lib7-Zip-JBinding.so \
+      # Remove unnecessary libs
+      && rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-armv7l /filebot/lib/Linux-i686 /filebot/lib/Linux-aarch64;; \
+    "linux/arm/v7") \
+      ln -sf /usr/lib/libzen.so /filebot/lib/Linux-armv7l/libzen.so \
+      && ln -sf /usr/lib/libmediainfo.so /filebot/lib/Linux-armv7l/libmediainfo.so \
+      && ln -sf /usr/lib/libjnidispatch.so /filebot/lib/Linux-armv7l/libjnidispatch.so \
+      && ln -sf /usr/local/lib/lib7-Zip-JBinding.so /filebot/lib/Linux-armv7l/lib7-Zip-JBinding.so \
+      && ln -sf /lib/libz.so /filebot/lib/Linux-armv7l/libz.so \
+      # Remove unnecessary libs
+      && rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-x86_64 /filebot/lib/Linux-i686 /filebot/lib/Linux-aarch64;; \
+    "linux/arm64") \
+      && ln -sf /usr/lib/libjnidispatch.so /filebot/lib/Linux-aarch64/libjnidispatch.so \
+      # Remove unnecessary libs
+      && rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-armv7l /filebot/lib/Linux-x86_64 /filebot/lib/Linux-i686;; \
+  esac; \
   fi
 
 COPY rootfs /
