@@ -10,12 +10,12 @@ jobs:
       arch: amd64
       env: TAG=latest
       install:
-        - export DOCKER_CLI_EXPERIMENTAL=enabled
         - sudo apt-get update -y
         - sudo apt-get install -y qemu-user-static
       before_script:
         - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
       script:
+        - export DOCKER_CLI_EXPERIMENTAL=enabled
         - docker buildx create --name builder
         - docker buildx inspect builder --bootstrap
         - docker buildx use builder
@@ -25,12 +25,12 @@ jobs:
       arch: amd64
       env: TAG=filebot
       install:
-        - export DOCKER_CLI_EXPERIMENTAL=enabled
         - sudo apt-get update -y
         - sudo apt-get install -y qemu-user-static
       before_script:
         - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
       script:
+        - export DOCKER_CLI_EXPERIMENTAL=enabled
         - docker buildx create --name builder
         - docker buildx inspect builder --bootstrap
         - docker buildx use builder
