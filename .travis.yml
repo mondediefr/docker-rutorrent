@@ -11,8 +11,8 @@ jobs:
       env: TAG=latest
       install:
         - export DOCKER_CLI_EXPERIMENTAL=enabled
-        - apt-get update -y
-        - apt-get install -y qemu-user-static
+        - sudo apt-get update -y
+        - sudo apt-get install -y qemu-user-static
       before_script:
         - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
       script:
@@ -26,8 +26,8 @@ jobs:
       env: TAG=filebot
       install:
         - export DOCKER_CLI_EXPERIMENTAL=enabled
-        - apt-get update -y
-        - apt-get install -y qemu-user-static
+        - sudo apt-get update -y
+        - sudo apt-get install -y qemu-user-static
       before_script:
         - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
       script:
