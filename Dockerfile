@@ -183,7 +183,7 @@ RUN if [ "${FILEBOT}" = true ]; then \
       # Remove unnecessary libs
       && rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-x86_64 /filebot/lib/Linux-i686 /filebot/lib/Linux-aarch64;; \
     "linux/arm64") \
-      && ln -sf /usr/lib/libjnidispatch.so /filebot/lib/Linux-aarch64/libjnidispatch.so \
+      ln -sf /usr/lib/libjnidispatch.so /filebot/lib/Linux-aarch64/libjnidispatch.so \
       # Remove unnecessary libs
       && rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-armv7l /filebot/lib/Linux-x86_64 /filebot/lib/Linux-i686;; \
   esac; \
