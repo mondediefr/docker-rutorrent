@@ -40,7 +40,6 @@ fi
 
 f_log SUC "Create user torrent done"
 
-# Create require folder
 mkdir -p \
   /data/.watch \
   /data/.session \
@@ -143,7 +142,7 @@ if [ -e /filebot/filebot.sh ]; then
   fi
 
   if [ -z "$(grep ^method.set_key.*event.download.finished,filebot /home/torrent/.rtorrent.rc)" ]; then
-    echo 'method.set_key = event.download.finished,filebot,"execute2=/usr/local/bin/postdl,$d.directory=,$d.name="' >> /home/torrent/.rtorrent.rc
+    echo 'method.set_key = event.download.finished,filebot,"execute2=/usr/local/bin/postdl,$d.base_path=,$d.name="' >> /home/torrent/.rtorrent.rc
   fi
 
   if [ -z "$(grep ^method.set_key.*event.download.erased,filebot_cleaner /home/torrent/.rtorrent.rc)" ]; then
@@ -155,6 +154,10 @@ if [ -e /filebot/filebot.sh ]; then
   f_log SUC "Configuration of filebot done"
 fi
 
+f_log INF "Update old configurations ..."
+/usr/local/bin/update-config
+f_log SUC "Update old configurations done"
+
 f_log INF "Apply system permissions ..."
 
 for folder in /config /rutorrent /home/torrent /var/lib/nginx /var/log /etc/nginx /etc/php7 /tmp /etc/s6.d /run; do
@@ -162,7 +165,6 @@ for folder in /config /rutorrent /home/torrent /var/lib/nginx /var/log /etc/ngin
 done
 
 find /etc/s6.d -type f -exec chmod +x {} \;
-
 f_log SUC "Apply system permissions done"
 
 if [ "${CHECK_PERM_DATA}" = true ]; then
@@ -175,5 +177,4 @@ fi
 rm -f /data/.session/rtorrent.lock
 
 f_log INF "Start all services ..."
-
 exec su-exec "${UID}":"${GID}" "$@"
