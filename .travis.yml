@@ -20,7 +20,7 @@ before_script:
   - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
 
 script:
-  - docker buildx build --progress plain --push --pull --platform linux/386,linux/amd64,linux/arm/v7,linux/arm64/v8 --tag mondedie/rutorrent:"${TAG}" .
+  - docker buildx build --pull --platform linux/amd64,linux/arm/v7,linux/arm64/v8 --tag mondedie/rutorrent:"${TAG}" --push .
 
 jobs:
   include:
