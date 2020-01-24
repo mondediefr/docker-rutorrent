@@ -5,7 +5,7 @@ services: docker
 jobs:
   include:
     -
-      stage: Build images
+      stage: test
       name: Build latest tag
       arch: amd64
       env: TAG=latest
@@ -16,22 +16,36 @@ jobs:
         - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
       script:
         - export DOCKER_CLI_EXPERIMENTAL=enabled
-        - docker buildx create --name builder
-        - docker buildx inspect builder --bootstrap
-        - docker buildx use builder
-        - docker buildx build --progress plain --push --pull --platform linux/386,linux/amd64,linux/arm/v7,linux/arm64/v8 --tag mondedie/rutorrent:"${TAG}" .
-    -
-      name: Build filebot tag
-      arch: amd64
-      env: TAG=filebot
-      install:
-        - sudo apt-get update -y
-        - sudo apt-get install -y qemu-user-static
-      before_script:
-        - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-      script:
-        - export DOCKER_CLI_EXPERIMENTAL=enabled
-        - docker buildx create --name builder
-        - docker buildx inspect builder --bootstrap
-        - docker buildx use builder
-        - docker buildx build --build-arg FILEBOT=true --progress plain --push --pull --platform linux/386,linux/amd64,linux/arm/v7,linux/arm64/v8 --tag mondedie/rutorrent:"${TAG}" .
+        - docker buildx
+    # -
+    #   stage: Build images
+    #   name: Build latest tag
+    #   arch: amd64
+    #   env: TAG=latest
+    #   install:
+    #     - sudo apt-get update -y
+    #     - sudo apt-get install -y qemu-user-static
+    #   before_script:
+    #     - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+    #   script:
+    #     - export DOCKER_CLI_EXPERIMENTAL=enabled
+    #     - docker buildx
+    #     - docker buildx create --name builder
+    #     - docker buildx inspect builder --bootstrap
+    #     - docker buildx use builder
+    #     - docker buildx build --progress plain --push --pull --platform linux/386,linux/amd64,linux/arm/v7,linux/arm64/v8 --tag mondedie/rutorrent:"${TAG}" .
+    # -
+    #   name: Build filebot tag
+    #   arch: amd64
+    #   env: TAG=filebot
+    #   install:
+    #     - sudo apt-get update -y
+    #     - sudo apt-get install -y qemu-user-static
+    #   before_script:
+    #     - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+    #   script:
+    #     - export DOCKER_CLI_EXPERIMENTAL=enabled
+    #     - docker buildx create --name builder
+    #     - docker buildx inspect builder --bootstrap
+    #     - docker buildx use builder
+    #     - docker buildx build --build-arg FILEBOT=true --progress plain --push --pull --platform linux/386,linux/amd64,linux/arm/v7,linux/arm64/v8 --tag mondedie/rutorrent:"${TAG}" .
