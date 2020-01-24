@@ -1,5 +1,7 @@
 os: linux
+dist: bionic
 language: shell
+service: docker
 
 jobs:
   include:
@@ -9,10 +11,13 @@ jobs:
       arch: amd64
       env: TAG=latest
       install:
+        - sudo apt-get purge -y docker docker-engine docker.io containerd runc
+        - sudo apt-get update
+        - sudo apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
         - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
         - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-        - sudo apt-get update -y
-        - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install -y qemu-user-static docker-ce
+        - sudo apt-get update
+        - sudo apt-get install -y docker-ce docker-ce-cli containerd.io qemu-user-static
       before_script:
         - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
       script:
@@ -21,20 +26,39 @@ jobs:
         - docker buildx inspect builder --bootstrap
         - docker buildx use builder
         - docker buildx build --progress plain --push --pull --platform linux/386,linux/amd64,linux/arm/v7,linux/arm64/v8 --tag mondedie/rutorrent:"${TAG}" .
-    -
-      name: Build filebot tag
-      arch: amd64
-      env: TAG=filebot
-      install:
-        - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-        - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-        - sudo apt-get update -y
-        - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install -y qemu-user-static docker-ce
-      before_script:
-        - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-      script:
-        - export DOCKER_CLI_EXPERIMENTAL=enabled
-        - docker buildx create --name builder
-        - docker buildx inspect builder --bootstrap
-        - docker buildx use builder
-        - docker buildx build --build-arg FILEBOT=true --progress plain --push --pull --platform linux/386,linux/amd64,linux/arm/v7,linux/arm64/v8 --tag mondedie/rutorrent:"${TAG}" .
+    # -
+    #   stage: Build images
+    #   name: Build latest tag
+    #   arch: amd64
+    #   env: TAG=latest
+    #   install:
+    #     - sudo apt-get update
+    #     - sudo apt-get install -y qemu-user-static
+    #   before_script:
+    #     - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+    #   script:
+    #     - export DOCKER_CLI_EXPERIMENTAL=enabled
+    #     - docker buildx create --name builder
+    #     - docker buildx inspect builder --bootstrap
+    #     - docker buildx use builder
+    #     - docker buildx build --progress plain --push --pull --platform linux/386,linux/amd64,linux/arm/v7,linux/arm64/v8 --tag mondedie/rutorrent:"${TAG}" .
+    # -
+    #   name: Build filebot tag
+    #   arch: amd64
+    #   env: TAG=filebot
+    #   install:
+    #     - sudo apt-get purge -y docker docker-engine docker.io containerd runc
+    #     - sudo apt-get update
+    #     - sudo apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+    #     - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    #     - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    #     - sudo apt-get update
+    #     - sudo apt-get install -y docker-ce docker-ce-cli containerd.io qemu-user-static
+    #   before_script:
+    #     - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+    #   script:
+    #     - export DOCKER_CLI_EXPERIMENTAL=enabled
+    #     - docker buildx create --name builder
+    #     - docker buildx inspect builder --bootstrap
+    #     - docker buildx use builder
+    #     - docker buildx build --build-arg FILEBOT=true --progress plain --push --pull --platform linux/386,linux/amd64,linux/arm/v7,linux/arm64/v8 --tag mondedie/rutorrent:"${TAG}" .
