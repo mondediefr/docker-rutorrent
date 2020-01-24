@@ -141,6 +141,11 @@ if [ -e /filebot/filebot.sh ]; then
     ln -s /config/filebot/args_amc.txt /filebot/args_amc.txt
   fi
 
+  # Custom postdl script
+  if [ -e /config/filebot/postdl ]; then
+    ln -sf /config/filebot/postdl /usr/local/bin/postdl
+  fi
+
   if [ -z "$(grep ^method.set_key.*event.download.finished,filebot /home/torrent/.rtorrent.rc)" ]; then
     echo 'method.set_key = event.download.finished,filebot,"execute2=/usr/local/bin/postdl,$d.base_path=,$d.name="' >> /home/torrent/.rtorrent.rc
   fi
