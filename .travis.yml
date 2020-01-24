@@ -1,9 +1,5 @@
 os: linux
 language: shell
-addons:
-  apt:
-    packages:
-      - docker-ce
 
 jobs:
   include:
@@ -13,8 +9,10 @@ jobs:
       arch: amd64
       env: TAG=latest
       install:
+        - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
         - sudo apt-get update -y
-        - sudo apt-get install -y qemu-user-static
+        - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install -y qemu-user-static docker-ce
       before_script:
         - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
       script:
