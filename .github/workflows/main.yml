@@ -1,0 +1,42 @@
+name: buildx
+
+on:
+  push:
+    branches: master
+
+jobs:
+  buildx:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v1
+      -
+        name: Set up Docker Buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
+      -
+        name: Available platforms
+        run: echo ${{ steps.buildx.outputs.platforms }}
+      -
+        name: Dockerhub login
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      -
+        name: Run Buildx latest tag
+        run: |
+          docker buildx build \
+          --pull \
+          --push \
+          --platform linux/386,linux/amd64,linux/arm/v7,linux/arm64/v8 \
+          --tag mondedie/rutorrent:latest .
+      -
+        name: Run Buildx filebot tag
+        run: |
+          docker buildx build \
+          --pull \
+          --push \
+          --build-arg FILEBOT=true \
+          --platform linux/386,linux/amd64,linux/arm/v7,linux/arm64/v8 \
+          --tag mondedie/rutorrent:filebot .
