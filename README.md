@@ -4,8 +4,6 @@
 [![](https://img.shields.io/docker/pulls/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent)
 [![](https://img.shields.io/docker/stars/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent)
 
-Github repository: https://github.com/mondediefr/docker-rutorrent
-
 ## Features
 
  - Multi-platform image: linux/386, linux/amd64, linux/arm/v7, linux/arm64/v8
@@ -82,7 +80,9 @@ docker build --tag mondedie/rutorrent:filebot --build-arg FILEBOT=true https://g
  - `/config/rutorrent/share` : rutorrent user configuration and cache
  - `/config/custom_plugins` : add your own plugins
  - `/config/custom_themes` : add your own themes
- - `/config/filebot` : add your License file in this folder and modify `args_amc.txt` file
+ - `/config/filebot` : add your License file in this folder
+ - `/config/filebot/args_amc.txt` : configuration of fn:amc script of filebot
+ - `/config/filebot/postdl` : modify postdl script, example [here](https://github.com/mondediefr/docker-rutorrent/blob/master/rootfs/usr/local/bin/postdl)
 
 ### Ports
 
