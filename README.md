@@ -1,5 +1,6 @@
 # mondedie/rutorrent
 
+![](https://github.com/mondediefr/docker-rutorrent/workflows/build/badge.svg?branch=master&event=push)
 [![](https://img.shields.io/docker/pulls/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent)
 [![](https://img.shields.io/docker/stars/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent)
 
@@ -27,8 +28,6 @@ Github repository: https://github.com/mondediefr/docker-rutorrent
 
 | Argument | Description | Type | Default value |
 | -------- | ----------- | ---- | ------------- |
-| **RTORRENT_VER** | rtorrent version | *optional* | 0.9.8
-| **LIBTORRENT_VER** | libtorrent version | *optional* | 0.13.8
 | **FILEBOT** | Build with filebot | *optional* | false
 | **FILEBOT_VER** | Filebot version | *optional* | 4.8.5
 | **CHROMAPRINT_VER** | Chromaprint version | *optional* | 1.4.3
@@ -36,13 +35,13 @@ Github repository: https://github.com/mondediefr/docker-rutorrent
 ### build
 
 ```sh
-docker build -t mondedie/rutorrent:latest https://github.com/mondediefr/docker-rutorrent.git
+docker build --tag mondedie/rutorrent:latest https://github.com/mondediefr/docker-rutorrent.git
 ```
 
 ### Build with arguments
 
 ```sh
-docker build -t mondedie/rutorrent:filebot --build-arg FILEBOT=true https://github.com/mondediefr/docker-rutorrent.git
+docker build --tag mondedie/rutorrent:filebot --build-arg FILEBOT=true https://github.com/mondediefr/docker-rutorrent.git
 ```
 
 ## Configuration

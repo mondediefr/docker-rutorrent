@@ -15,10 +15,8 @@ RUN apk add --no-progress \
     zlib-dev \
     cppunit-dev \
     cppunit \
-    ncurses-dev \
     curl-dev \
     curl \
-    libsigc++-dev \
     libnl3-dev \
     libnl3 \
     cmake \
@@ -28,33 +26,11 @@ RUN apk add --no-progress \
     fftw-dev \
     ffmpeg-dev \
     ffmpeg-libs \
-  && git clone https://github.com/mirror/xmlrpc-c.git /tmp/xmlrpc-c \
-  && git clone -b "v${LIBTORRENT_VER}" https://github.com/rakshasa/libtorrent.git /tmp/libtorrent \
-  && git clone -b "v${RTORRENT_VER}" https://github.com/rakshasa/rtorrent.git /tmp/rtorrent \
+  # Downloads projects
   && git clone https://github.com/borisbrodski/sevenzipjbinding.git /tmp/SevenZipJBinding \
   && wget "https://github.com/acoustid/chromaprint/releases/download/v${CHROMAPRINT_VER}/chromaprint-${CHROMAPRINT_VER}.tar.gz" -O /tmp/chromaprint-fpcalc.tar.gz \
   # Set BUILD_CORES
   && BUILD_CORES="$(grep -c processor /proc/cpuinfo)" \
-  # Compile xmlrpc-c
-  && cd /tmp/xmlrpc-c/stable \
-  && wget "http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD" -O config.guess \
-  && wget "http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD" -O config.sub \
-  && ./configure \
-  && make -j "${BUILD_CORES}" \
-  && make install \
-  # Compile libtorrent
-  && cd /tmp/libtorrent \
-  && ./autogen.sh \
-  && ./configure --disable-debug --disable-instrumentation \
-  && make -j "${BUILD_CORES}" \
-  && make install \
-  # Compile rtorrent
-  && cd /tmp/rtorrent \
-  && ./autogen.sh \
-  && ./configure --enable-ipv6 --disable-debug --with-xmlrpc-c \
-  && make -j "${BUILD_CORES}" \
-  && make install \
-  && strip -s /usr/local/bin/rtorrent \
   # Compile SevenZipJBinding
   && cd /tmp/SevenZipJBinding \
   && cmake . -DJAVA_JDK=/usr/lib/jvm/java-1.8-openjdk \
@@ -99,8 +75,7 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/local/lib /usr/local/lib
 
 RUN apk add --no-progress --no-cache \
-    libsigc++-dev \
-    ncurses-dev \
+    rtorrent \
     curl-dev \
     curl \
     git \
