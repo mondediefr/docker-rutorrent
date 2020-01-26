@@ -89,6 +89,7 @@ RUN apk add --no-progress --no-cache \
     php7-ctype \
     php7-sockets \
     php7-phar \
+    php7-bcmath \
     zip \
     unrar \
     mktorrent \
