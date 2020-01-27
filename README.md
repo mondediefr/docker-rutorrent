@@ -8,7 +8,6 @@
 
  - Multi-platform image: linux/386, linux/amd64, linux/arm/v7, linux/arm64/v8
  - Based on Alpine Linux.
- - rTorrent and libtorrent are compiled from source.
  - Provides by default a solid configuration.
  - No **ROOT** process.
  - Persitance custom configuration for rutorrent and rtorrent.
