@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 
 # replace d.directory by d.base_path
-sed -e "s|d\.directory|d\.base_path|g" -i /home/torrent/.rtorrent.rc
+sed -e "s|d\.directory|d\.base_path|g" -i /config/rtorrent/.rtorrent.rc

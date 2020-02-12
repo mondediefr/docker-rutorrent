@@ -102,6 +102,7 @@ RUN apk add --no-progress --no-cache \
     libmediainfo \
     mediainfo \
     openssl \
+    findutils \
   # Install rutorrent
   && git clone https://github.com/Novik/ruTorrent.git /rutorrent/app \
   && git clone https://github.com/Phlooo/ruTorrent-MaterialDesign.git /rutorrent/app/plugins/theme/themes/materialdesign \
@@ -125,7 +126,6 @@ RUN if [ "${FILEBOT}" = true ]; then \
     openjdk8 \
     openjdk8-jre \
     java-jna-native \
-    findutils \
   # Install filebot
   && mkdir /filebot \
   && cd /filebot \
