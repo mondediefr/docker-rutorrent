@@ -2,3 +2,6 @@
 
 # replace d.directory by d.base_path
 sed -e "s|d\.directory|d\.base_path|g" -i /config/rtorrent/.rtorrent.rc
+
+# replace /RPC by /RPC2
+sed -e "s|'\/RPC'|'\/RPC2'|g" -i /config/rutorrent/conf/config.php
