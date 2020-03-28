@@ -13,10 +13,10 @@ f_log() {
 
   case "${LOG_TYPE}" in
     "INF")
-      echo -e "${CBLUE}[$(date +%Y/%m/%d-%H:%M:%S)] ${LOG_MESSAGE}${CEND}"
+      echo -en "${CBLUE}[$(date +%Y/%m/%d-%H:%M:%S)] ${LOG_MESSAGE}${CEND}"
     ;;
     "SUC")
-      echo -e "${CGREEN}[$(date +%Y/%m/%d-%H:%M:%S)] ${LOG_MESSAGE}${CEND}"
+      echo -e "${CGREEN}${LOG_MESSAGE}${CEND}"
     ;;
     "WRN")
       echo -e "${CYELLOW}[$(date +%Y/%m/%d-%H:%M:%S)] ${LOG_MESSAGE}${CEND}"
@@ -27,7 +27,7 @@ f_log() {
   esac
 }
 
-f_log INF "Create user torrent ..."
+f_log INF "Create torrent user... "
 
 if [ -z "$(grep :${GID}: /etc/group)" ]; then
   addgroup -g "${GID}" torrent
@@ -36,9 +36,11 @@ fi
 if [ -z "$(grep :${UID}: /etc/passwd)" ]; then
   group="$(grep :${GID}: /etc/group | cut -f 1 -d :)"
   adduser -h /home/torrent -s /bin/sh -G "${group}" -D -u "${UID}" torrent
+  f_log SUC "done." # success of Create torrent user
+else
+  f_log ERR "Unable to create torrent user, you cannot use UID ${UID}"
+  exit 1
 fi
-
-f_log SUC "Create user torrent done"
 
 mkdir -p \
   /data/.watch \
@@ -52,7 +54,7 @@ mkdir -p \
 
 chown "${UID}:${GID}" /data/.watch /data/.session /data/downloads
 
-f_log INF "Generate configuration ..."
+f_log INF "Generate configuration... "
 
 # Externalize rutorrent configuration
 if [ -d /config/rutorrent/conf ]; then
@@ -96,9 +98,9 @@ else
   ln -s /config/rtorrent/.rtorrent.rc /home/torrent/.rtorrent.rc
 fi
 
-f_log SUC "Generate configuration done"
+f_log SUC "done." # success of Generate configuration
 
-f_log INF "HTTP authentication configuration ..."
+f_log INF "HTTP authentication configuration... "
 
 # Add http authentication
 if [ "${HTTP_AUTH}" = true ]; then
@@ -108,11 +110,11 @@ else
   sed "/<auth>/d" -i /etc/nginx/nginx.conf
 fi
 
-f_log SUC "HTTP authentication configuration done"
+f_log SUC "done." # success of HTTP authentication configuration
 
 # Filebot configuration
 if [ -e /filebot/filebot.sh ]; then
-  f_log INF "Configuration of filebot ..."
+  f_log INF "Configuration of filebot... "
   mkdir -p /data/media
 
   # Externalize filebot data folder
@@ -156,30 +158,29 @@ if [ -e /filebot/filebot.sh ]; then
 
   find /filebot ! -user "${UID}" -exec chown -h "${UID}:${GID}" {} \;
   chmod +x /usr/local/bin/postdl /usr/local/bin/postrm
-  f_log SUC "Configuration of filebot done"
+  f_log SUC "done." # success of Configuration of filebot
 fi
 
-f_log INF "Update old configurations ..."
+f_log INF "Update old configurations... "
 /usr/local/bin/update-config
-f_log SUC "Update old configurations done"
+f_log SUC "done." # success of Update old configurations
 
-f_log INF "Apply system permissions ..."
+f_log INF "Apply system permissions... "
 
 for folder in /config /rutorrent /home/torrent /var/lib/nginx /var/log /etc/nginx /etc/php7 /tmp /etc/s6.d /run; do
   find "${folder}" ! -user "${UID}" -exec chown -h "${UID}:${GID}" {} \;
 done
 
 find /etc/s6.d -type f -exec chmod +x {} \;
-f_log SUC "Apply system permissions done"
+f_log SUC "done." # success of Apply system permissions
 
 if [ "${CHECK_PERM_DATA}" = true ]; then
-  f_log INF "Apply data permissions ..."
+  f_log INF "Apply data permissions... "
   find /data ! -user "${UID}" -exec chown -h "${UID}:${GID}" {} \;
   chown root:root /data # fix chroot sftp
-  f_log SUC "Apply data permissions done"
+  f_log SUC "done." # success of Apply data permissions
 fi
 
 rm -f /data/.session/rtorrent.lock
 
-f_log INF "Start all services ..."
 exec su-exec "${UID}":"${GID}" "$@"
