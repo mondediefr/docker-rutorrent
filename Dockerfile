@@ -73,36 +73,37 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/local/lib /usr/local/lib
 
 RUN apk add --no-progress --no-cache \
-    rtorrent \
-    curl-dev \
     curl \
+    curl-dev \
+    ffmpeg \
+    ffmpeg-dev \
+    findutils \
     git \
+    libmediainfo \
+    libmediainfo-dev \
+    libzen \
+    libzen-dev \
+    mediainfo \
+    mktorrent \
     nginx \
+    openssl \
     php7 \
+    php7-apcu \
+    php7-bcmath \
+    php7-ctype \
     php7-fpm \
     php7-json \
-    php7-opcache \
-    php7-apcu \
     php7-mbstring \
-    php7-ctype \
-    php7-sockets \
+    php7-opcache \
     php7-phar \
-    php7-bcmath \
-    zip \
-    unrar \
-    mktorrent \
-    ffmpeg-dev \
-    ffmpeg \
+    php7-sockets \
+    php7-zip \
+    rtorrent \
     s6 \
-    su-exec \
     sox \
-    libzen-dev \
-    libzen \
-    libmediainfo-dev \
-    libmediainfo \
-    mediainfo \
-    openssl \
-    findutils \
+    su-exec \
+    unrar \
+    zip \
   # Install rutorrent
   && git clone https://github.com/Novik/ruTorrent.git /rutorrent/app \
   && git clone https://github.com/Phlooo/ruTorrent-MaterialDesign.git /rutorrent/app/plugins/theme/themes/materialdesign \
@@ -165,3 +166,4 @@ VOLUME /data /config
 EXPOSE 8080
 ENTRYPOINT ["/usr/local/bin/startup"]
 CMD ["/bin/s6-svscan", "/etc/s6.d"]
+
