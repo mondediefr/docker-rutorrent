@@ -4,26 +4,26 @@ ARG TARGETPLATFORM
 ARG CHROMAPRINT_VER=1.4.3
 
 RUN apk add --no-progress \
-    git \
-    automake \
     autoconf \
+    automake \
     build-base \
-    linux-headers \
-    libtool \
-    zlib-dev \
+    curl \
+    curl-dev \
+    cmake \
     cppunit-dev \
     cppunit \
-    curl-dev \
-    curl \
-    libnl3-dev \
-    libnl3 \
-    cmake \
-    openjdk8 \
-    openjdk8-jre \
-    java-jna-native \
-    fftw-dev \
     ffmpeg-dev \
     ffmpeg-libs \
+    fftw-dev \
+    git \
+    java-jna-native \
+    libnl3 \
+    libnl3-dev \
+    libtool \
+    linux-headers \
+    openjdk8 \
+    openjdk8-jre \
+    zlib-dev \
   # Downloads projects
   && git clone https://github.com/borisbrodski/sevenzipjbinding.git /tmp/SevenZipJBinding \
   && wget "https://github.com/acoustid/chromaprint/releases/download/v${CHROMAPRINT_VER}/chromaprint-${CHROMAPRINT_VER}.tar.gz" -O /tmp/chromaprint-fpcalc.tar.gz \
@@ -118,17 +118,20 @@ RUN apk add --no-progress --no-cache \
   && rm -rf /tmp/rutorrent-thirdparty-plugins \
   # Socket folder
   && mkdir -p /run/rtorrent /run/nginx /run/php \
+  # Configuration folder
+  && mkdir -p /data/.watch /data/.session /data/downloads \
+  && mkdir -p /config/rtorrent /config/rutorrent /config/custom_themes /config/custom_plugins \
   # Cleanup
   && apk del --purge git
 
 RUN if [ "${FILEBOT}" = true ]; then \
   apk add --no-progress --no-cache \
-    zlib-dev \
+    java-jna-native \
     openjdk8 \
     openjdk8-jre \
-    java-jna-native \
+    zlib-dev \
   # Install filebot
-  && mkdir /filebot \
+  && mkdir -p /config/filebot /filebot \
   && cd /filebot \
   && wget "https://get.filebot.net/filebot/FileBot_${FILEBOT_VER}/FileBot_${FILEBOT_VER}-portable.tar.xz" -O /filebot/filebot.tar.xz \
   && tar -xJf filebot.tar.xz \
@@ -166,4 +169,3 @@ VOLUME /data /config
 EXPOSE 8080
 ENTRYPOINT ["/usr/local/bin/startup"]
 CMD ["/bin/s6-svscan", "/etc/s6.d"]
-
