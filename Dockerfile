@@ -118,9 +118,6 @@ RUN apk add --no-progress --no-cache \
   && rm -rf /tmp/rutorrent-thirdparty-plugins \
   # Socket folder
   && mkdir -p /run/rtorrent /run/nginx /run/php \
-  # Configuration folder
-  && mkdir -p /data/.watch /data/.session /data/downloads \
-  && mkdir -p /config/rtorrent /config/rutorrent /config/custom_themes /config/custom_plugins \
   # Cleanup
   && apk del --purge git
 
