@@ -48,19 +48,12 @@ fi
 f_log INF "Create volume folders... "
 
 # Create data volume folders
-mkdir -p /data/.watch
-mkdir -p /data/.session
-mkdir -p /data/downloads
+mkdir -p /data/.watch /data/.session /data/downloads
 
 # Create config volume folders
-mkdir -p /config/rtorrent 
-mkdir -p /config/rutorrent 
-mkdir -p /config/custom_themes 
+mkdir -p /config/rtorrent /config/rutorrent /config/custom_themes /config/custom_plugins 
 
-if [ ! -d "/config/custom_plugins" ]; then
-  mkdir -p /config/custom_plugins 
-fi 
-f_log SUC "done" # success of Create torrent user
+f_log SUC "done" # success of Create volume folders
 
 f_log INF "Generate configuration... "
 
