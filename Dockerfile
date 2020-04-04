@@ -128,7 +128,7 @@ RUN if [ "${FILEBOT}" = true ]; then \
     openjdk8-jre \
     zlib-dev \
   # Install filebot
-  && mkdir -p /config/filebot /filebot \
+  && mkdir /filebot \
   && cd /filebot \
   && wget "https://get.filebot.net/filebot/FileBot_${FILEBOT_VER}/FileBot_${FILEBOT_VER}-portable.tar.xz" -O /filebot/filebot.tar.xz \
   && tar -xJf filebot.tar.xz \

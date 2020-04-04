@@ -46,13 +46,8 @@ else
 fi
 
 f_log INF "Create volume folders... "
-
-# Create data volume folders
 mkdir -p /data/.watch /data/.session /data/downloads
-
-# Create config volume folders
-mkdir -p /config/rtorrent /config/rutorrent /config/custom_themes /config/custom_plugins 
-
+mkdir -p /config/rtorrent /config/rutorrent /config/custom_themes /config/custom_plugins
 f_log SUC "done" # success of Create volume folders
 
 f_log INF "Generate configuration... "
@@ -116,7 +111,7 @@ f_log SUC "done" # success of HTTP authentication configuration
 # Filebot configuration
 if [ -e /filebot/filebot.sh ]; then
   f_log INF "Configuration of filebot... "
-  mkdir -p /data/media
+  mkdir -p /data/media /config/filebot
 
   # Externalize filebot data folder
   if [ -d /config/filebot/data ]; then
