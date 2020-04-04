@@ -48,30 +48,14 @@ fi
 f_log INF "Create volume folders... "
 
 # Create data volume folders
-if [ ! -d "/data/.watch" ]; then
-  mkdir -p /data/.watch
-fi
-
-if [ ! -d "/data/.session" ]; then
-  mkdir -p /data/.session
-fi  
-
-if [ ! -d "/data/downloads" ]; then
-  mkdir -p /data/downloads
-fi  
+mkdir -p /data/.watch
+mkdir -p /data/.session
+mkdir -p /data/downloads
 
 # Create config volume folders
-if [ ! -d "/config/rtorrent" ]; then
-  mkdir -p /config/rtorrent 
-fi
-
-if [ ! -d "/config/rutorrent" ]; then
-  mkdir -p /config/rutorrent 
-fi    
-
-if [ ! -d "/config/custom_themes" ]; then
-  mkdir -p /config/custom_themes 
-fi
+mkdir -p /config/rtorrent 
+mkdir -p /config/rutorrent 
+mkdir -p /config/custom_themes 
 
 if [ ! -d "/config/custom_plugins" ]; then
   mkdir -p /config/custom_plugins 
