@@ -26,7 +26,7 @@
 | Argument | Description | Type | Default value |
 | -------- | ----------- | ---- | ------------- |
 | **FILEBOT** | Build with filebot | *optional* | false
-| **FILEBOT_VER** | Filebot version | *optional* | 4.8.5
+| **FILEBOT_VER** | Filebot version | *optional* | 4.9.1
 | **CHROMAPRINT_VER** | Chromaprint version | *optional* | 1.4.3
 
 ### build

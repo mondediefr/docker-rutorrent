@@ -57,7 +57,7 @@ LABEL description="rutorrent based on alpinelinux" \
 
 ARG TARGETPLATFORM
 ARG FILEBOT=false
-ARG FILEBOT_VER=4.8.5
+ARG FILEBOT_VER=4.9.1
 
 ENV UID=991 \
     GID=991 \
@@ -124,8 +124,8 @@ RUN apk add --no-progress --no-cache \
 RUN if [ "${FILEBOT}" = true ]; then \
   apk add --no-progress --no-cache \
     java-jna-native \
-    openjdk8 \
-    openjdk8-jre \
+    openjdk11 \
+    openjdk11-jre \
     zlib-dev \
   # Install filebot
   && mkdir /filebot \
