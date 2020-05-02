@@ -1,6 +1,6 @@
 # mondedie/rutorrent
 
-![](https://github.com/mondediefr/docker-rutorrent/workflows/build/badge.svg?branch=master&event=push)
+[![](https://github.com/mondediefr/docker-rutorrent/workflows/build/badge.svg)](https://github.com/mondediefr/docker-rutorrent/actions)
 [![](https://img.shields.io/docker/pulls/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent)
 [![](https://img.shields.io/docker/stars/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent)
 
@@ -19,7 +19,7 @@
  - latest [(Dockerfile)](https://github.com/mondediefr/docker-rutorrent/blob/master/Dockerfile)
  - filebot [(Dockerfile)](https://github.com/mondediefr/docker-rutorrent/blob/master/Dockerfile)
 
-## BUILD IMAGE
+## Build image
 
 ### Build arguments
 
@@ -134,7 +134,7 @@ docker run --name rutorrent -dt \
 
 URL: http://xx.xx.xx.xx:9080
 
-#### Add HTTP authentication
+### Add HTTP authentication
 
 ```sh
 docker run --name rutorrent -dt \

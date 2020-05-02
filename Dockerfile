@@ -21,8 +21,8 @@ RUN apk add --no-progress \
     libnl3-dev \
     libtool \
     linux-headers \
-    openjdk8 \
-    openjdk8-jre \
+    openjdk11 \
+    openjdk11-jre \
     zlib-dev \
   # Downloads projects
   && git clone https://github.com/borisbrodski/sevenzipjbinding.git /tmp/SevenZipJBinding \
@@ -31,7 +31,7 @@ RUN apk add --no-progress \
   && BUILD_CORES="$(grep -c processor /proc/cpuinfo)" \
   # Compile SevenZipJBinding
   && cd /tmp/SevenZipJBinding \
-  && cmake . -DJAVA_JDK=/usr/lib/jvm/java-1.8-openjdk \
+  && cmake . -DJAVA_JDK=/usr/lib/jvm/java-11-openjdk \
   && make -j "${BUILD_CORES}" \
   && case "${TARGETPLATFORM}" in \
     "linux/386") cp /tmp/SevenZipJBinding/Linux-i386/lib7-Zip-JBinding.so /usr/local/lib;; \
