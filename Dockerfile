@@ -34,9 +34,7 @@ RUN apk add --no-progress \
   && cmake . -DJAVA_JDK=/usr/lib/jvm/java-11-openjdk \
   && make -j "${BUILD_CORES}" \
   && case "${TARGETPLATFORM}" in \
-    "linux/386") cp /tmp/SevenZipJBinding/Linux-i386/lib7-Zip-JBinding.so /usr/local/lib;; \
     "linux/amd64") cp /tmp/SevenZipJBinding/Linux-amd64/lib7-Zip-JBinding.so /usr/local/lib;; \
-    "linux/arm/v7") cp /tmp/SevenZipJBinding/Linux-arm/lib7-Zip-JBinding.so /usr/local/lib;; \
     "linux/arm64") cp /tmp/SevenZipJBinding/Linux-aarch64/lib7-Zip-JBinding.so /usr/local/lib;; \
   esac \
   # Compile chromaprint
@@ -135,25 +133,12 @@ RUN if [ "${FILEBOT}" = true ]; then \
   && rm -rf filebot.tar.xz \
   # Fix filebot lib
   && case "${TARGETPLATFORM}" in \
-    "linux/386") \
-      ln -sf /usr/lib/libzen.so /filebot/lib/Linux-i686/libzen.so \
-      && ln -sf /usr/lib/libmediainfo.so /filebot/lib/Linux-i686/libmediainfo.so \
-      && ln -sf /usr/lib/libjnidispatch.so /filebot/lib/Linux-i686/libjnidispatch.so \
-      && ln -sf /usr/local/lib/lib7-Zip-JBinding.so /filebot/lib/Linux-i686/lib7-Zip-JBinding.so \
-      && rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-armv7l /filebot/lib/Linux-x86_64 /filebot/lib/Linux-aarch64;; \
     "linux/amd64") \
       ln -sf /usr/lib/libzen.so /filebot/lib/Linux-x86_64/libzen.so \
       && ln -sf /usr/lib/libmediainfo.so /filebot/lib/Linux-x86_64/libmediainfo.so \
       && ln -sf /usr/lib/libjnidispatch.so /filebot/lib/Linux-x86_64/libjnidispatch.so \
       && ln -sf /usr/local/lib/lib7-Zip-JBinding.so /filebot/lib/Linux-x86_64/lib7-Zip-JBinding.so \
       && rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-armv7l /filebot/lib/Linux-i686 /filebot/lib/Linux-aarch64;; \
-    "linux/arm/v7") \
-      ln -sf /usr/lib/libzen.so /filebot/lib/Linux-armv7l/libzen.so \
-      && ln -sf /usr/lib/libmediainfo.so /filebot/lib/Linux-armv7l/libmediainfo.so \
-      && ln -sf /usr/lib/libjnidispatch.so /filebot/lib/Linux-armv7l/libjnidispatch.so \
-      && ln -sf /usr/local/lib/lib7-Zip-JBinding.so /filebot/lib/Linux-armv7l/lib7-Zip-JBinding.so \
-      && ln -sf /lib/libz.so /filebot/lib/Linux-armv7l/libz.so \
-      && rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-x86_64 /filebot/lib/Linux-i686 /filebot/lib/Linux-aarch64;; \
     "linux/arm64") \
       ln -sf /usr/lib/libjnidispatch.so /filebot/lib/Linux-aarch64/libjnidispatch.so \
       && rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-armv7l /filebot/lib/Linux-x86_64 /filebot/lib/Linux-i686;; \
