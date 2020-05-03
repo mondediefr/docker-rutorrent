@@ -16,13 +16,12 @@ RUN apk add --no-progress \
     ffmpeg-libs \
     fftw-dev \
     git \
-    java-jna-native \
     libnl3 \
     libnl3-dev \
     libtool \
     linux-headers \
-    openjdk11 \
-    openjdk11-jre \
+    openjdk8 \
+    openjdk8-jre \
     zlib-dev \
   # Downloads projects
   && git clone https://github.com/borisbrodski/sevenzipjbinding.git /tmp/SevenZipJBinding \
@@ -31,7 +30,7 @@ RUN apk add --no-progress \
   && BUILD_CORES="$(grep -c processor /proc/cpuinfo)" \
   # Compile SevenZipJBinding
   && cd /tmp/SevenZipJBinding \
-  && cmake . -DJAVA_JDK=/usr/lib/jvm/java-11-openjdk \
+  && cmake . -DJAVA_JDK=/usr/lib/jvm/java-1.8-openjdk \
   && make -j "${BUILD_CORES}" \
   && case "${TARGETPLATFORM}" in \
     "linux/amd64") cp /tmp/SevenZipJBinding/Linux-amd64/lib7-Zip-JBinding.so /usr/local/lib;; \
@@ -121,7 +120,6 @@ RUN apk add --no-progress --no-cache \
 
 RUN if [ "${FILEBOT}" = true ]; then \
   apk add --no-progress --no-cache \
-    java-jna-native \
     openjdk11 \
     openjdk11-jre \
     zlib-dev \
