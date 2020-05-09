@@ -122,6 +122,7 @@ RUN if [ "${FILEBOT}" = true ]; then \
   apk add --no-progress --no-cache \
     openjdk11 \
     openjdk11-jre \
+    java-jna-native \
     zlib-dev \
   # Install filebot
   && mkdir /filebot \
