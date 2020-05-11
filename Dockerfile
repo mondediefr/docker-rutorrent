@@ -122,7 +122,6 @@ RUN if [ "${FILEBOT}" = true ]; then \
   apk add --no-progress --no-cache \
     openjdk11 \
     openjdk11-jre \
-    java-jna-native \
     zlib-dev \
   # Install filebot
   && mkdir /filebot \
@@ -135,11 +134,12 @@ RUN if [ "${FILEBOT}" = true ]; then \
     "linux/amd64") \
       ln -sf /usr/lib/libzen.so /filebot/lib/Linux-x86_64/libzen.so \
       && ln -sf /usr/lib/libmediainfo.so /filebot/lib/Linux-x86_64/libmediainfo.so \
-      && ln -sf /usr/lib/libjnidispatch.so /filebot/lib/Linux-x86_64/libjnidispatch.so \
       && ln -sf /usr/local/lib/lib7-Zip-JBinding.so /filebot/lib/Linux-x86_64/lib7-Zip-JBinding.so \
       && rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-armv7l /filebot/lib/Linux-i686 /filebot/lib/Linux-aarch64;; \
     "linux/arm64") \
-      ln -sf /usr/lib/libjnidispatch.so /filebot/lib/Linux-aarch64/libjnidispatch.so \
+      ln -sf /lib/libz.so /filebot/lib/Linux-aarch64/libz.so \
+      && ln -sf /usr/lib/libzen.so /filebot/lib/Linux-aarch64/libzen.so \
+      && ln -sf /usr/lib/libmediainfo.so /filebot/lib/Linux-aarch64/libmediainfo.so \
       && rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-armv7l /filebot/lib/Linux-x86_64 /filebot/lib/Linux-i686;; \
   esac; \
   fi
