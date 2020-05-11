@@ -6,7 +6,7 @@
 
 ## Features
 
- - Multi-platform image: `linux/amd64`, `linux/arm64/v8`
+ - Multi-platform image: `linux/amd64`, `linux/arm64`
  - Based on Alpine Linux.
  - Provides by default a solid configuration.
  - No root process.
