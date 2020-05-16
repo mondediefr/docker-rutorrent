@@ -93,6 +93,7 @@ RUN apk add --no-progress --no-cache \
     php7-mbstring \
     php7-opcache \
     php7-phar \
+    php7-session \
     php7-sockets \
     php7-zip \
     rtorrent \
