@@ -6,7 +6,7 @@
 
 ## Features
 
- - Multi-platform image: `linux/amd64`, `linux/arm64`
+ - Multi-platform image: `linux/amd64`, `linux/arm64` (only 64-bit architecture)
  - Based on Alpine Linux.
  - Provides by default a solid configuration.
  - No root process.
@@ -27,7 +27,6 @@
 | -------- | ----------- | ---- | ------------- |
 | **FILEBOT** | Build with filebot | *optional* | false
 | **FILEBOT_VER** | Filebot version | *optional* | 4.9.1
-| **CHROMAPRINT_VER** | Chromaprint version | *optional* | 1.4.3
 
 ### build
 

@@ -1,7 +1,6 @@
-FROM alpine:3.11 AS builder
+FROM alpine:3.12 AS builder
 
 ARG TARGETPLATFORM
-ARG CHROMAPRINT_VER=1.4.3
 
 RUN apk add --no-progress \
     autoconf \
@@ -25,7 +24,6 @@ RUN apk add --no-progress \
     zlib-dev \
   # Downloads projects
   && git clone https://github.com/borisbrodski/sevenzipjbinding.git /tmp/SevenZipJBinding \
-  && wget "https://github.com/acoustid/chromaprint/releases/download/v${CHROMAPRINT_VER}/chromaprint-${CHROMAPRINT_VER}.tar.gz" -O /tmp/chromaprint-fpcalc.tar.gz \
   # Set BUILD_CORES
   && BUILD_CORES="$(grep -c processor /proc/cpuinfo)" \
   # Compile SevenZipJBinding
@@ -36,18 +34,10 @@ RUN apk add --no-progress \
     "linux/amd64") cp /tmp/SevenZipJBinding/Linux-amd64/lib7-Zip-JBinding.so /usr/local/lib;; \
     "linux/arm64") cp /tmp/SevenZipJBinding/Linux-aarch64/lib7-Zip-JBinding.so /usr/local/lib;; \
   esac \
-  # Compile chromaprint
-  && cd /tmp \
-  && tar -xzf chromaprint-fpcalc.tar.gz \
-  && cd "chromaprint-v${CHROMAPRINT_VER}" \
-  && cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=ON . \
-  && make -j "${BUILD_CORES}" \
-  && make install \
-  && strip -s /usr/local/bin/fpcalc \
   # Removes symbols that are not needed
   && find /usr/local/lib -name "*.so" -exec strip -s {} \;
 
-FROM alpine:3.11
+FROM alpine:3.12
 
 LABEL description="rutorrent based on alpinelinux" \
       maintainer="magicalex <magicalex@mondedie.fr>"
@@ -66,7 +56,6 @@ ENV UID=991 \
     FILEBOT_CONFLICT=skip \
     HTTP_AUTH=false
 
-COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/local/lib /usr/local/lib
 
 RUN apk add --no-progress --no-cache \
@@ -121,6 +110,7 @@ RUN apk add --no-progress --no-cache \
 
 RUN if [ "${FILEBOT}" = true ]; then \
   apk add --no-progress --no-cache \
+    chromaprint \
     openjdk11 \
     openjdk11-jre \
     zlib-dev \
