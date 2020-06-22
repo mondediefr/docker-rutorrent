@@ -15,11 +15,10 @@ jobs:
         name: Checkout
         uses: actions/checkout@v2
       -
-        name: Set up docker buildx
-        uses: crazy-max/ghaction-docker-buildx@v2
+        name: Set up Docker Buildx
+        uses: crazy-max/ghaction-docker-buildx@v3
         with:
           buildx-version: latest
-          skip-cache: false
           qemu-version: latest
       -
         name: Dockerhub login
@@ -42,11 +41,10 @@ jobs:
         name: Checkout
         uses: actions/checkout@v2
       -
-        name: Set up docker buildx
-        uses: crazy-max/ghaction-docker-buildx@v2
+        name: Set up Docker Buildx
+        uses: crazy-max/ghaction-docker-buildx@v3
         with:
           buildx-version: latest
-          skip-cache: false
           qemu-version: latest
       -
         name: Dockerhub login
