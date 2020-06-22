@@ -110,8 +110,13 @@ Add custom plugin :
 
 ```sh
 mkdir -p /mnt/docker/rutorrent/config/custom_plugins
-git clone https://github.com/Gyran/rutorrent-ratiocolor.git /mnt/docker/rutorrent/config/custom_plugins
+git clone https://github.com/Gyran/rutorrent-ratiocolor.git /mnt/docker/rutorrent/config/custom_plugins/ratiocolor
 ```
+
+Add custom theme :
+
+Donwload a theme for example in this repository https://github.com/artyuum/3rd-party-ruTorrent-Themes.git  
+And copy the folder in `/mnt/docker/rutorrent/config/custom_themes`
 
 Run container :
 
