@@ -176,7 +176,6 @@ chown "${UID}:${GID}" /data/.watch /data/.session /data/downloads
 if [ "${CHECK_PERM_DATA}" = true ]; then
   f_log INF "Apply data permissions... "
   find /data ! -user "${UID}" -exec chown -h "${UID}:${GID}" {} \;
-  chown root:root /data # fix chroot sftp
   f_log SUC "done" # success of Apply data permissions
 fi
 
