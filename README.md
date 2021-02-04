@@ -7,12 +7,13 @@
 ## Features
 
  - Multi-platform image: `linux/amd64`, `linux/arm64` (only 64-bit architecture)
- - Based on Alpine Linux.
- - Provides by default a solid configuration.
- - No root process.
- - Persitance custom configuration for rutorrent and rtorrent.
- - Add your own plugins and themes.
- - Filebot is included, and creates symlinks in `/data/media` (choose filebot tag).
+ - Based on Alpine Linux 3.13
+ - php 8.0.1
+ - Provides by default a solid configuration
+ - No root process
+ - Persitance custom configuration for rutorrent and rtorrent
+ - Add your own rutorrent plugins and themes
+ - Filebot is included, and creates symlinks in `/data/media` (choose filebot tag)
 
 ## Tag available
 

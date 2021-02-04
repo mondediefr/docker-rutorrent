@@ -1,4 +1,4 @@
-FROM alpine:3.12 AS builder
+FROM alpine:3.13 AS builder
 
 ARG TARGETPLATFORM
 
@@ -37,7 +37,7 @@ RUN apk add --no-progress \
   # Removes symbols that are not needed
   && find /usr/local/lib -name "*.so" -exec strip -s {} \;
 
-FROM alpine:3.12
+FROM alpine:3.13
 
 LABEL description="rutorrent based on alpinelinux" \
       maintainer="magicalex <magicalex@mondedie.fr>"
@@ -73,19 +73,18 @@ RUN apk add --no-progress --no-cache \
     mktorrent \
     nginx \
     openssl \
-    php7 \
-    php7-apcu \
-    php7-bcmath \
-    php7-ctype \
-    php7-curl \
-    php7-fpm \
-    php7-json \
-    php7-mbstring \
-    php7-opcache \
-    php7-phar \
-    php7-session \
-    php7-sockets \
-    php7-zip \
+    php8 \
+    php8-bcmath \
+    php8-ctype \
+    php8-curl \
+    php8-fpm \
+    php8-mbstring \
+    php8-opcache \
+    php8-pecl-apcu \
+    php8-phar \
+    php8-session \
+    php8-sockets \
+    php8-zip \
     rtorrent \
     s6 \
     sox \
