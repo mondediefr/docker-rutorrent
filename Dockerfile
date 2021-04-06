@@ -104,6 +104,8 @@ RUN apk add --no-progress --no-cache \
   && rm -rf /rutorrent/app/plugins/geoip2/.git \
   && rm -rf /rutorrent/app/.git \
   && rm -rf /tmp/rutorrent-thirdparty-plugins \
+  # fix filemanager plugin
+  && sed -e "s|mv -f --target-directory=\"\$2\" \"\$file\"|mv -f \"\$file\" \"\$2\"|g" -i /rutorrent/app/plugins/filemanager/scripts/mv \
   # Socket folder
   && mkdir -p /run/rtorrent /run/nginx /run/php \
   # Cleanup
