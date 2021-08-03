@@ -1,4 +1,4 @@
-FROM alpine:3.13 AS builder
+FROM alpine:3.14 AS builder
 
 ARG TARGETPLATFORM
 
@@ -37,14 +37,14 @@ RUN apk add --no-progress \
   # Removes symbols that are not needed
   && find /usr/local/lib -name "*.so" -exec strip -s {} \;
 
-FROM alpine:3.13
+FROM alpine:3.14
 
 LABEL description="rutorrent based on alpinelinux" \
       maintainer="magicalex <magicalex@mondedie.fr>"
 
 ARG TARGETPLATFORM
 ARG FILEBOT=false
-ARG FILEBOT_VER=4.9.3
+ARG FILEBOT_VER=4.9.4
 
 ENV UID=991 \
     GID=991 \
