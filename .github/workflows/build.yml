@@ -36,7 +36,7 @@ jobs:
           docker buildx build \
           --pull \
           --push \
-          --platform linux/amd64,linux/arm64 \
+          --platform linux/amd64,linux/arm64,linux/arm/v7 \
           --tag mondedie/rutorrent:latest .
   filebot:
     runs-on: ubuntu-latest
@@ -67,5 +67,5 @@ jobs:
           --pull \
           --push \
           --build-arg FILEBOT=true \
-          --platform linux/amd64,linux/arm64 \
+          --platform linux/amd64,linux/arm64,linux/arm/v7 \
           --tag mondedie/rutorrent:filebot .
