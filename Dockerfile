@@ -95,17 +95,15 @@ RUN apk add --no-progress --no-cache \
   # Install rutorrent
   && git clone https://github.com/Novik/ruTorrent.git /rutorrent/app \
   && git clone https://github.com/Phlooo/ruTorrent-MaterialDesign.git /rutorrent/app/plugins/theme/themes/materialdesign \
-  && git clone https://github.com/nelu/rutorrent-thirdparty-plugins.git /tmp/rutorrent-thirdparty-plugins \
+  && git clone https://github.com/nelu/rutorrent-filemanager.git /tmp/filemanager \
   && git clone https://github.com/Micdu70/geoip2-rutorrent.git /rutorrent/app/plugins/geoip2 \
-  && cp -r /tmp/rutorrent-thirdparty-plugins/filemanager /rutorrent/app/plugins \
+  && cp -r /tmp/filemanager /rutorrent/app/plugins \
   && rm -rf /rutorrent/app/plugins/geoip \
   && rm -rf /rutorrent/app/plugins/_cloudflare \
   && rm -rf /rutorrent/app/plugins/theme/themes/materialdesign/.git \
   && rm -rf /rutorrent/app/plugins/geoip2/.git \
   && rm -rf /rutorrent/app/.git \
   && rm -rf /tmp/rutorrent-thirdparty-plugins \
-  # fix filemanager plugin
-  && sed -e "s|mv -f --target-directory=\"\$2\" \"\$file\"|mv -f \"\$file\" \"\$2\"|g" -i /rutorrent/app/plugins/filemanager/scripts/mv \
   # Socket folder
   && mkdir -p /run/rtorrent /run/nginx /run/php \
   # Cleanup
