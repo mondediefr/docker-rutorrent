@@ -10,10 +10,6 @@ on:
 jobs:
   latest:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        platform: ['linux/amd64','linux/arm64','linux/arm/v7']
-
     steps:
       -
         name: Checkout
@@ -52,16 +48,14 @@ jobs:
           docker buildx build \
           --pull \
           --push \
-          --platform ${{matrix.platform}} \
+          --platform linux/amd64,linux/arm64 \
           --tag mondedie/rutorrent:latest \
           --tag mondedie/rutorrent:${{ steps.fullDate.outputs.fullDate }} \
           --tag mondedie/rutorrent:${{ steps.yearMonthDate.outputs.yearMonthDate }} \
           --tag mondedie/rutorrent:${{ steps.yearDate.outputs.yearDate }} .
+          
   filebot:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        platform: ['linux/amd64','linux/arm64','linux/arm/v7']
     steps:
       -
         name: Checkout
@@ -89,5 +83,5 @@ jobs:
           --pull \
           --push \
           --build-arg FILEBOT=true \
-          --platform ${{matrix.platform}} \
+          --platform linux/amd64,linux/arm64 \
           --tag mondedie/rutorrent:filebot .
