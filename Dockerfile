@@ -29,8 +29,8 @@ RUN apk add --no-progress \
   esac \
   && tar -xzvf rarlinux.tar.gz \
   && rm rarlinux.tar.gz \
-  && mv -v rar/rar /usr/local/bin/rar \
-  && chmod 755 /usr/local/bin/rar \
+  && mv -v rar/rar /usr/bin/rar \
+  && chmod 755 /usr/bin/rar \
   # Downloads projects
   && git clone https://github.com/borisbrodski/sevenzipjbinding.git /tmp/SevenZipJBinding \
   # Set BUILD_CORES
