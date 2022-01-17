@@ -6,7 +6,7 @@ $pathToExternals['zip'] = '/usr/bin/zip';
 $pathToExternals['unzip'] = '/usr/bin/unzip';
 $pathToExternals['tar'] = '/bin/tar';
 $pathToExternals['gzip'] = '/bin/gzip';
-$pathToExternals['rar'] = '/usr/bin/unrar';
+$pathToExternals['rar'] = '/usr/bin/rar';
 $pathToExternals['bzip2'] = '/usr/bin/bzip2';
 
 
