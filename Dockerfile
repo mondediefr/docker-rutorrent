@@ -21,7 +21,7 @@ RUN apk add --no-progress \
     linux-headers \
     openjdk8 \
     openjdk8-jre \
-    zlib-dev \  
+    zlib-dev \
   # Downloads projects
   && git clone https://github.com/borisbrodski/sevenzipjbinding.git /tmp/SevenZipJBinding \
   # Set BUILD_CORES
