@@ -28,9 +28,10 @@ RUN apk add --no-progress \
     "linux/arm64") wget -O rarlinux.tar.gz https://www.rarlab.com/rar/rarlinux-6.0.2.tar.gz;; \
   esac \
   && tar -xzvf rarlinux.tar.gz \
-  && rm rarlinux.tar.gz \
-  && mv -v rar/rar /usr/bin/rar \
+  && mv rar/rar /usr/bin \
   && chmod 755 /usr/bin/rar \
+  && rm -rf rar \
+  && rm rarlinux.tar.gz \  
   # Downloads projects
   && git clone https://github.com/borisbrodski/sevenzipjbinding.git /tmp/SevenZipJBinding \
   # Set BUILD_CORES
