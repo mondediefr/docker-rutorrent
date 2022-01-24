@@ -24,6 +24,18 @@ jobs:
         uses: docker/setup-buildx-action@v1
         with:
           version: latest
+      - 
+        name: Get date (YYYY.MM.dd)
+        id: fullDate
+        run: echo "::set-output name=fullDate::$(date +'%Y.%m.%d')"
+      - 
+        name: Get date (YYYY.MM)
+        id: yearMonthDate
+        run: echo "::set-output name=yearMonthDate::$(date +'%Y.%m')"
+      - 
+        name: Get date (YYYY)
+        id: yearDate
+        run: echo "::set-output name=yearDate::$(date +'%Y')"
       -
         name: Dockerhub login
         env:
@@ -37,7 +49,11 @@ jobs:
           --pull \
           --push \
           --platform linux/amd64,linux/arm64 \
-          --tag mondedie/rutorrent:latest .
+          --tag mondedie/rutorrent:latest \
+          --tag mondedie/rutorrent:${{ steps.fullDate.outputs.fullDate }} \
+          --tag mondedie/rutorrent:${{ steps.yearMonthDate.outputs.yearMonthDate }} \
+          --tag mondedie/rutorrent:${{ steps.yearDate.outputs.yearDate }} .
+          
   filebot:
     runs-on: ubuntu-latest
     steps:
