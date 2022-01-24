@@ -21,17 +21,7 @@ RUN apk add --no-progress \
     linux-headers \
     openjdk8 \
     openjdk8-jre \
-    zlib-dev \
-  # Install RAR
-  && case "${TARGETPLATFORM}" in \
-    "linux/amd64") wget -O rarlinux.tar.gz https://www.rarlab.com/rar/rarlinux-x64-6.0.2.tar.gz;; \
-    "linux/arm64") wget -O rarlinux.tar.gz https://www.rarlab.com/rar/rarlinux-6.0.2.tar.gz;; \
-  esac \
-  && tar -xzvf rarlinux.tar.gz \
-  && mv rar/rar /usr/bin \
-  && chmod 755 /usr/bin/rar \
-  && rm -rf rar \
-  && rm rarlinux.tar.gz \  
+    zlib-dev \  
   # Downloads projects
   && git clone https://github.com/borisbrodski/sevenzipjbinding.git /tmp/SevenZipJBinding \
   # Set BUILD_CORES
