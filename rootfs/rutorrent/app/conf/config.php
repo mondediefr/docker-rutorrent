@@ -38,7 +38,7 @@ $pathToExternals = [
     'pgrep' => '/usr/bin/pgrep'
 ];
 $localhosts = ['127.0.0.1', 'localhost'];
-$profilePath = '../share'; // Path to user profiles
+$profilePath = '../../share'; // Path to user profiles
 $profileMask = 0777;
 $tempDirectory = null; // Temp directory. Absolute path with trail slash. If null, then autodetect will be used.
 $canUseXSendFile = false; // If true then use X-Sendfile feature if it exist
