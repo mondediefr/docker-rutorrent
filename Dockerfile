@@ -74,6 +74,7 @@ RUN apk add --no-progress --no-cache \
     mktorrent \
     nginx \
     openssl \
+    p7zip \
     php8 \
     php8-bcmath \
     php8-ctype \
@@ -91,7 +92,7 @@ RUN apk add --no-progress --no-cache \
     sox \
     su-exec \
     unrar \
-    zip \
+    unzip \
   # Install rutorrent
   && git clone https://github.com/Novik/ruTorrent.git /rutorrent/app \
   && git clone https://github.com/Phlooo/ruTorrent-MaterialDesign.git /rutorrent/app/plugins/theme/themes/materialdesign \
