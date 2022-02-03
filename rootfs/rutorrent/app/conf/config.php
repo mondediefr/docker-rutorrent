@@ -31,7 +31,7 @@
 	$saveUploadedTorrents = true;		// Save uploaded torrents to profile/torrents directory or not
 	$overwriteUploadedTorrents = false;     // Overwrite existing uploaded torrents in profile/torrents directory or make unique name
 
-	$topDirectory = '/data/downloads';			// Upper available directory. Absolute path with trail slash.
+	$topDirectory = '/data/downloads/';			// Upper available directory. Absolute path with trail slash.
 	$forbidUserSettings = false;
 
 	$scgi_port = 0;
