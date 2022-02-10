@@ -11,7 +11,7 @@ $config['show_fullpaths'] = false; // wheter to show userpaths or full system pa
 $config['textExtensions'] = 'log|txt|nfo|sfv|xml|html';
 
 // see what 7zip extraction supports as type by file extension
-$config['fileExtractExtensions'] = '7z|bzip2|t?bz2|tgz|gz(ip)?|iso|img|lzma|rar|tar|t?xz|zip|z01|wim';
+$config['fileExtractExtensions'] = '(7z|bzip2|t?bz2|tgz|gz(ip)?|iso|img|lzma|rar|tar|t?xz|zip|z01|wim)(\.[0-9]+)?';
 
 // archive creation, see archiver man page before editing
 // archive.fileExt -> config
