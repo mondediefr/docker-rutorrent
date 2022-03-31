@@ -94,7 +94,7 @@ RUN apk add --no-progress --no-cache \
     unrar \
     unzip \
   # Install rutorrent
-  && git clone https://github.com/Novik/ruTorrent.git /rutorrent/app \
+  && git clone --recurse-submodules https://github.com/Novik/ruTorrent.git /rutorrent/app \
   && git clone https://github.com/nelu/rutorrent-filemanager.git /tmp/filemanager \
   && git clone https://github.com/Micdu70/geoip2-rutorrent.git /rutorrent/app/plugins/geoip2 \
   && cp -r /tmp/filemanager /rutorrent/app/plugins \
