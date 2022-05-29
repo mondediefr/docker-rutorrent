@@ -60,12 +60,9 @@ COPY --from=builder /usr/local/lib /usr/local/lib
 
 RUN apk add --no-progress --no-cache \
     bash \
-    curl \
-    curl-dev \
     ffmpeg \
     ffmpeg-dev \
     findutils \
-    git \
     libmediainfo \
     libmediainfo-dev \
     libzen \
