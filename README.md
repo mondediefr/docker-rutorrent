@@ -8,8 +8,8 @@
 - 2022.03.31 ( Fully Working )
 ## Features
 
- - Multi-platform image: `linux/amd64`, `linux/arm64` (only 64-bit architecture)
- - Based on Alpine Linux 3.13
+ - Platform image: `linux/amd64`
+ - Based on Alpine Linux 3.16
  - php 8.0
  - Provides by default a solid configuration
  - No root process
@@ -29,7 +29,7 @@
 | Argument | Description | Type | Default value |
 | -------- | ----------- | ---- | ------------- |
 | **FILEBOT** | Build with filebot | *optional* | false
-| **FILEBOT_VER** | Filebot version | *optional* | 4.9.4
+| **FILEBOT_VER** | Filebot version | *optional* | 4.9.6
 
 ### build
 
@@ -53,7 +53,7 @@ docker build --tag mondedie/rutorrent:filebot --build-arg FILEBOT=true https://g
 | **GID** | Choose gid for launch rtorrent | *optional* | 991
 | **PORT_RTORRENT** | Port of rtorrent | *optional* | 45000
 | **DHT_RTORRENT** | DHT option in rtorrent.rc file | *optional* | off
-| **CHECK_PERM_DATA** | Check permission data in downloads directory | *optional* | true
+| **CHECK_PERM_DATA** | Check permissions in the data directory | *optional* | true
 | **HTTP_AUTH** | Enable HTTP authentication | *optional* | false
 
 ### Environment variables with filebot

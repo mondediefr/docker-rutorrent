@@ -1,50 +1,33 @@
-FROM alpine:3.13 AS builder
+FROM alpine:3.16 AS builder
 
-ARG TARGETPLATFORM
+ARG UNRAR_VER=6.1.7
 
-RUN apk add --no-progress \
+RUN apk --update --no-cache add \
     autoconf \
     automake \
+    binutils \
     build-base \
-    curl \
-    curl-dev \
     cmake \
     cppunit-dev \
-    cppunit \
-    ffmpeg-dev \
-    ffmpeg-libs \
-    fftw-dev \
-    git \
-    libnl3 \
-    libnl3-dev \
+    curl-dev \
     libtool \
     linux-headers \
-    openjdk8 \
-    openjdk8-jre \
     zlib-dev \
-  # Downloads projects
-  && git clone https://github.com/borisbrodski/sevenzipjbinding.git /tmp/SevenZipJBinding \
-  # Set BUILD_CORES
-  && BUILD_CORES="$(grep -c processor /proc/cpuinfo)" \
-  # Compile SevenZipJBinding
-  && cd /tmp/SevenZipJBinding \
-  && cmake . -DJAVA_JDK=/usr/lib/jvm/java-1.8-openjdk \
-  && make -j "${BUILD_CORES}" \
-  && case "${TARGETPLATFORM}" in \
-    "linux/amd64") cp /tmp/SevenZipJBinding/Linux-amd64/lib7-Zip-JBinding.so /usr/local/lib;; \
-    "linux/arm64") cp /tmp/SevenZipJBinding/Linux-aarch64/lib7-Zip-JBinding.so /usr/local/lib;; \
-  esac \
-  # Removes symbols that are not needed
-  && find /usr/local/lib -name "*.so" -exec strip -s {} \;
+  # Install unrar from source
+  && cd /tmp \
+  && wget https://www.rarlab.com/rar/unrarsrc-${UNRAR_VER}.tar.gz -O /tmp/unrar.tar.gz \
+  && tar -xzf /tmp/unrar.tar.gz \
+  && cd unrar \
+  && make -f makefile \
+  && install -Dm 755 unrar /usr/bin/unrar
 
-FROM alpine:3.13
+FROM alpine:3.16
 
 LABEL description="rutorrent based on alpinelinux" \
       maintainer="magicalex <magicalex@mondedie.fr>"
 
-ARG TARGETPLATFORM
 ARG FILEBOT=false
-ARG FILEBOT_VER=4.9.4
+ARG FILEBOT_VER=4.9.6
 
 ENV UID=991 \
     GID=991 \
@@ -56,9 +39,9 @@ ENV UID=991 \
     FILEBOT_CONFLICT=skip \
     HTTP_AUTH=false
 
-COPY --from=builder /usr/local/lib /usr/local/lib
+COPY --from=builder /usr/bin/unrar /usr/bin
 
-RUN apk add --no-progress --no-cache \
+RUN apk --update --no-cache add \
     bash \
     curl \
     curl-dev \
@@ -91,7 +74,6 @@ RUN apk add --no-progress --no-cache \
     s6 \
     sox \
     su-exec \
-    unrar \
     unzip \
   # Install rutorrent
   && git clone --recurse-submodules https://github.com/Novik/ruTorrent.git /rutorrent/app \
@@ -109,10 +91,10 @@ RUN apk add --no-progress --no-cache \
   && apk del --purge git
 
 RUN if [ "${FILEBOT}" = true ]; then \
-  apk add --no-progress --no-cache \
+  apk --update --no-cache add \
     chromaprint \
-    openjdk11 \
-    openjdk11-jre \
+    openjdk17 \
+    openjdk17-jre \
     zlib-dev \
   # Install filebot
   && mkdir /filebot \
@@ -120,19 +102,10 @@ RUN if [ "${FILEBOT}" = true ]; then \
   && wget "https://get.filebot.net/filebot/FileBot_${FILEBOT_VER}/FileBot_${FILEBOT_VER}-portable.tar.xz" -O /filebot/filebot.tar.xz \
   && tar -xJf filebot.tar.xz \
   && rm -rf filebot.tar.xz \
+  && sed -i 's/-Dapplication.deployment=tar/-Dapplication.deployment=docker/g' /filebot/filebot.sh \
   # Fix filebot lib
-  && case "${TARGETPLATFORM}" in \
-    "linux/amd64") \
-      ln -sf /usr/lib/libzen.so /filebot/lib/Linux-x86_64/libzen.so \
-      && ln -sf /usr/lib/libmediainfo.so /filebot/lib/Linux-x86_64/libmediainfo.so \
-      && ln -sf /usr/local/lib/lib7-Zip-JBinding.so /filebot/lib/Linux-x86_64/lib7-Zip-JBinding.so \
-      && rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-armv7l /filebot/lib/Linux-i686 /filebot/lib/Linux-aarch64;; \
-    "linux/arm64") \
-      ln -sf /lib/libz.so /filebot/lib/Linux-aarch64/libz.so \
-      && ln -sf /usr/lib/libzen.so /filebot/lib/Linux-aarch64/libzen.so \
-      && ln -sf /usr/lib/libmediainfo.so /filebot/lib/Linux-aarch64/libmediainfo.so \
-      && rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-armv7l /filebot/lib/Linux-x86_64 /filebot/lib/Linux-i686;; \
-  esac; \
+  && rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-armv7l /filebot/lib/Linux-aarch64 \
+  && rm -rf /filebot/lib/Linux-x86_64/libzen.so /filebot/lib/Linux-x86_64/libmediainfo.so; \
   fi
 
 COPY rootfs /

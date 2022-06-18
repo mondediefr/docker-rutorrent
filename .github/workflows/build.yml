@@ -48,7 +48,7 @@ jobs:
           docker buildx build \
           --pull \
           --push \
-          --platform linux/amd64,linux/arm64 \
+          --platform linux/amd64 \
           --tag mondedie/rutorrent:latest \
           --tag mondedie/rutorrent:${{ steps.fullDate.outputs.fullDate }} \
           --tag mondedie/rutorrent:${{ steps.yearMonthDate.outputs.yearMonthDate }} \
@@ -83,5 +83,5 @@ jobs:
           --pull \
           --push \
           --build-arg FILEBOT=true \
-          --platform linux/amd64,linux/arm64 \
+          --platform linux/amd64 \
           --tag mondedie/rutorrent:filebot .
