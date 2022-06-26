@@ -4,8 +4,6 @@
 [![](https://img.shields.io/docker/pulls/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent)
 [![](https://img.shields.io/docker/stars/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent)
 
-## Recommended Tags
-- 2022.03.31 ( Fully Working )
 ## Features
 
  - Platform image: `linux/amd64`
