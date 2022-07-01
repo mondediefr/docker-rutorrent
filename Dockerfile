@@ -26,6 +26,7 @@ FROM alpine:3.16
 LABEL description="rutorrent based on alpinelinux" \
       maintainer="magicalex <magicalex@mondedie.fr>"
 
+ARG TARGETPLATFORM
 ARG FILEBOT=false
 ARG FILEBOT_VER=4.9.6
 
@@ -104,8 +105,14 @@ RUN if [ "${FILEBOT}" = true ]; then \
   && rm -rf filebot.tar.xz \
   && sed -i 's/-Dapplication.deployment=tar/-Dapplication.deployment=docker/g' /filebot/filebot.sh \
   # Fix filebot lib
-  && rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-armv7l /filebot/lib/Linux-aarch64 \
-  && rm -rf /filebot/lib/Linux-x86_64/libzen.so /filebot/lib/Linux-x86_64/libmediainfo.so; \
+  && case "${TARGETPLATFORM}" in \
+    "linux/amd64") \
+      rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-aarch64 /filebot/lib/Linux-armv7l \
+      && rm -rf /filebot/lib/Linux-x86_64/libzen.so /filebot/lib/Linux-x86_64/libmediainfo.so;; \
+    "linux/arm64") \
+      rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-armv7l /filebot/lib/Linux-x86_64 \
+      && rm -rf /filebot/lib/Linux-aarch64/libzen.so /filebot/lib/Linux-aarch64/libmediainfo.so;; \
+  esac; \
   fi
 
 COPY rootfs /
