@@ -6,7 +6,7 @@
 
 ## Features
 
- - Platform image: `linux/amd64`
+ - Platform image: `linux/amd64`, `linux/arm64`
  - Based on Alpine Linux 3.16
  - php 8.0
  - Provides by default a solid configuration
