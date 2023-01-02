@@ -59,19 +59,19 @@ RUN apk --update --no-cache add \
     nginx \
     openssl \
     p7zip \
-    php8 \
-    php8-bcmath \
-    php8-ctype \
-    php8-curl \
-    php8-fpm \
-    php8-mbstring \
-    php8-opcache \
-    php8-openssl \
-    php8-pecl-apcu \
-    php8-phar \
-    php8-session \
-    php8-sockets \
-    php8-zip \
+    php81 \
+    php81-bcmath \
+    php81-ctype \
+    php81-curl \
+    php81-fpm \
+    php81-mbstring \
+    php81-opcache \
+    php81-openssl \
+    php81-pecl-apcu \
+    php81-phar \
+    php81-session \
+    php81-sockets \
+    php81-zip \
     rtorrent \
     s6 \
     sox \

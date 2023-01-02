@@ -8,7 +8,7 @@
 
  - Platform image: `linux/amd64`, `linux/arm64`
  - Based on Alpine Linux 3.17
- - php 8.0
+ - php 8.1
  - Provides by default a solid configuration
  - No root process
  - Persitance custom configuration for rutorrent and rtorrent
