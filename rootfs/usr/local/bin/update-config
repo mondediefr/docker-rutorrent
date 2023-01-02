@@ -6,5 +6,5 @@ sed -e "s|/usr/local/bin/postdl,\$d\.directory|/usr/local/bin/postdl,\$d\.base_p
 # replace /RPC by /RPC2
 sed -e "s|'\/RPC'|'\/RPC2'|g" -i /config/rutorrent/conf/config.php
 
-# update to php8
-sed -e "s|'\/usr\/bin\/php'|'\/usr\/bin\/php8'|g" -i /config/rutorrent/conf/config.php
+# update to php81
+sed -e "s|'\/usr\/bin\/php8'|'\/usr\/bin\/php81'|g" -i /config/rutorrent/conf/config.php
