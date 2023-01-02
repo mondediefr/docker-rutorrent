@@ -1,6 +1,6 @@
-FROM alpine:3.16 AS builder
+FROM alpine:3.17 AS builder
 
-ARG UNRAR_VER=6.1.7
+ARG UNRAR_VER=6.2.3
 
 RUN apk --update --no-cache add \
     autoconf \
@@ -21,7 +21,7 @@ RUN apk --update --no-cache add \
   && make -f makefile \
   && install -Dm 755 unrar /usr/bin/unrar
 
-FROM alpine:3.16
+FROM alpine:3.17
 
 LABEL description="rutorrent based on alpinelinux" \
       maintainer="magicalex <magicalex@mondedie.fr>"
@@ -66,6 +66,7 @@ RUN apk --update --no-cache add \
     php8-fpm \
     php8-mbstring \
     php8-opcache \
+    php8-openssl \
     php8-pecl-apcu \
     php8-phar \
     php8-session \
