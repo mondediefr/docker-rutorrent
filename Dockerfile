@@ -73,6 +73,7 @@ RUN apk --update --no-cache add \
     php81-phar \
     php81-session \
     php81-sockets \
+    php81-xml \
     php81-zip \
     rtorrent \
     s6 \
