@@ -63,11 +63,11 @@ fi
 
 # Externalize rutorrent share
 if [ -d /config/rutorrent/share ]; then
-  rm -rf /rutorrent/app/php/share
-  ln -s /config/rutorrent/share /rutorrent/app/php/share
+  rm -rf /rutorrent/app/share
+  ln -s /config/rutorrent/share /rutorrent/app/share
 else
-  mv /rutorrent/app/php/share /config/rutorrent
-  ln -s /config/rutorrent/share /rutorrent/app/php/share
+  mv /rutorrent/app/share /config/rutorrent
+  ln -s /config/rutorrent/share /rutorrent/app/share
 fi
 
 # Add custom plugins
