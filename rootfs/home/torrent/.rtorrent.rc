@@ -5,7 +5,7 @@ log.add_output = "error", "rtorrent"
 
 # general
 system.daemon.set = true
-directory.default.set = /data/downloads
+directory.default.set = <DOWNLOAD_DIRECTORY>
 session.path.set = /data/.session
 protocol.encryption.set = allow_incoming, try_outgoing, enable_retry
 

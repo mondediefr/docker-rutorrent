@@ -53,6 +53,7 @@ docker build --tag mondedie/rutorrent:filebot --build-arg FILEBOT=true https://g
 | **MODE_DHT** | DHT mode in rtorrent.rc file (disable,off,on) | *optional* | off
 | **PORT_DHT** | UDP port to use for DHT | *optional* | 6881
 | **PEER_EXCHANGE** | Enable peer exchange (yes,no) | *optional* | no
+| **DOWNLOAD_DIRECTORY** | Torrent download directory | *optional* | /data/downloads
 | **CHECK_PERM_DATA** | Check permissions in the data directory | *optional* | true
 | **HTTP_AUTH** | Enable HTTP authentication | *optional* | false
 

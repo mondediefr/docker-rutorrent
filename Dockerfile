@@ -36,6 +36,7 @@ ENV UID=991 \
     MODE_DHT=off \
     PORT_DHT=6881 \
     PEER_EXCHANGE=no \
+    DOWNLOAD_DIRECTORY=/data/downloads \
     CHECK_PERM_DATA=true \
     FILEBOT_RENAME_METHOD=symlink \
     FILEBOT_LANG=fr \
