@@ -84,7 +84,7 @@ done
   fi
 done
 
-sed -e "s|<MODE_DHT>|${MODE_DHT}|g" -e "s|<PORT_DHT>|${PORT_DHT}|g" -e "s|<PEER_EXCHANGE>|${PEER_EXCHANGE}|g" -e "s|<PORT_RTORRENT>|${PORT_RTORRENT}|g" -i /home/torrent/.rtorrent.rc
+sed -e "s|<DOWNLOAD_DIRECTORY>|${<DOWNLOAD_DIRECTORY>}|g" -e "s|<MODE_DHT>|${MODE_DHT}|g" -e "s|<PORT_DHT>|${PORT_DHT}|g" -e "s|<PEER_EXCHANGE>|${PEER_EXCHANGE}|g" -e "s|<PORT_RTORRENT>|${PORT_RTORRENT}|g" -i /home/torrent/.rtorrent.rc
 
 # Externalize rtorrent configuration
 if [ -e /config/rtorrent/.rtorrent.rc ]; then
