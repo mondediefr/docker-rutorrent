@@ -4,6 +4,23 @@
 [![](https://img.shields.io/docker/pulls/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent)
 [![](https://img.shields.io/docker/stars/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent)
 
+## Update
+
+**Following the latest version of 02/10/2023, I advise you to do this:**
+
+ - Stop the container.
+ - In your persistent directory:
+    > ../config/rtorrent
+
+    > ../config/rutorrent
+ - Save any personal modifications in another directory.
+ - Delete in your persistent directory the folders:
+    > ../config/rtorrent
+
+    > ../config/rutorrent
+ - Restart your container.
+ - Finally, if you had any, add your personal configurations and restart
+
 ## Features
 
  - Platform image: `linux/amd64`, `linux/arm64`
