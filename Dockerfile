@@ -1,6 +1,6 @@
 FROM alpine:3.17 AS builder
 
-ARG UNRAR_VER=6.2.3
+ARG UNRAR_VER=6.2.5
 
 RUN apk --update --no-cache add \
     autoconf \
