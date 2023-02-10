@@ -11,10 +11,12 @@
  - Stop the container.
  - In your persistent directory:
     > ../config/rtorrent
+
     > ../config/rutorrent
  - Save any personal modifications in another directory.
  - Delete in your persistent directory the folders:
     > ../config/rtorrent
+
     > ../config/rutorrent
  - Restart your container.
  - Finally, if you had any, add your personal configurations and restart
