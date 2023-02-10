@@ -88,9 +88,7 @@ sed -e "s|<DOWNLOAD_DIRECTORY>|${DOWNLOAD_DIRECTORY}|g" -e "s|<MODE_DHT>|${MODE_
 
 # Externalize rtorrent configuration
 if [ -e /config/rtorrent/.rtorrent.rc ]; then
-  mv /config/rtorrent/.rtorrent.rc /config/rtorrent/.rtorrent.rc.old
-  mv /home/torrent/.rtorrent.rc /config/rtorrent/.rtorrent.rc
-  ln -s /config/rtorrent/.rtorrent.rc /home/torrent/.rtorrent.rc
+  ln -sf /config/rtorrent/.rtorrent.rc /home/torrent/.rtorrent.rc
 else
   mv /home/torrent/.rtorrent.rc /config/rtorrent/.rtorrent.rc
   ln -s /config/rtorrent/.rtorrent.rc /home/torrent/.rtorrent.rc
