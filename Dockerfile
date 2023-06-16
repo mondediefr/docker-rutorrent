@@ -1,6 +1,6 @@
-FROM alpine:3.17 AS builder
+FROM alpine:3.18 AS builder
 
-ARG UNRAR_VER=6.2.6
+ARG UNRAR_VER=6.2.8
 
 RUN apk --update --no-cache add \
     autoconf \
@@ -21,14 +21,14 @@ RUN apk --update --no-cache add \
   && make -f makefile \
   && install -Dm 755 unrar /usr/bin/unrar
 
-FROM alpine:3.17
+FROM alpine:3.18
 
 LABEL description="rutorrent based on alpinelinux" \
       maintainer="magicalex <magicalex@mondedie.fr>"
 
 ARG TARGETPLATFORM
 ARG FILEBOT=false
-ARG FILEBOT_VER=4.9.6
+ARG FILEBOT_VER=5.0.3
 
 ENV UID=991 \
     GID=991 \
@@ -66,6 +66,7 @@ RUN apk --update --no-cache add \
     php81-bcmath \
     php81-ctype \
     php81-curl \
+    php81-dom \
     php81-fpm \
     php81-mbstring \
     php81-opcache \
@@ -99,9 +100,7 @@ RUN apk --update --no-cache add \
 RUN if [ "${FILEBOT}" = true ]; then \
   apk --update --no-cache add \
     chromaprint \
-    openjdk17 \
-    openjdk17-jre \
-    zlib-dev \
+    openjdk17-jre-headless \
   # Install filebot
   && mkdir /filebot \
   && cd /filebot \

@@ -24,7 +24,7 @@
 ## Features
 
  - Platform image: `linux/amd64`, `linux/arm64`
- - Based on Alpine Linux 3.17
+ - Based on Alpine Linux 3.18
  - php 8.1
  - Provides by default a solid configuration
  - No root process
@@ -44,7 +44,7 @@
 | Argument | Description | Type | Default value |
 | -------- | ----------- | ---- | ------------- |
 | **FILEBOT** | Build with filebot | *optional* | false
-| **FILEBOT_VER** | Filebot version | *optional* | 4.9.6
+| **FILEBOT_VER** | Filebot version | *optional* | 5.0.3
 
 ### build
 
