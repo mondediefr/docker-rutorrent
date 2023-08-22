@@ -29,6 +29,7 @@ LABEL description="rutorrent based on alpinelinux" \
 ARG TARGETPLATFORM
 ARG FILEBOT=false
 ARG FILEBOT_VER=5.0.3
+ARG RUTORRENT_VER=4.2.3
 
 ENV UID=991 \
     GID=991 \
@@ -83,7 +84,7 @@ RUN apk --update --no-cache add \
     su-exec \
     unzip \
   # Install rutorrent
-  && git clone --recurse-submodules https://github.com/Novik/ruTorrent.git /rutorrent/app \
+  && git clone -b v${RUTORRENT_VER} --recurse-submodules https://github.com/Novik/ruTorrent.git /rutorrent/app \
   && git clone https://github.com/nelu/rutorrent-filemanager.git /tmp/filemanager \
   && git clone https://github.com/Micdu70/geoip2-rutorrent.git /rutorrent/app/plugins/geoip2 \
   && cp -r /tmp/filemanager /rutorrent/app/plugins \
