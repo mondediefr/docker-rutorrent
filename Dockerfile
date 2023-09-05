@@ -29,7 +29,7 @@ LABEL description="rutorrent based on alpinelinux" \
 ARG TARGETPLATFORM
 ARG FILEBOT=false
 ARG FILEBOT_VER=5.0.3
-ARG RUTORRENT_VER=4.2.4
+ARG RUTORRENT_VER=4.2.6
 
 ENV UID=991 \
     GID=991 \
