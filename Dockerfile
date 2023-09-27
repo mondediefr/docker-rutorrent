@@ -1,6 +1,6 @@
 FROM alpine:3.18 AS builder
 
-ARG UNRAR_VER=6.2.10
+ARG UNRAR_VER=6.2.11
 
 RUN apk --update --no-cache add \
     autoconf \
@@ -47,6 +47,7 @@ ENV UID=991 \
 COPY --from=builder /usr/bin/unrar /usr/bin
 
 RUN apk --update --no-cache add \
+    7zip \
     bash \
     curl \
     curl-dev \
@@ -62,7 +63,6 @@ RUN apk --update --no-cache add \
     mktorrent \
     nginx \
     openssl \
-    p7zip \
     php81 \
     php81-bcmath \
     php81-ctype \
