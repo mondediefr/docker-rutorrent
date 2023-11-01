@@ -1,6 +1,6 @@
 FROM alpine:3.18 AS builder
 
-ARG UNRAR_VER=6.2.11
+ARG UNRAR_VER=6.2.12
 
 RUN apk --update --no-cache add \
     autoconf \
@@ -109,16 +109,7 @@ RUN if [ "${FILEBOT}" = true ]; then \
   && tar -xJf filebot.tar.xz \
   && rm -rf filebot.tar.xz \
   && sed -i 's/-Dapplication.deployment=tar/-Dapplication.deployment=docker/g' /filebot/filebot.sh \
-  # Fix filebot lib
-  && case "${TARGETPLATFORM}" in \
-    "linux/amd64") \
-      rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-aarch64 /filebot/lib/Linux-armv7l \
-      && rm -rf /filebot/lib/Linux-x86_64/libzen.so /filebot/lib/Linux-x86_64/libmediainfo.so;; \
-    "linux/arm64") \
-      rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-armv7l /filebot/lib/Linux-x86_64 \
-      && rm -rf /filebot/lib/Linux-aarch64/libzen.so /filebot/lib/Linux-aarch64/libmediainfo.so;; \
-  esac; \
-  fi
+  && find /filebot/lib -type f -not -name libjnidispatch.so -delete
 
 COPY rootfs /
 RUN chmod 775 /usr/local/bin/*
