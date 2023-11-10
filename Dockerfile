@@ -1,6 +1,6 @@
 FROM alpine:3.18 AS builder
 
-ARG UNRAR_VER=6.2.11
+ARG UNRAR_VER=6.2.12
 
 RUN apk --update --no-cache add \
     autoconf \
@@ -28,8 +28,8 @@ LABEL description="rutorrent based on alpinelinux" \
 
 ARG TARGETPLATFORM
 ARG FILEBOT=false
-ARG FILEBOT_VER=5.1.1
-ARG RUTORRENT_VER=4.2.6
+ARG FILEBOT_VER=5.1.2
+ARG RUTORRENT_VER=4.2.7
 
 ENV UID=991 \
     GID=991 \
