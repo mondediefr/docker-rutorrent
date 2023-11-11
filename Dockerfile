@@ -109,7 +109,7 @@ RUN if [ "${FILEBOT}" = true ]; then \
   && tar -xJf filebot.tar.xz \
   && rm -rf filebot.tar.xz \
   && sed -i 's/-Dapplication.deployment=tar/-Dapplication.deployment=docker/g' /filebot/filebot.sh \
-  && find /filebot/lib -type f -not -name libjnidispatch.so -delete \
+  && find /filebot/lib -type f -not -name libjnidispatch.so -delete; \
   fi
 
 COPY rootfs /
