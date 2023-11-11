@@ -1,94 +1,95 @@
 name: build
 
 on:
-  push:
-    branches:
-      - master
   schedule:
-    - cron: '0 8 * * 1'
+    - cron: '15 23 * * 5'
+  push:
+    branches: [ "master" ]
+
+env:
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   latest:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v3
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - 
-        name: Get date (YYYY.MM.dd)
-        id: fullDate
-        run: echo "fullDate=$(date +'%Y.%m.%d')" >> $GITHUB_OUTPUT
-      - 
-        name: Get date (YYYY.MM)
-        id: yearMonthDate
-        run: echo "yearMonthDate=$(date +'%Y.%m')" >> $GITHUB_OUTPUT
-      - 
-        name: Get date (YYYY)
-        id: yearDate
-        run: echo "yearDate=$(date +'%Y')" >> $GITHUB_OUTPUT
-      -
-        name: Dockerhub login
-        uses: docker/login-action@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Get date (YYYY.MM.dd)
+        id: date
+        run: |
+          echo "FULL_DATE=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      -
-        name: Build
-        run: |
-          docker buildx build \
-          --pull \
-          --push \
-          --platform linux/amd64,linux/arm64 \
-          --tag mondedie/rutorrent:latest \
-          --tag mondedie/rutorrent:${{ steps.fullDate.outputs.fullDate }} \
-          --tag mondedie/rutorrent:${{ steps.yearMonthDate.outputs.yearMonthDate }} \
-          --tag mondedie/rutorrent:${{ steps.yearDate.outputs.yearDate }} .
-          
+      
+      - name: Set Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_NAME }}
+          tags: |
+            latest
+            ${{ env.FULL_DATE }}
+
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+
   filebot:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v3
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      -
-        name: Get date (YYYY.MM.dd)
-        id: fullDate
-        run: echo "fullDate=$(date +'%Y.%m.%d')" >> $GITHUB_OUTPUT
-      - 
-        name: Get date (YYYY.MM)
-        id: yearMonthDate
-        run: echo "yearMonthDate=$(date +'%Y.%m')" >> $GITHUB_OUTPUT
-      - 
-        name: Get date (YYYY)
-        id: yearDate
-        run: echo "yearDate=$(date +'%Y')" >> $GITHUB_OUTPUT
-      -
-        name: Dockerhub login
-        uses: docker/login-action@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Get date (YYYY.MM.dd)
+        id: date
+        run: |
+          echo "FULL_DATE=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      -
-        name: Build
-        run: |
-          docker buildx build \
-          --pull \
-          --push \
-          --build-arg FILEBOT=true \
-          --platform linux/amd64,linux/arm64 \
-          --tag mondedie/rutorrent:filebot \
-          --tag mondedie/rutorrent:filebot-${{ steps.fullDate.outputs.fullDate }} \
-          --tag mondedie/rutorrent:filebot-${{ steps.yearMonthDate.outputs.yearMonthDate }} \
-          --tag mondedie/rutorrent:filebot-${{ steps.yearDate.outputs.yearDate }} .
+      
+      - name: Set Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_NAME }}
+          tags: |
+            filebot
+            filebot-${{ env.FULL_DATE }}
+
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@v5
+        with:
+          build-args: |
+            FILEBOT=true
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
