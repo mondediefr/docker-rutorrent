@@ -7,7 +7,7 @@ on:
     branches: [ "master" ]
 
 env:
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: mondedie/rutorrent
 
 jobs:
   latest:
