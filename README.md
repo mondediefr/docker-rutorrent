@@ -28,7 +28,7 @@
 | -------- | ----------- | ---- | ------------- |
 | **FILEBOT** | Build with filebot | *optional* | false
 | **FILEBOT_VER** | Filebot version | *optional* | 5.1.2
-| **RUTORRENT_VER** | ruTorrent version | *optional* | 4.2.8
+| **RUTORRENT_VER** | ruTorrent version | *optional* | 4.2.9
 
 ### build
 
