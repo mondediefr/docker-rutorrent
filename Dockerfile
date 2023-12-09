@@ -26,7 +26,6 @@ FROM alpine:3.19
 LABEL description="rutorrent based on alpinelinux" \
       maintainer="magicalex <magicalex@mondedie.fr>"
 
-ARG TARGETPLATFORM
 ARG FILEBOT=false
 ARG FILEBOT_VER=5.1.2
 ARG RUTORRENT_VER=4.2.9
