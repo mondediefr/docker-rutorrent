@@ -85,14 +85,11 @@ RUN apk --update --no-cache add \
     unzip \
   # Install rutorrent
   && git clone -b v${RUTORRENT_VER} --recurse-submodules https://github.com/Novik/ruTorrent.git /rutorrent/app \
-  && git clone https://github.com/nelu/rutorrent-filemanager.git /tmp/filemanager \
   && git clone https://github.com/Micdu70/geoip2-rutorrent.git /rutorrent/app/plugins/geoip2 \
-  && cp -r /tmp/filemanager /rutorrent/app/plugins \
   && rm -rf /rutorrent/app/plugins/geoip \
   && rm -rf /rutorrent/app/plugins/_cloudflare \
   && rm -rf /rutorrent/app/plugins/geoip2/.git \
   && rm -rf /rutorrent/app/.git \
-  && rm -rf /tmp/filemanager \
   # Socket folder
   && mkdir -p /run/rtorrent /run/nginx /run/php \
   # Cleanup
