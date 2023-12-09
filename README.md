@@ -7,8 +7,8 @@
 ## Features
 
  - Platform image: `linux/amd64`, `linux/arm64`
- - Based on Alpine Linux 3.18
- - php 8.1
+ - Based on Alpine Linux 3.19
+ - php 8.2
  - Provides by default a solid configuration
  - No root process
  - Persitance custom configuration for rutorrent and rtorrent

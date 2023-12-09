@@ -53,7 +53,7 @@
 	// Can't be greater then 327625*1024 due to limitation in libtorrent ResourceManager::set_max_upload_unchoked function.
 
 	$pathToExternals = array(
-		"php"	=> '/usr/bin/php81',				// Something like /usr/bin/php. If empty, will be found in PATH.
+		"php"	=> '/usr/bin/php82',				// Something like /usr/bin/php. If empty, will be found in PATH.
 		"curl"	=> '/usr/bin/curl',					// Something like /usr/bin/curl. If empty, will be found in PATH.
 		"gzip"	=> '/usr/bin/gzip',					// Something like /usr/bin/gzip. If empty, will be found in PATH.
 		"id"	=> '/usr/bin/id',					// Something like /usr/bin/id. If empty, will be found in PATH.
