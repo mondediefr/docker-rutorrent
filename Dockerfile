@@ -1,4 +1,4 @@
-FROM alpine:3.18 AS builder
+FROM alpine:3.19 AS builder
 
 ARG UNRAR_VER=6.2.12
 
@@ -21,7 +21,7 @@ RUN apk --update --no-cache add \
   && make -f makefile \
   && install -Dm 755 unrar /usr/bin/unrar
 
-FROM alpine:3.18
+FROM alpine:3.19
 
 LABEL description="rutorrent based on alpinelinux" \
       maintainer="magicalex <magicalex@mondedie.fr>"
@@ -63,21 +63,21 @@ RUN apk --update --no-cache add \
     mktorrent \
     nginx \
     openssl \
-    php81 \
-    php81-bcmath \
-    php81-ctype \
-    php81-curl \
-    php81-dom \
-    php81-fpm \
-    php81-mbstring \
-    php81-opcache \
-    php81-openssl \
-    php81-pecl-apcu \
-    php81-phar \
-    php81-session \
-    php81-sockets \
-    php81-xml \
-    php81-zip \
+    php82 \
+    php82-bcmath \
+    php82-ctype \
+    php82-curl \
+    php82-dom \
+    php82-fpm \
+    php82-mbstring \
+    php82-opcache \
+    php82-openssl \
+    php82-pecl-apcu \
+    php82-phar \
+    php82-session \
+    php82-sockets \
+    php82-xml \
+    php82-zip \
     rtorrent \
     s6 \
     sox \

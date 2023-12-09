@@ -163,7 +163,7 @@ f_log SUC "done" # success of Update old configurations
 
 f_log INF "Apply system permissions... "
 
-for folder in /config /rutorrent /rutorrent/app/php/share/torrents /home/torrent /var/lib/nginx /var/log /etc/nginx /etc/php81 /tmp /etc/s6.d /run; do
+for folder in /config /rutorrent /rutorrent/app/php/share/torrents /home/torrent /var/lib/nginx /var/log /etc/nginx /etc/php82 /tmp /etc/s6.d /run; do
   find "${folder}" ! -user "${UID}" -exec chown -h "${UID}:${GID}" {} \;
 done
 
