@@ -1,6 +1,6 @@
 FROM alpine:3.19 AS builder
 
-ARG UNRAR_VER=6.2.12
+ARG UNRAR_VER=7.0.7
 
 RUN apk --update --no-cache add \
     autoconf \
@@ -27,7 +27,7 @@ LABEL description="rutorrent based on alpinelinux" \
       maintainer="magicalex <magicalex@mondedie.fr>"
 
 ARG FILEBOT=false
-ARG FILEBOT_VER=5.1.2
+ARG FILEBOT_VER=5.1.3
 ARG RUTORRENT_VER=4.2.10
 
 ENV UID=991 \
