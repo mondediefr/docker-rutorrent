@@ -1,6 +1,6 @@
-FROM alpine:3.19 AS builder
+FROM alpine:3.20 AS builder
 
-ARG UNRAR_VER=7.0.8
+ARG UNRAR_VER=7.0.9
 
 RUN apk --update --no-cache add \
     autoconf \
@@ -21,14 +21,14 @@ RUN apk --update --no-cache add \
   && make -f makefile \
   && install -Dm 755 unrar /usr/bin/unrar
 
-FROM alpine:3.19
+FROM alpine:3.20
 
 LABEL description="rutorrent based on alpinelinux" \
       maintainer="magicalex <magicalex@mondedie.fr>"
 
 ARG FILEBOT=false
 ARG FILEBOT_VER=5.1.3
-ARG RUTORRENT_VER=4.3.1
+ARG RUTORRENT_VER=4.3.5
 
 ENV UID=991 \
     GID=991 \
@@ -85,9 +85,11 @@ RUN apk --update --no-cache add \
   # Install rutorrent
   && git clone -b v${RUTORRENT_VER} --recurse-submodules https://github.com/Novik/ruTorrent.git /rutorrent/app \
   && git clone https://github.com/Micdu70/geoip2-rutorrent.git /rutorrent/app/plugins/geoip2 \
+  && git clone https://github.com/Micdu70/rutorrent-ratiocolor.git /rutorrent/app/plugins/ratiocolor \
   && rm -rf /rutorrent/app/plugins/geoip \
   && rm -rf /rutorrent/app/plugins/_cloudflare \
   && rm -rf /rutorrent/app/plugins/geoip2/.git \
+  && rm -rf /rutorrent/app/plugins/ratiocolor/.git \
   && rm -rf /rutorrent/app/.git \
   # Socket folder
   && mkdir -p /run/rtorrent /run/nginx /run/php \
