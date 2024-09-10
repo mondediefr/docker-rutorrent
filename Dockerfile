@@ -27,8 +27,8 @@ LABEL description="rutorrent based on alpinelinux" \
       maintainer="magicalex <magicalex@mondedie.fr>"
 
 ARG FILEBOT=false
-ARG FILEBOT_VER=5.1.3
-ARG RUTORRENT_VER=4.3.5
+ARG FILEBOT_VER=5.1.5
+ARG RUTORRENT_VER=4.3.6
 
 ENV UID=991 \
     GID=991 \
