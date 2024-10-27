@@ -27,8 +27,8 @@
 | Argument | Description | Type | Default value |
 | -------- | ----------- | ---- | ------------- |
 | **FILEBOT** | Build with filebot | *optional* | false
-| **FILEBOT_VER** | Filebot version | *optional* | 5.1.5
-| **RUTORRENT_VER** | ruTorrent version | *optional* | 4.3.6
+| **FILEBOT_VER** | Filebot version | *optional* | 5.1.6
+| **RUTORRENT_VER** | ruTorrent version | *optional* | 5.0.0
 
 ### build
 
