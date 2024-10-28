@@ -1,8 +1,10 @@
-# mondedie/rutorrent
+# kdtheory/rutorrent
 
-[![](https://github.com/mondediefr/docker-rutorrent/workflows/build/badge.svg)](https://github.com/mondediefr/docker-rutorrent/actions)
-[![](https://img.shields.io/docker/pulls/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent)
-[![](https://img.shields.io/docker/stars/mondedie/rutorrent)](https://hub.docker.com/r/mondedie/rutorrent)
+**ATTENTION : Ce dépôt ne supporte pas FileBot. Pour une version avec FileBot, veuillez vous référer au dépôt dédié maintenu par magicalex : [https://github.com/magicalex/docker-rtorrent-rutorrent](https://github.com/magicalex/docker-rtorrent-rutorrent)**
+
+[![](https://github.com/kdtheory/docker-rutorrent/workflows/build/badge.svg)](https://github.com/kdtheory/docker-rutorrent/actions)
+[![](https://img.shields.io/docker/pulls/kdtheory/rutorrent)](https://hub.docker.com/r/kdtheory/rutorrent)
+[![](https://img.shields.io/docker/stars/kdtheory/rutorrent)](https://hub.docker.com/r/kdtheory/rutorrent)
 
 ## Features
 
@@ -17,8 +19,7 @@
 
 ## Tag available
 
- - latest [(Dockerfile)](https://github.com/mondediefr/docker-rutorrent/blob/master/Dockerfile)
- - filebot [(Dockerfile)](https://github.com/mondediefr/docker-rutorrent/blob/master/Dockerfile)
+ - latest [(Dockerfile)](https://github.com/kdtheory/docker-rutorrent/blob/master/Dockerfile)
 
 ## Build image
 
@@ -27,20 +28,14 @@
 | Argument | Description | Type | Default value |
 | -------- | ----------- | ---- | ------------- |
 | **FILEBOT** | Build with filebot | *optional* | false
-| **FILEBOT_VER** | Filebot version | *optional* | 5.1.6
 | **RUTORRENT_VER** | ruTorrent version | *optional* | 5.1-beta3
 
 ### build
 
 ```sh
-docker build --tag mondedie/rutorrent:latest https://github.com/mondediefr/docker-rutorrent.git
+docker build --tag kdtheory/rutorrent:latest https://github.com/kdtheory/docker-rutorrent.git
 ```
 
-### Build with arguments
-
-```sh
-docker build --tag mondedie/rutorrent:filebot --build-arg FILEBOT=true https://github.com/mondediefr/docker-rutorrent.git
-```
 
 ## Configuration
 
@@ -57,15 +52,6 @@ docker build --tag mondedie/rutorrent:filebot --build-arg FILEBOT=true https://g
 | **DOWNLOAD_DIRECTORY** | Torrent download directory | *optional* | /data/downloads
 | **CHECK_PERM_DATA** | Check permissions in the data directory | *optional* | true
 | **HTTP_AUTH** | Enable HTTP authentication | *optional* | false
-
-### Environment variables with filebot
-
-| Variable | Description | Type | Default value |
-| -------- | ----------- | ---- | ------------- |
-| **FILEBOT_LICENSE** | License file path | **required** | none
-| **FILEBOT_RENAME_METHOD** | Method for rename media | *optional* | symlink
-| **FILEBOT_LANG** | Set your language | *optional* | fr
-| **FILEBOT_CONFLICT** | Conflict management | *optional* | skip
 
 ### Volumes
 
@@ -85,7 +71,7 @@ docker build --tag mondedie/rutorrent:filebot --build-arg FILEBOT=true https://g
  - `/config/custom_themes` : add your own themes
  - `/config/filebot` : add your License file in this folder
  - `/config/filebot/args_amc.txt` : configuration of fn:amc script of filebot
- - `/config/filebot/postdl` : modify postdl script, example [here](https://github.com/mondediefr/docker-rutorrent/blob/master/rootfs/usr/local/bin/postdl)
+ - `/config/filebot/postdl` : modify postdl script, example [here](https://github.com/kdtheory/docker-rutorrent/blob/master/rootfs/usr/local/bin/postdl)
 
 ### Ports
 
@@ -104,7 +90,7 @@ docker run --name rutorrent -dt \
   -p 45000:45000 \
   -v /mnt/docker/rutorrent/config:/config \
   -v /mnt/docker/rutorrent/data:/data \
-  mondedie/rutorrent:latest
+  kdtheory/rutorrent:latest
 ```
 
 URL: http://xx.xx.xx.xx:8080
@@ -123,25 +109,6 @@ Add custom theme :
 Donwload a theme for example in this repository https://github.com/artyuum/3rd-party-ruTorrent-Themes.git  
 And copy the folder in `/mnt/docker/rutorrent/config/custom_themes`
 
-Run container :
-
-```sh
-docker run --name rutorrent -dt \
-  -e UID=1000 \
-  -e GID=1000 \
-  -e DHT_RTORRENT=on \
-  -e PORT_RTORRENT=6881 \
-  -e FILEBOT_LICENSE=/config/filebot/FileBot_License_XXXXXXXXX.psm \
-  -e FILEBOT_RENAME_METHOD=move \
-  -p 9080:8080 \
-  -p 6881:6881 \
-  -p 6881:6881/udp \
-  -v /mnt/docker/rutorrent/config:/config \
-  -v /mnt/docker/rutorrent/data:/data \
-  mondedie/rutorrent:filebot
-```
-
-URL: http://xx.xx.xx.xx:9080
 
 ### Add HTTP authentication
 
@@ -155,7 +122,7 @@ docker run --name rutorrent -dt \
   -p 46000:46000 \
   -v /mnt/docker/rutorrent/config:/config \
   -v /mnt/docker/rutorrent/data:/data \
-  mondedie/rutorrent:latest
+  kdtheory/rutorrent:latest
 ```
 
 Generate your password:
@@ -172,4 +139,4 @@ URL: http://xx.xx.xx.xx:8080
 
 ## License
 
-Docker image [mondedie/rutorrent](https://hub.docker.com/r/mondedie/rutorrent) is released under [MIT License](https://github.com/mondediefr/docker-rutorrent/blob/master/LICENSE).
+Docker image [kdtheory/rutorrent](https://hub.docker.com/r/kdtheory/rutorrent) is released under [MIT License](https://github.com/kdtheory/docker-rutorrent/blob/master/LICENSE).
