@@ -1,6 +1,18 @@
-FROM alpine:3.20 AS builder
-
+ARG MKTORRENT_VERSION=v1.1
 ARG UNRAR_VER=7.1.1
+
+# Create src image to retreive source files
+FROM alpine:3.20 AS src
+RUN apk --update --no-cache add curl git tar tree xz
+WORKDIR /src
+
+# Retreive source files for mktorrent
+FROM src AS src-mktorrent
+RUN git init . && git remote add origin "https://github.com/pobrn/mktorrent.git"
+ARG MKTORRENT_VERSION
+RUN git fetch origin "${MKTORRENT_VERSION}" && git checkout -q FETCH_HEAD
+
+FROM alpine:3.20 AS builder
 
 RUN apk --update --no-cache add \
     autoconf \
@@ -20,6 +32,16 @@ RUN apk --update --no-cache add \
   && cd unrar \
   && make -f makefile \
   && install -Dm 755 unrar /usr/bin/unrar
+
+# Build and install mktorrent with pthreads
+WORKDIR /usr/local/src/mktorrent
+COPY --from=src-mktorrent /src .
+RUN echo "CC = gcc" >> Makefile	
+RUN echo "CFLAGS = -w -flto -O3" >> Makefile
+RUN echo "USE_PTHREADS = 1" >> Makefile
+RUN echo "USE_OPENSSL = 1" >> Makefile
+RUN make -j$(nproc)
+RUN make install -j$(nproc)
 
 FROM alpine:3.20
 
@@ -59,7 +81,6 @@ RUN apk --update --no-cache add \
     libzen \
     libzen-dev \
     mediainfo \
-    mktorrent \
     nginx \
     openssl \
     php82 \
