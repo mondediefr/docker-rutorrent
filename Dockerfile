@@ -1,5 +1,5 @@
 ARG MKTORRENT_VERSION=v1.1
-ARG UNRAR_VER=7.0.9
+ARG UNRAR_VER=7.1.1
 
 # Create src image to retreive source files
 FROM alpine:3.20 AS src
@@ -50,7 +50,7 @@ LABEL description="rutorrent based on alpinelinux" \
 
 ARG FILEBOT=false
 ARG FILEBOT_VER=5.1.6
-ARG RUTORRENT_VER=5.1-beta3
+ARG RUTORRENT_VER=5.1.0
 
 ENV UID=991 \
     GID=991 \
