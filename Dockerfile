@@ -114,9 +114,7 @@ RUN apk --update --no-cache add \
   && rm -rf /rutorrent/app/plugins/ratiocolor/.git \
   && rm -rf /rutorrent/app/.git \
   # Socket folder
-  && mkdir -p /run/rtorrent /run/nginx /run/php \
-  # Cleanup
-  && apk del --purge git
+  && mkdir -p /run/rtorrent /run/nginx /run/php
 
 RUN if [ "${FILEBOT}" = true ]; then \
   apk --update --no-cache add \
