@@ -13,6 +13,8 @@ RUN git fetch origin "${MKTORRENT_VERSION}" && git checkout -q FETCH_HEAD
 
 FROM alpine:3.20 AS builder
 
+ENV DIST_PATH="/dist"
+
 RUN apk --update --no-cache add \
     autoconf \
     automake \
@@ -23,6 +25,7 @@ RUN apk --update --no-cache add \
     curl-dev \
     libtool \
     linux-headers \
+    tree \
     zlib-dev
 
 # Build and install mktorrent with pthreads
@@ -34,6 +37,8 @@ RUN echo "USE_PTHREADS = 1" >> Makefile
 RUN echo "USE_OPENSSL = 1" >> Makefile
 RUN make -j$(nproc)
 RUN make install -j$(nproc)
+RUN make DESTDIR=${DIST_PATH} install -j$(nproc)
+RUN tree ${DIST_PATH}
 
 FROM alpine:3.20
 
@@ -57,7 +62,7 @@ ENV UID=991 \
     FILEBOT_CONFLICT=skip \
     HTTP_AUTH=false
 
-COPY --from=builder /usr/bin
+COPY --from=builder /dist /
 
 # unrar package is not available since alpine 3.15
 RUN echo "@314 http://dl-cdn.alpinelinux.org/alpine/v3.14/main" >> /etc/apk/repositories \
