@@ -1,5 +1,4 @@
 ARG MKTORRENT_VERSION=v1.1
-ARG UNRAR_VER=7.1.1
 
 # Create src image to retreive source files
 FROM alpine:3.20 AS src
@@ -24,14 +23,7 @@ RUN apk --update --no-cache add \
     curl-dev \
     libtool \
     linux-headers \
-    zlib-dev \
-  # Install unrar from source
-  && cd /tmp \
-  && wget https://www.rarlab.com/rar/unrarsrc-${UNRAR_VER}.tar.gz -O /tmp/unrar.tar.gz \
-  && tar -xzf /tmp/unrar.tar.gz \
-  && cd unrar \
-  && make -f makefile \
-  && install -Dm 755 unrar /usr/bin/unrar
+    zlib-dev
 
 # Build and install mktorrent with pthreads
 WORKDIR /usr/local/src/mktorrent
@@ -65,7 +57,11 @@ ENV UID=991 \
     FILEBOT_CONFLICT=skip \
     HTTP_AUTH=false
 
-COPY --from=builder /usr/bin/unrar /usr/bin
+COPY --from=builder /usr/bin
+
+# unrar package is not available since alpine 3.15
+RUN echo "@314 http://dl-cdn.alpinelinux.org/alpine/v3.14/main" >> /etc/apk/repositories \
+  && apk --update --no-cache add unrar@314
 
 RUN apk --update --no-cache add \
     7zip \
