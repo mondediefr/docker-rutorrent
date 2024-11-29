@@ -1,8 +1,9 @@
 ARG MKTORRENT_VERSION=v1.1
+ARG DUMP_TORRENT_VERSION=302ac444a20442edb4aeabef65b264a85ab88ce9
 
 # Create src image to retreive source files
 FROM alpine:3.20 AS src
-RUN apk --update --no-cache add curl git tar tree xz
+RUN apk --update --no-cache add curl git tar sed tree xz
 WORKDIR /src
 
 # Retreive source files for mktorrent
@@ -10,6 +11,14 @@ FROM src AS src-mktorrent
 RUN git init . && git remote add origin "https://github.com/pobrn/mktorrent.git"
 ARG MKTORRENT_VERSION
 RUN git fetch origin "${MKTORRENT_VERSION}" && git checkout -q FETCH_HEAD
+
+# Retreive source files for dumptorrent. Repair build for alpine Linux.
+FROM src AS src-dump-torrent
+RUN git init . && git remote add origin "https://github.com/TheGoblinHero/dumptorrent.git"
+ARG DUMP_TORRENT_VERSION
+RUN git fetch origin "${DUMP_TORRENT_VERSION}" && git checkout -q FETCH_HEAD
+RUN sed -i '1i #include <sys/time.h>' scrapec.c
+RUN rm -rf .git*
 
 FROM alpine:3.20 AS builder
 
@@ -38,6 +47,13 @@ RUN echo "USE_OPENSSL = 1" >> Makefile
 RUN make -j$(nproc)
 RUN make install -j$(nproc)
 RUN make DESTDIR=${DIST_PATH} install -j$(nproc)
+RUN tree ${DIST_PATH}
+
+# Build and install dump torrent for ruTorrent plugin
+WORKDIR /usr/local/src/dump-torrent
+COPY --from=src-dump-torrent /src .
+RUN make dumptorrent -j$(nproc)
+RUN cp dumptorrent ${DIST_PATH}/usr/local/bin
 RUN tree ${DIST_PATH}
 
 FROM alpine:3.20
