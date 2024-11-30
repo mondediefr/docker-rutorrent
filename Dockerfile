@@ -63,7 +63,7 @@ LABEL description="rutorrent based on alpinelinux" \
 
 ARG FILEBOT=false
 ARG FILEBOT_VER=5.1.6
-ARG RUTORRENT_VER=5.1.0
+ARG RUTORRENT_VER=5.1.1
 
 ENV UID=991 \
     GID=991 \
