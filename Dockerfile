@@ -2,7 +2,7 @@ ARG MKTORRENT_VERSION=v1.1
 ARG DUMP_TORRENT_VERSION=302ac444a20442edb4aeabef65b264a85ab88ce9
 
 # Create src image to retreive source files
-FROM alpine:3.20 AS src
+FROM alpine:3.21 AS src
 RUN apk --update --no-cache add curl git tar sed tree xz
 WORKDIR /src
 
@@ -20,7 +20,7 @@ RUN git fetch origin "${DUMP_TORRENT_VERSION}" && git checkout -q FETCH_HEAD
 RUN sed -i '1i #include <sys/time.h>' scrapec.c
 RUN rm -rf .git*
 
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 ENV DIST_PATH="/dist"
 
@@ -56,14 +56,14 @@ RUN make dumptorrent -j$(nproc)
 RUN cp dumptorrent ${DIST_PATH}/usr/local/bin
 RUN tree ${DIST_PATH}
 
-FROM alpine:3.20
+FROM alpine:3.21
 
 LABEL description="rutorrent based on alpinelinux" \
       maintainer="magicalex <magicalex@mondedie.fr>"
 
 ARG FILEBOT=false
 ARG FILEBOT_VER=5.1.6
-ARG RUTORRENT_VER=5.1.1
+ARG RUTORRENT_VER=5.1.2
 
 ENV UID=991 \
     GID=991 \

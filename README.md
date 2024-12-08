@@ -7,7 +7,7 @@
 ## Features
 
  - Platform image: `linux/amd64`, `linux/arm64`
- - Based on Alpine Linux 3.20
+ - Based on Alpine Linux 3.21
  - php 8.2
  - Provides by default a solid configuration
  - No root process
@@ -28,7 +28,7 @@
 | -------- | ----------- | ---- | ------------- |
 | **FILEBOT** | Build with filebot | *optional* | false
 | **FILEBOT_VER** | Filebot version | *optional* | 5.1.6
-| **RUTORRENT_VER** | ruTorrent version | *optional* | 5.1.1
+| **RUTORRENT_VER** | ruTorrent version | *optional* | 5.1.2
 
 ### build
 
