@@ -1,3 +1,5 @@
+ARG CARES_VERSION=1.34.3
+ARG CURL_VERSION=8.11.0
 ARG MKTORRENT_VERSION=v1.1
 ARG DUMP_TORRENT_VERSION=302ac444a20442edb4aeabef65b264a85ab88ce9
 
@@ -5,6 +7,16 @@ ARG DUMP_TORRENT_VERSION=302ac444a20442edb4aeabef65b264a85ab88ce9
 FROM alpine:3.21 AS src
 RUN apk --update --no-cache add curl git tar sed tree xz
 WORKDIR /src
+
+# Retreive c-ares source files
+FROM src AS src-cares
+ARG CARES_VERSION
+RUN curl -sSL "https://github.com/c-ares/c-ares/releases/download/v${CARES_VERSION}/c-ares-${CARES_VERSION}.tar.gz" | tar xz --strip 1
+
+# Retreive curl source files
+FROM src AS src-curl
+ARG CURL_VERSION
+RUN curl -sSL "https://curl.se/download/curl-${CURL_VERSION}.tar.gz" | tar xz --strip 1
 
 # Retreive source files for mktorrent
 FROM src AS src-mktorrent
@@ -28,14 +40,34 @@ RUN apk --update --no-cache add \
     autoconf \
     automake \
     binutils \
+    brotli-dev \
     build-base \
     cmake \
     cppunit-dev \
     curl-dev \
     libtool \
     linux-headers \
+    openssl-dev \
     tree \
     zlib-dev
+
+# Build and install c-ares for asynchronous DNS resolution of TCP trackers on rTorrent
+WORKDIR /usr/local/src/cares
+COPY --from=src-cares /src .
+RUN cmake . -D CARES_SHARED=ON -D CMAKE_BUILD_TYPE:STRING="Release" -D CMAKE_C_FLAGS_RELEASE:STRING="-O3"
+RUN cmake --build . --clean-first --parallel $(nproc)
+RUN make install -j$(nproc)
+RUN make DESTDIR=${DIST_PATH} install -j$(nproc)
+RUN tree ${DIST_PATH}
+
+# Build and install curl with c-ares for asynchronous DNS resolution of TCP trackers on rTorrent
+WORKDIR /usr/local/src/curl
+COPY --from=src-curl /src .
+RUN cmake . -D ENABLE_ARES=ON -D CURL_USE_OPENSSL=ON -D CURL_BROTLI=ON -D CURL_ZSTD=ON -D BUILD_SHARED_LIBS=ON -D CMAKE_BUILD_TYPE:STRING="Release" -D CMAKE_C_FLAGS_RELEASE:STRING="-O3"
+RUN cmake --build . --clean-first --parallel $(nproc)
+RUN make install -j$(nproc)
+RUN make DESTDIR=${DIST_PATH} install -j$(nproc)
+RUN tree ${DIST_PATH}
 
 # Build and install mktorrent with pthreads
 WORKDIR /usr/local/src/mktorrent
@@ -90,8 +122,6 @@ RUN echo "@320 http://dl-cdn.alpinelinux.org/alpine/v3.20/main" >> /etc/apk/repo
 RUN apk --update --no-cache add \
     7zip \
     bash \
-    curl \
-    curl-dev \
     ffmpeg \
     ffmpeg-dev \
     findutils \
