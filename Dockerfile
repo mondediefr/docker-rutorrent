@@ -84,6 +84,9 @@ COPY --from=builder /dist /
 RUN echo "@314 http://dl-cdn.alpinelinux.org/alpine/v3.14/main" >> /etc/apk/repositories \
   && apk --update --no-cache add unrar@314
 
+RUN echo "@320 http://dl-cdn.alpinelinux.org/alpine/v3.20/main" >> /etc/apk/repositories \
+  && apk --update --no-cache add s6@320
+
 RUN apk --update --no-cache add \
     7zip \
     bash \
@@ -116,7 +119,6 @@ RUN apk --update --no-cache add \
     php82-xml \
     php82-zip \
     rtorrent \
-    s6 \
     sox \
     su-exec \
     unzip \
