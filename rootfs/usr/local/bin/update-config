@@ -8,3 +8,6 @@ sed -e "s|'\/RPC'|'\/RPC2'|g" -i /config/rutorrent/conf/config.php
 
 # update to php82
 sed -e "s|'\/usr\/bin\/php81'|'\/usr\/bin\/php82'|g" -i /config/rutorrent/conf/config.php
+
+# replace new location of curl
+sed -i -e "s/\/usr\/bin\/curl/\/usr\/local\/bin\/curl/g" /config/rutorrent/conf/config.php
