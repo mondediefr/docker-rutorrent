@@ -161,6 +161,7 @@ RUN apk --update --no-cache add \
   && rm -rf /rutorrent/app/plugins/geoip2/.git \
   && rm -rf /rutorrent/app/plugins/ratiocolor/.git \
   && rm -rf /rutorrent/app/.git \
+  && sed -i -e "s/\/usr\/bin\/curl/\/usr\/local\/bin\/curl/g" /rutorrent/app/conf/conf.php
   # Socket folder
   && mkdir -p /run/rtorrent /run/nginx /run/php
 
