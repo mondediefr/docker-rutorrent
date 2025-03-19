@@ -46,7 +46,7 @@ else
 fi
 
 f_log INF "Create volume folders... "
-mkdir -p /data/.watch /data/.session /data/downloads
+mkdir -p /data/.watch /data/.session "${DOWNLOAD_DIRECTORY}"
 mkdir -p /config/rtorrent /config/rutorrent /config/custom_themes /config/custom_plugins
 f_log SUC "done" # success of Create volume folders
 
@@ -171,7 +171,7 @@ find /etc/s6.d -type f -exec chmod +x {} \;
 f_log SUC "done" # success of Apply system permissions
 
 # set perm
-chown "${UID}:${GID}" /data/.watch /data/.session /data/downloads
+chown "${UID}:${GID}" /data/.watch /data/.session "${DOWNLOAD_DIRECTORY}"
 
 if [ "${CHECK_PERM_DATA}" = true ]; then
   f_log INF "Apply data permissions... "
