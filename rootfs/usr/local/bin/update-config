@@ -11,3 +11,6 @@ sed -e "s|'\/usr\/bin\/php81'|'\/usr\/bin\/php82'|g" -i /config/rutorrent/conf/c
 
 # replace new location of curl
 sed -i -e "s/\/usr\/bin\/curl/\/usr\/local\/bin\/curl/g" /config/rutorrent/conf/config.php
+
+# replace download directory
+sed -i "s|^\(\s*\$topDirectory\s*=\s*\)\S*|\\1'${DOWNLOAD_DIRECTORY}';|" /config/rutorrent/conf/config.php
