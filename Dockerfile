@@ -133,21 +133,21 @@ RUN apk --update --no-cache add \
     mediainfo \
     nginx \
     openssl \
-    php82 \
-    php82-bcmath \
-    php82-ctype \
-    php82-curl \
-    php82-dom \
-    php82-fpm \
-    php82-mbstring \
-    php82-opcache \
-    php82-openssl \
-    php82-pecl-apcu \
-    php82-phar \
-    php82-session \
-    php82-sockets \
-    php82-xml \
-    php82-zip \
+    php83 \
+    php83-bcmath \
+    php83-ctype \
+    php83-curl \
+    php83-dom \
+    php83-fpm \
+    php83-mbstring \
+    php83-opcache \
+    php83-openssl \
+    php83-pecl-apcu \
+    php83-phar \
+    php83-session \
+    php83-sockets \
+    php83-xml \
+    php83-zip \
     rtorrent \
     sox \
     su-exec \
