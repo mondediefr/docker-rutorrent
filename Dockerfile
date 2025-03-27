@@ -1,7 +1,7 @@
 ARG CARES_VERSION=1.34.4
-ARG CURL_VERSION=8.11.1
+ARG CURL_VERSION=8.12.1
 ARG MKTORRENT_VERSION=v1.1
-ARG DUMP_TORRENT_VERSION=302ac444a20442edb4aeabef65b264a85ab88ce9
+ARG DUMP_TORRENT_VERSION=bb4b64cb504357dc6ed51bdd27c06062019a268d
 
 # Create src image to retreive source files
 FROM alpine:3.21 AS src
@@ -94,8 +94,8 @@ LABEL description="rutorrent based on alpinelinux" \
       maintainer="magicalex <magicalex@mondedie.fr>"
 
 ARG FILEBOT=false
-ARG FILEBOT_VER=5.1.6
-ARG RUTORRENT_VER=5.1.5
+ARG FILEBOT_VER=5.1.7
+ARG RUTORRENT_VER=5.1.6
 
 ENV UID=991 \
     GID=991 \
