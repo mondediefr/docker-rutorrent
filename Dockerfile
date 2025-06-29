@@ -3,6 +3,14 @@ ARG CURL_VERSION=8.14.1
 ARG MKTORRENT_VERSION=v1.1
 ARG DUMP_TORRENT_VERSION=bb4b64cb504357dc6ed51bdd27c06062019a268d
 
+# libtorrent v0.15.5
+ARG LIBTORRENT_BRANCH=stable-0.15
+ARG LIBTORRENT_VERSION=5737d5e283278a39f13de4fa65ecb3536937aa0c
+
+# rtorrent v0.15.5
+ARG RTORRENT_BRANCH=stable-0.15
+ARG RTORRENT_VERSION=4463bf418e21a8bb9a205651d980d772809550a9
+
 # Create src image to retreive source files
 FROM alpine:3.21 AS src
 RUN apk --update --no-cache add curl git tar sed tree xz
@@ -17,6 +25,20 @@ RUN curl -sSL "https://github.com/c-ares/c-ares/releases/download/v${CARES_VERSI
 FROM src AS src-curl
 ARG CURL_VERSION
 RUN curl -sSL "https://curl.se/download/curl-${CURL_VERSION}.tar.gz" | tar xz --strip 1
+
+# Retreive libtorrent source files
+FROM src AS src-libtorrent
+ARG LIBTORRENT_BRANCH
+RUN git clone -b "${LIBTORRENT_BRANCH}" "https://github.com/rakshasa/libtorrent.git" .
+ARG LIBTORRENT_VERSION
+RUN git reset --hard "${LIBTORRENT_VERSION}"
+
+# Retreive rTorrent source files
+FROM src AS src-rtorrent
+ARG RTORRENT_BRANCH
+RUN git clone -b "${RTORRENT_BRANCH}" "https://github.com/rakshasa/rtorrent.git" .
+ARG RTORRENT_VERSION
+RUN git reset --hard "${RTORRENT_VERSION}"
 
 # Retreive source files for mktorrent
 FROM src AS src-mktorrent
@@ -47,6 +69,7 @@ RUN apk --update --no-cache add \
     curl-dev \
     libtool \
     linux-headers \
+    ncurses-dev \
     openssl-dev \
     tree \
     zlib-dev
@@ -65,6 +88,26 @@ WORKDIR /usr/local/src/curl
 COPY --from=src-curl /src .
 RUN cmake . -D ENABLE_ARES=ON -D CURL_USE_OPENSSL=ON -D CURL_BROTLI=ON -D CURL_ZSTD=ON -D BUILD_SHARED_LIBS=ON -D CMAKE_BUILD_TYPE:STRING="Release" -D CMAKE_C_FLAGS_RELEASE:STRING="-O3"
 RUN cmake --build . --clean-first --parallel $(nproc)
+RUN make install -j$(nproc)
+RUN make DESTDIR=${DIST_PATH} install -j$(nproc)
+RUN tree ${DIST_PATH}
+
+# Build libtorrent with aligned memory access for stability purposes
+WORKDIR /usr/local/src/libtorrent
+COPY --from=src-libtorrent /src .
+RUN autoreconf -vfi
+RUN ./configure --enable-aligned
+RUN make -j$(nproc) CXXFLAGS="-w -O3 -flto -Werror=odr -Werror=lto-type-mismatch -Werror=strict-aliasing"
+RUN make install -j$(nproc)
+RUN make DESTDIR=${DIST_PATH} install -j$(nproc)
+RUN tree ${DIST_PATH}
+
+# Build rTorrent with tinyxml2 for performance and ncurses for the terminal ui
+WORKDIR /usr/local/src/rtorrent
+COPY --from=src-rtorrent /src .
+RUN autoreconf -vfi
+RUN ./configure --with-xmlrpc-tinyxml2 --with-ncurses
+RUN make -j$(nproc) CXXFLAGS="-w -O3 -flto -Werror=odr -Werror=lto-type-mismatch -Werror=strict-aliasing"
 RUN make install -j$(nproc)
 RUN make DESTDIR=${DIST_PATH} install -j$(nproc)
 RUN tree ${DIST_PATH}
@@ -131,6 +174,7 @@ RUN apk --update --no-cache add \
     libzen \
     libzen-dev \
     mediainfo \
+    ncurses \
     nginx \
     openssl \
     php83 \
@@ -148,7 +192,6 @@ RUN apk --update --no-cache add \
     php83-sockets \
     php83-xml \
     php83-zip \
-    rtorrent \
     sox \
     su-exec \
     unzip \
